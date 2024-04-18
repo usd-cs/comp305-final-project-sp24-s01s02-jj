@@ -54,10 +54,12 @@
     - For Ticket and its related classes, ensure that all the update and notify functions update the proper instance fields such as approver chain, iterator, comments, etc. For generateApproverChain, ensure it creates appropriate approvers by tracing up the departmental chain of a person. For makeRecommendation, give it a ticket and make sure the ticket is edited accordingly. For cancelTicket, make sure only the requestor who made the ticket can cancel the ticket.  
 
 
+---
 ## All Classes and Methods Plan:
 
 For all classes with instance variables, public getters and protected setters
     - Backend
+
         - interface DatabaseItem
             - boolean addToDatabase();
             - boolean removeFromDatabase();
