@@ -21,7 +21,7 @@ public abstract class Person implements DatabaseItem {
     public static List<Person> getAllWithLastName(String lastName) {
         return null;
     }
-    public static List<Person> getByPhoneNumber(String phoneNumber) {
+    public static List<Person> getAllWithPhoneNumber(String phoneNumber) {
         return null;
     }
     public static Optional<Person> getByUsername(String username) {
