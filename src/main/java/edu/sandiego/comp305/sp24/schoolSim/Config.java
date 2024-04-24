@@ -6,7 +6,7 @@ public class Config {
     private String databaseUsername;
     private String databasePassword;
     private String databaseHost;
-    private void readFromFile() {
+    private void readFromFile(String fileName) {
 
     }
     public Config getInstance() {
