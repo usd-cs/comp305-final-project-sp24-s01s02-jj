@@ -7,10 +7,23 @@ import static org.junit.jupiter.api.Assertions.*;
 class BulkDataUploadControllerTest {
 
     @Test
-    void parseCSV() {
+    void parseCSVRegular() {
     }
 
     @Test
-    void parseLineItem() {
+    void parseCSVBadFormat() {
+    }
+
+    @Test
+    void parseCSVWhitespace() {
+    }
+
+    @Test
+    void parseLineItemRegular() {
+    }
+
+    @Test
+    void parseLineItemBad() {
+
     }
 }
