@@ -28,8 +28,9 @@ class BulkDataUploadController implements WebMvcConfigurer {
         return "/";
     }
 
-    public void parseCSV(List<String> lines) {
+    public List<DatabaseItem> parseCSV(List<String> lines) {
         // do stuff
+        return null;
     }
 
     public DatabaseItem parseLineItem(String line) {
