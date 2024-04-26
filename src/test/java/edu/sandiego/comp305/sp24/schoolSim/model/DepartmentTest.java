@@ -35,10 +35,22 @@ class DepartmentTest {
     }
 
     @Test
-    void fetchFromDatabase() {
+    void fetchFromDatabaseNotThere() {
     }
 
     @Test
-    void queryDatabase() {
+    void fetchFromDatabaseIsThere() {
+    }
+
+    @Test
+    void queryDatabaseNoResults() {
+    }
+
+    @Test
+    void queryDatabaseOneResult() {
+    }
+
+    @Test
+    void queryDatabaseManyResults() {
     }
 }
