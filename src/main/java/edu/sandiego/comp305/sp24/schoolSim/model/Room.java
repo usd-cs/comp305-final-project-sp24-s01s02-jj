@@ -1,26 +1,32 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Department implements DatabaseItem {
+public class Room implements DatabaseItem{
+    private Building building;
+    private int roomNumber;
 
-    private String name;
-    private ArrayList<Person> personList;
+    Room(){
 
-    public Faculty[] getFacultyInDepartment(){
-        return null;
     }
-    public Student[] getStudentsInDepartment(){
-        return null;
+
+    public Building getBuilding() {
+        return building;
     }
-    public Alumni[] getAlumniInDepartment(){
-        return null;
+
+    public int getRoomNumber() {
+        return roomNumber;
     }
-    public Person[] getAllInDepartment(){
-        return null;
+
+    public void setBuilding(Building building) {
+        this.building = building;
     }
+
+    public void setRoomNumber(int roomNumber) {
+        this.roomNumber = roomNumber;
+    }
+
     @Override
     public boolean addToDatabase() {
         return false;
