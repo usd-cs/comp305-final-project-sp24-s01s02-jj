@@ -1,5 +1,6 @@
 package edu.sandiego.comp305.sp24.schoolSim.controller;
 
+import edu.sandiego.comp305.sp24.schoolSim.model.Building;
 import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
@@ -14,14 +15,12 @@ class BuildingFormController implements WebMvcConfigurer {
     }
 
     @GetMapping("/building/input")
-    //TODO: Replace with Building when it exists
-    public String form(Department departmentForm) {
+    public String form(Building buildingForm) {
         return "index";
     }
 
     @PostMapping("/building/input")
-    //TODO: Replace with Building when it exists
-    public String addBuilding(@Valid Department departmentForm, BindingResult result) {
+    public String addBuilding(@Valid Building buildingForm, BindingResult result) {
         return "redirect:/";
     }
 }

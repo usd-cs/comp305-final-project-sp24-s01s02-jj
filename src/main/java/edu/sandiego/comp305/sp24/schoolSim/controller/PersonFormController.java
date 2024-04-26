@@ -20,7 +20,7 @@ class PersonFormController implements WebMvcConfigurer {
 
     @PostMapping("/person/input")
     //TODO: Check if this is possible since person is abstract
-    public String addDepartment(@Valid Person personForm, BindingResult result) {
+    public String addPerson(@Valid Person personForm, BindingResult result) {
         return "redirect:/";
     }
 }

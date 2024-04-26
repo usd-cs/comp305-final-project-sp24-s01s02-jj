@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.controller;
 
 import edu.sandiego.comp305.sp24.schoolSim.model.Department;
+import edu.sandiego.comp305.sp24.schoolSim.model.Room;
 import jakarta.validation.Valid;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,14 +15,12 @@ class RoomFormController implements WebMvcConfigurer {
     }
 
     @GetMapping("/room/input")
-    //TODO: Replace with room when it exists
-    public String form(Department departmentForm) {
+    public String form(Room roomForm) {
         return "index";
     }
 
     @PostMapping("/room/input")
-    //TODO: Replace with room when it exists
-    public String addDepartment(@Valid Department departmentForm, BindingResult result) {
+    public String addRoom(@Valid Room roomForm, BindingResult result) {
         return "redirect:/";
     }
 }
