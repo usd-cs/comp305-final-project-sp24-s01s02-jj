@@ -9,6 +9,8 @@ import java.util.Properties;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ConfigTests {
+    private static final String TEST_PROPERTIES = "test.properties";
+
     private static final String VALID_RESOURCE = "test-resource-file.txt";
     private static final String INVALID_RESOURCE = "doesnt-exist.txt";
 
@@ -62,79 +64,97 @@ public class ConfigTests {
 
     @Test
     void setInstanceVariablesNull() {
-        assertThrows(IllegalArgumentException.class, () -> Config.getInstance().setInstanceVariables(null));
+        Config config = new Config();
+        assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(null));
     }
 
     @Test
     void setInstanceVariablesMissingDBName() {
+        Config config = new Config();
+
         Properties properties = new Properties();
         properties.setProperty("database_username", "fake username");
         properties.setProperty("database_password", "fake password");
         properties.setProperty("database_host", "fake host");
-        assertThrows(IllegalArgumentException.class, () -> Config.getInstance().setInstanceVariables(properties));
+        assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
     @Test
     void setInstanceVariablesMissingDBUsername() {
+        Config config = new Config();
+
         Properties properties = new Properties();
         properties.setProperty("database_name", "fake name");
         properties.setProperty("database_password", "fake password");
         properties.setProperty("database_host", "fake host");
-        assertThrows(IllegalArgumentException.class, () -> Config.getInstance().setInstanceVariables(properties));
+        assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
     @Test
     void setInstanceVariablesMissingDBPassword() {
+        Config config = new Config();
+
         Properties properties = new Properties();
         properties.setProperty("database_username", "fake username");
         properties.setProperty("database_name", "fake name");
         properties.setProperty("database_host", "fake host");
-        assertThrows(IllegalArgumentException.class, () -> Config.getInstance().setInstanceVariables(properties));
+        assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
     @Test
     void setInstanceVariablesMissingDBHost() {
+        Config config = new Config();
+
         Properties properties = new Properties();
         properties.setProperty("database_username", "fake username");
         properties.setProperty("database_name", "fake name");
         properties.setProperty("database_password", "fake password");
-        assertThrows(IllegalArgumentException.class, () -> Config.getInstance().setInstanceVariables(properties));
+        assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
     @Test
     void setInstanceVariablesAllPresent() {
+        Config config = new Config();
+
         Properties properties = new Properties();
         properties.setProperty("database_username", "fake username");
         properties.setProperty("database_name", "fake name");
         properties.setProperty("database_password", "fake password");
         properties.setProperty("database_host", "fake host");
 
-        assertDoesNotThrow(() -> Config.getInstance().setInstanceVariables(properties));
+        assertDoesNotThrow(() -> config.setInstanceVariables(properties));
     }
 
     @Test
     void setInstanceVariablesEmpty() {
+        Config config = new Config();
+
         Properties properties = new Properties();
 
-        assertThrows(IllegalArgumentException.class, () -> Config.getInstance().setInstanceVariables(properties));
+        assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
     @Test
-    void getInstanceNotMade() {
-        Config config = Config.getInstance();
-        assertNotNull(config);
+    void getInstanceNotInitialized() {
+        Config.initialize(TEST_PROPERTIES);
+        Config.getInstance().reset();
+
+        assertThrows(NullPointerException.class, () -> Config.getInstance());
     }
     @Test
-    void getInstanceAlreadyMade() {
-        Config.getInstance();
+    void getInstanceInitialized() {
+        Config.initialize(TEST_PROPERTIES);
+
         assertNotNull(Config.getInstance());
     }
 
     @Test
     void getInstanceCorrectVariables() {
-        assertEquals("TestName", Config.getInstance().getDatabaseName());
-        assertEquals("a", Config.getInstance().getDatabaseUsername());
-        assertEquals("b", Config.getInstance().getDatabasePassword());
-        assertEquals("c", Config.getInstance().getDatabaseHost());
+        Config.initialize(TEST_PROPERTIES);
+
+        assertEquals("fakename", Config.getInstance().getDatabaseName());
+        assertEquals("fakeusername", Config.getInstance().getDatabaseUsername());
+        assertEquals("fakepassword", Config.getInstance().getDatabasePassword());
+        assertEquals("fakehost", Config.getInstance().getDatabaseHost());
     }
 }
