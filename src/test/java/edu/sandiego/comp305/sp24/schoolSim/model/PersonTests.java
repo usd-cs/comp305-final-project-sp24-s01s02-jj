@@ -14,7 +14,7 @@ public class PersonTests {
             super(id);
         }
 
-        public DummyPerson(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, int department) {
+        public DummyPerson(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department) {
             super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
         }
     }
@@ -48,7 +48,7 @@ public class PersonTests {
         assertEquals("alumni@sandiego.edu", person.getOrganizationEmail());
         assertEquals("alumni@gmail.com", person.getSecondaryEmail());
         assertTrue(person.isActive());
-        assertEquals(0, person.getDepartment());
+        assertEquals(1, person.getDepartment().getId());
     }
 
 
@@ -64,7 +64,7 @@ public class PersonTests {
                     FAKE_ORG_EMAIL,
                     FAKE_SECONDARY_EMAIL,
                     true,
-                    1
+                    new Department(1)
             );
         });
     }
@@ -81,7 +81,7 @@ public class PersonTests {
                     "alumni@sandiego.edu",
                     FAKE_SECONDARY_EMAIL,
                     true,
-                    1
+                    new Department(1)
             );
         });
     }
@@ -98,7 +98,7 @@ public class PersonTests {
                     FAKE_ORG_EMAIL,
                     "alumni@gmail.com",
                     true,
-                    1
+                    new Department(1)
             );
         });
     }

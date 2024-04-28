@@ -1,24 +1,65 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import edu.sandiego.comp305.sp24.schoolSim.Database;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Department {
-
+    private int id;
     private String name;
-    private ArrayList<Person> personList;
 
-    /*public Faculty[] getFacultyInDepartment(){
-        return null;
-    }*/
-    public Student[] getStudentsInDepartment(){
-        return null;
+    public Department(int id) {
+        this.id = id;
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement("SELECT * FROM Department WHERE id=?");
+            preparedStatement.setLong(1, getId());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                this.name = resultSet.getString("name");
+            } else {
+                throw new SQLException("No entries found with id " + getId());
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("SQL Error: " + e.getMessage());
+        }
     }
-    public Alumni[] getAlumniInDepartment(){
-        return null;
+
+    public Department(String name) {
+        this.name = name;
+        String sql = "INSERT INTO Department (name) " +
+                "VALUES (?)";
+
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, name);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating department failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    this.id = (int) generatedKeys.getLong(1);
+                } else {
+                    throw new SQLException("Creating department failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Department entry not found");
+        }
     }
-    public Person[] getAllInDepartment(){
-        return null;
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }

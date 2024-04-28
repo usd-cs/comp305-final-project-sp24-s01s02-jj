@@ -28,7 +28,7 @@ public class Alumni extends Person {
         }
     }
 
-    public Alumni(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, int department, Date graduationDate, DegreeType degreeType) {
+    public Alumni(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date graduationDate, DegreeType degreeType) {
         super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
         this.graduationDate = graduationDate;
         this.degreeType = degreeType;

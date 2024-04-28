@@ -15,7 +15,7 @@ public abstract class Person {
     private String organizationEmail;
     private String secondaryEmail;
     private boolean isActive;
-    private int department;
+    private Department department;
     public Person(int id) {
         String sql = "SELECT * FROM Person WHERE id=?";
         try {
@@ -33,7 +33,7 @@ public abstract class Person {
                 this.organizationEmail = resultSet.getString("organization_email");
                 this.secondaryEmail = resultSet.getString("secondary_email");
                 this.isActive = resultSet.getBoolean("is_active");
-                this.department = resultSet.getInt("department");
+                this.department = new Department(resultSet.getInt("department"));
             } else {
                 throw new SQLException("No entries found with id " + id);
             }
@@ -42,7 +42,7 @@ public abstract class Person {
         }
     }
 
-    public Person(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, int department) {
+    public Person(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthdate = birthdate;
@@ -66,7 +66,7 @@ public abstract class Person {
             preparedStatement.setString(6, organizationEmail);
             preparedStatement.setString(7, secondaryEmail);
             preparedStatement.setBoolean(8, isActive);
-            preparedStatement.setInt(9, 0);
+            preparedStatement.setInt(9, department.getId());
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -122,7 +122,7 @@ public abstract class Person {
         return isActive;
     }
 
-    public int getDepartment() {
+    public Department getDepartment() {
         return department;
     }
 }
