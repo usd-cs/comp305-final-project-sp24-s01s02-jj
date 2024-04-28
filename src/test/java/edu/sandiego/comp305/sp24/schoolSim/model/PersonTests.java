@@ -1,10 +1,14 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
+import edu.sandiego.comp305.sp24.schoolSim.Database;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,6 +22,7 @@ public class PersonTests {
             super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
         }
     }
+    private static final int DOESNT_EXIST_ID = -1;
 
     private static final String FAKE_FIRST_NAME = "fakename";
     private static final String FAKE_LAST_NAME = "fakelast";
@@ -26,8 +31,10 @@ public class PersonTests {
     private static final String FAKE_USERNAME = "alumni123";
     private static final String FAKE_ORG_EMAIL = "different_email@sandiego.edu";
     private static final String FAKE_SECONDARY_EMAIL = "different_email@gmail.edu";
-    private static final Date FAKE_GRAD_DATE = new Date(2023 - 1900, 8, 1);
 
+    private static final String UNIQUE_USERNAME = "uniqueuser";
+    private static final String UNIQUE_ORG_EMAIl = "unique@sandiego.edu";
+    private static final String UNIQUE_SECONDARY_EMAIL = "unique@gmail.com";
 
     @BeforeAll
     static void beforeAll() {
@@ -49,6 +56,11 @@ public class PersonTests {
         assertEquals("alumni@gmail.com", person.getSecondaryEmail());
         assertTrue(person.isActive());
         assertEquals(1, person.getDepartment().getId());
+    }
+
+    @Test
+    void getPersonDoesntExist() {
+        assertThrows(IllegalArgumentException.class, () -> new DummyPerson(DOESNT_EXIST_ID));
     }
 
 
@@ -87,7 +99,7 @@ public class PersonTests {
     }
 
     @Test
-    void createAlumniDuplicateSecondaryEmail() {
+    void createPersonDuplicateSecondaryEmail() {
         assertThrows(IllegalArgumentException.class, () -> {
             DummyPerson person = new DummyPerson(
                     FAKE_FIRST_NAME,
@@ -101,5 +113,79 @@ public class PersonTests {
                     new Department(1)
             );
         });
+    }
+
+    @Test
+    void createNewPersonTestVariables() {
+        DummyPerson newPerson = new DummyPerson(
+                FAKE_FIRST_NAME,
+                FAKE_LAST_NAME,
+                FAKE_BIRTHDATE,
+                FAKE_PHONE_NUMBER,
+                UNIQUE_USERNAME,
+                UNIQUE_ORG_EMAIl,
+                UNIQUE_SECONDARY_EMAIL,
+                true,
+                new Department(1)
+        );
+        assertEquals(FAKE_FIRST_NAME, newPerson.getFirstName());
+        assertEquals(FAKE_LAST_NAME, newPerson.getLastName());
+        assertEquals(FAKE_BIRTHDATE.toString(), newPerson.getBirthdate().toString());
+        assertEquals(FAKE_PHONE_NUMBER, newPerson.getPhoneNumber());
+        assertEquals(UNIQUE_USERNAME, newPerson.getUsername());
+        assertEquals(UNIQUE_ORG_EMAIl, newPerson.getOrganizationEmail());
+        assertEquals(UNIQUE_SECONDARY_EMAIL, newPerson.getSecondaryEmail());
+        assertTrue(newPerson.isActive());
+        assertEquals(1, newPerson.getDepartment().getId());
+
+
+        // Delete person so test can be re-run
+        deletePersonWithUsername(UNIQUE_USERNAME);
+    }
+
+    @Test
+    void createNewPersonGetAndTestVariables() {
+        DummyPerson newPerson1 = new DummyPerson(
+                FAKE_FIRST_NAME,
+                FAKE_LAST_NAME,
+                FAKE_BIRTHDATE,
+                FAKE_PHONE_NUMBER,
+                UNIQUE_USERNAME,
+                UNIQUE_ORG_EMAIl,
+                UNIQUE_SECONDARY_EMAIL,
+                true,
+                new Department(1)
+        );
+
+        DummyPerson newPerson = new DummyPerson(newPerson1.getId());
+        assertEquals(FAKE_FIRST_NAME, newPerson.getFirstName());
+        assertEquals(FAKE_LAST_NAME, newPerson.getLastName());
+        assertEquals(FAKE_BIRTHDATE.toString(), newPerson.getBirthdate().toString());
+        assertEquals(FAKE_PHONE_NUMBER, newPerson.getPhoneNumber());
+        assertEquals(UNIQUE_USERNAME, newPerson.getUsername());
+        assertEquals(UNIQUE_ORG_EMAIl, newPerson.getOrganizationEmail());
+        assertEquals(UNIQUE_SECONDARY_EMAIL, newPerson.getSecondaryEmail());
+        assertTrue(newPerson.isActive());
+        assertEquals(1, newPerson.getDepartment().getId());
+
+
+        // Delete person so test can be re-run
+        deletePersonWithUsername(UNIQUE_USERNAME);
+    }
+
+    void deletePersonWithUsername(String username) {
+        try {
+            String sql = "DELETE FROM Person WHERE `username` = ?";
+
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, username);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("User not deleted");
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("User couldn't be deleted");
+        }
     }
 }

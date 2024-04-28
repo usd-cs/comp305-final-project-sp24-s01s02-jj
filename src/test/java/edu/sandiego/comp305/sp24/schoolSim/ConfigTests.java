@@ -1,5 +1,6 @@
 package edu.sandiego.comp305.sp24.schoolSim;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -16,6 +17,11 @@ public class ConfigTests {
 
     private static final String VALID_PROPERTIES = "valid.properties";
     private static final String INVALID_PROPERTIES = "invalid.properties";
+    @AfterAll
+    static void afterAll() {
+        Config.getInstance().reset();
+    }
+
 
     @Test
     void readFromResourceFileNull() {
@@ -151,6 +157,7 @@ public class ConfigTests {
     @Test
     void getInstanceCorrectVariables() {
         Config.initialize(TEST_PROPERTIES);
+
 
         assertEquals("fakename", Config.getInstance().getDatabaseName());
         assertEquals("fakeusername", Config.getInstance().getDatabaseUsername());
