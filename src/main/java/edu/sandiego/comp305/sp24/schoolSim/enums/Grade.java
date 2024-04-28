@@ -1,4 +1,4 @@
-package edu.sandiego.comp305.sp24.schoolSim.model;
+package edu.sandiego.comp305.sp24.schoolSim.enums;
 
 public enum Grade{
     FRESHMAN,

@@ -1,10 +1,11 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
-import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
 
-public abstract class Person implements DatabaseItem {
+import edu.sandiego.comp305.sp24.schoolSim.Database;
+
+import java.sql.*;
+
+public abstract class Person {
     private int id;
     private String firstName;
     private String lastName;
@@ -14,30 +15,75 @@ public abstract class Person implements DatabaseItem {
     private String organizationEmail;
     private String secondaryEmail;
     private boolean isActive;
-    private Department department;
-    public static List<Person> getAllWithFirstName(String firstName) {
-        return null;
+    private int department;
+    public Person(int id) {
+        String sql = "SELECT * FROM Person WHERE id=?";
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                this.id = resultSet.getInt("id");
+                this.firstName = resultSet.getString("first_name");
+                this.lastName = resultSet.getString("last_name");
+                this.birthdate = resultSet.getDate("birthdate");
+                this.phoneNumber = resultSet.getString("phone_number");
+                this.username = resultSet.getString("username");
+                this.organizationEmail = resultSet.getString("organization_email");
+                this.secondaryEmail = resultSet.getString("secondary_email");
+                this.isActive = resultSet.getBoolean("is_active");
+                this.department = resultSet.getInt("department");
+            } else {
+                throw new SQLException("No entries found with id " + id);
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("SQL Error: " + e.getMessage());
+        }
     }
-    public static List<Person> getAllWithLastName(String lastName) {
-        return null;
-    }
-    public static List<Person> getAllWithPhoneNumber(String phoneNumber) {
-        return null;
-    }
-    public static Optional<Person> getByUsername(String username) {
-        return null;
-    }
-    public static Optional<Person> getByOrganizationEmail(String organizationEmail) {
-        return null;
-    }
-    public static Optional<Person> getBySecondaryEmail(String secondaryEmail) {
-        return null;
-    }
-    public static List<Person> getActivePeople() {
-        return null;
-    }
-    public static List<Person> getInactivePeople() {
-        return null;
+
+    public Person(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, int department) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.birthdate = birthdate;
+        this.phoneNumber = phoneNumber;
+        this.username = username;
+        this.organizationEmail = organizationEmail;
+        this.secondaryEmail = secondaryEmail;
+        this.isActive = isActive;
+        this.department = department;
+
+        String sql = "INSERT INTO Person (first_name, last_name, birthdate, phone_number, username, organization_email, secondary_email, is_active, department) " +
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, firstName);
+            preparedStatement.setString(2, lastName);
+            preparedStatement.setDate(3, birthdate);
+            preparedStatement.setString(4, phoneNumber);
+            preparedStatement.setString(5, username);
+            preparedStatement.setString(6, organizationEmail);
+            preparedStatement.setString(7, secondaryEmail);
+            preparedStatement.setBoolean(8, isActive);
+            preparedStatement.setInt(9, 0);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    this.id = (int) generatedKeys.getLong(1);
+                } else {
+                    throw new SQLException("Creating user failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Person entry not found");
+        }
     }
 
     public int getId() {
@@ -76,46 +122,7 @@ public abstract class Person implements DatabaseItem {
         return isActive;
     }
 
-    public Department getDepartment() {
+    public int getDepartment() {
         return department;
-    }
-    void setId(int id) {
-        this.id = id;
-    }
-
-    void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    void setBirthdate(Date birthdate) {
-        this.birthdate = birthdate;
-    }
-
-    void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    void setUsername(String username) {
-        this.username = username;
-    }
-
-    void setOrganizationEmail(String organizationEmail) {
-        this.organizationEmail = organizationEmail;
-    }
-
-    void setSecondaryEmail(String secondaryEmail) {
-        this.secondaryEmail = secondaryEmail;
-    }
-
-    void setActive(boolean active) {
-        isActive = active;
-    }
-
-    void setDepartment(Department department) {
-        this.department = department;
     }
 }

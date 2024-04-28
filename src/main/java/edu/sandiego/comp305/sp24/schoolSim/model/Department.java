@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Department implements DatabaseItem {
+public class Department {
 
     private String name;
     private ArrayList<Person> personList;
 
-    public Faculty[] getFacultyInDepartment(){
+    /*public Faculty[] getFacultyInDepartment(){
         return null;
-    }
+    }*/
     public Student[] getStudentsInDepartment(){
         return null;
     }
@@ -19,30 +19,6 @@ public class Department implements DatabaseItem {
         return null;
     }
     public Person[] getAllInDepartment(){
-        return null;
-    }
-    @Override
-    public boolean addToDatabase() {
-        return false;
-    }
-
-    @Override
-    public boolean removeFromDatabase() {
-        return false;
-    }
-
-    @Override
-    public boolean updateFromDatabase(String query) {
-        return false;
-    }
-
-    @Override
-    public Optional<DatabaseItem> fetchFromDatabase(int id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<DatabaseItem> queryDatabase(String query) {
         return null;
     }
 }

@@ -1,6 +1,6 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
-public class Faculty extends Employee{
+public class Faculty /*extends Employee*/ {
     private Room officeLocation;
     private Department department;
     private boolean hasTenure;

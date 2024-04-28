@@ -1,121 +1,105 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
+import edu.sandiego.comp305.sp24.schoolSim.Config;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonTests {
-    @Test
-    void getAllWithFirstNameNull() {
+    private static class DummyPerson extends Person {
+        public DummyPerson(int id) {
+            super(id);
+        }
 
-    }
-    @Test
-    void getAllWithFirstNameNone() {
-
-    }
-    @Test
-    void getAllWithFirstNameOne() {
-
-    }
-    @Test
-    void getAllWithFirstNameMultiple() {
-
+        public DummyPerson(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, int department) {
+            super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
+        }
     }
 
-    @Test
-    void getAllWithLastNameNull() {
+    private static final String FAKE_FIRST_NAME = "fakename";
+    private static final String FAKE_LAST_NAME = "fakelast";
+    private static final Date FAKE_BIRTHDATE = new Date(2004 - 1900, 7, 1);
+    private static final String FAKE_PHONE_NUMBER = "1234009955";
+    private static final String FAKE_USERNAME = "alumni123";
+    private static final String FAKE_ORG_EMAIL = "different_email@sandiego.edu";
+    private static final String FAKE_SECONDARY_EMAIL = "different_email@gmail.edu";
+    private static final Date FAKE_GRAD_DATE = new Date(2023 - 1900, 8, 1);
 
-    }
-    @Test
-    void getAllWithLastNameNone() {
 
-    }
-    @Test
-    void getAllWithLastNameOne() {
-
-    }
-    @Test
-    void getAllWithLastNameMultiple() {
-
+    @BeforeAll
+    static void beforeAll() {
+        Config.initialize("config.properties");
     }
 
     @Test
-    void getAllWithPhoneNumberNull() {
+    void verifyFirstPersonValues() {
+        DummyPerson person = new DummyPerson(1);
+        assertNotNull(person);
 
-    }
-    @Test
-    void getAllWithPhoneNumberNone() {
-
-    }
-    @Test
-    void getAllWithPhoneNumberOne() {
-
-    }
-    @Test
-    void getAllWithPhoneNumberMultiple() {
-
-    }
-
-    @Test
-    void getByUsernameNull() {
-
-    }
-    @Test
-    void getByUsernameYes() {
-
-    }
-    @Test
-    void getByUsernameNo() {
-
+        assertEquals(1, person.getId());
+        assertEquals("Alumni1", person.getFirstName());
+        assertEquals("Smith", person.getLastName());
+        assertEquals("2004-03-18", person.getBirthdate().toString());
+        assertEquals("1234567891", person.getPhoneNumber());
+        assertEquals("alumni", person.getUsername());
+        assertEquals("alumni@sandiego.edu", person.getOrganizationEmail());
+        assertEquals("alumni@gmail.com", person.getSecondaryEmail());
+        assertTrue(person.isActive());
+        assertEquals(0, person.getDepartment());
     }
 
-    @Test
-    void getByOrganizationEmailNull() {
 
-    }
     @Test
-    void getByOrganizationEmailYes() {
-
-    }
-    @Test
-    void getByOrganizationEmailNo() {
-
+    void createPersonDuplicateUsername() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            DummyPerson person = new DummyPerson(
+                    FAKE_FIRST_NAME,
+                    FAKE_LAST_NAME,
+                    FAKE_BIRTHDATE,
+                    FAKE_PHONE_NUMBER,
+                    "alumni",
+                    FAKE_ORG_EMAIL,
+                    FAKE_SECONDARY_EMAIL,
+                    true,
+                    1
+            );
+        });
     }
 
     @Test
-    void getBySecondaryEmailNull() {
-
+    void createPersonDuplicateOrgEmail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            DummyPerson person = new DummyPerson(
+                    FAKE_FIRST_NAME,
+                    FAKE_LAST_NAME,
+                    FAKE_BIRTHDATE,
+                    FAKE_PHONE_NUMBER,
+                    FAKE_USERNAME,
+                    "alumni@sandiego.edu",
+                    FAKE_SECONDARY_EMAIL,
+                    true,
+                    1
+            );
+        });
     }
-    @Test
-    void getBySecondaryEmailYes() {
 
-    }
     @Test
-    void getBySecondaryEmailNo() {
-
-    }
-    @Test
-    void getActivePeopleOne() {
-
-    }
-    @Test
-    void getActivePeopleNone() {
-
-    }
-    @Test
-    void getActiveInPeopleMultiple() {
-
-    }
-    @Test
-    void getInactivePeopleOne() {
-
-    }
-    @Test
-    void getInactivePeopleNone() {
-
-    }
-    @Test
-    void getInactivePeopleMultiple() {
-
+    void createAlumniDuplicateSecondaryEmail() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            DummyPerson person = new DummyPerson(
+                    FAKE_FIRST_NAME,
+                    FAKE_LAST_NAME,
+                    FAKE_BIRTHDATE,
+                    FAKE_PHONE_NUMBER,
+                    FAKE_USERNAME,
+                    FAKE_ORG_EMAIL,
+                    "alumni@gmail.com",
+                    true,
+                    1
+            );
+        });
     }
 }

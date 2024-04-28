@@ -4,12 +4,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-public class Employee extends Person{
+public class Employee /*extends Person*/ {
     private Optional<Employee> manager;
     private Date startDate;
     private double hourlyWage;
 
-    Employee(){
+    Employee() {
 
     }
 
@@ -35,30 +35,5 @@ public class Employee extends Person{
 
     public void setHourlyWage(double hourlyWage) {
         this.hourlyWage = hourlyWage;
-    }
-
-    @Override
-    public boolean addToDatabase() {
-        return false;
-    }
-
-    @Override
-    public boolean removeFromDatabase() {
-        return false;
-    }
-
-    @Override
-    public boolean updateFromDatabase(String query) {
-        return false;
-    }
-
-    @Override
-    public Optional<DatabaseItem> fetchFromDatabase(int id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<DatabaseItem> queryDatabase(String query) {
-        return null;
     }
 }
