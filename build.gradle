@@ -27,6 +27,7 @@ dependencies {
 }
 
 jar {
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 	manifest {
 		attributes "Main-Class": "edu/sandiego/comp305/sp24/schoolSim/SchoolSimApplication"
 	}
