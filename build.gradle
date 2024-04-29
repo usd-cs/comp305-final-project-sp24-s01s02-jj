@@ -26,6 +26,17 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
+jar {
+	manifest {
+		attributes "Main-Class": "edu/sandiego/comp305/sp24/schoolSim/SchoolSimApplication"
+	}
+	from {
+		configurations.runtimeClasspath.collect {
+			it.isDirectory() ? it : zipTree(it)
+		}
+	}
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }

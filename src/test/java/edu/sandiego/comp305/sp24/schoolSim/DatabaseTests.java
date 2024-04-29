@@ -1,5 +1,6 @@
 package edu.sandiego.comp305.sp24.schoolSim;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
@@ -17,6 +18,11 @@ public class DatabaseTests {
         } catch (IllegalStateException e) {
             // ignore
         }
+    }
+
+    @AfterAll
+    static void afterAll() {
+        Config.initialize(TEST_PROPERTIES).reset();
     }
 
     @Test
