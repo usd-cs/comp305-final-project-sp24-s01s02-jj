@@ -38,7 +38,7 @@ public class Database {
     private boolean testHostConnection(String host) {
         try {
             InetAddress addr = InetAddress.getByName(host);
-            if (addr.isReachable(10)) {
+            if (addr.isReachable(10000)) {
                 return true;
             } else {
                 return false;
