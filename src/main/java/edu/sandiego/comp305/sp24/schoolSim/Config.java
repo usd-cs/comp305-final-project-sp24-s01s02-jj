@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public class Config {
-    //private static final String FILENAME = "config.properties";
     private static Config instance;
     private String databaseName;
     private String databaseUsername;
@@ -58,22 +57,20 @@ public class Config {
         }
 
         String[] keys = {"database_name", "database_username", "database_password", "database_host"};
-        String[] instanceVariables = {databaseName, databaseUsername, databasePassword, databaseHost};
-
+        String[] values = new String[keys.length];
         for (int i = 0; i < keys.length; i++) {
             String value = properties.getProperty(keys[i]);
 
             if (value == null) {
                 throw new IllegalArgumentException("Key " + keys[i] + " not found in properties");
             }
-
-            instanceVariables[i] = value;
+            values[i] = value;
         }
 
-        databaseName = instanceVariables[0];
-        databaseUsername = instanceVariables[1];
-        databasePassword = instanceVariables[2];
-        databaseHost = instanceVariables[3];
+        databaseName = values[0];
+        databaseUsername = values[1];
+        databasePassword = values[2];
+        databaseHost = values[3];
     }
 
     public static Config getInstance() {

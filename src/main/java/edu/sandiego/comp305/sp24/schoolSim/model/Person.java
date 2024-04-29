@@ -16,6 +16,8 @@ public abstract class Person {
     private String secondaryEmail;
     private boolean isActive;
     private Department department;
+
+    // Obtain a Person entry from the database
     public Person(int id) {
         String sql = "SELECT * FROM Person WHERE id=?";
         try {
@@ -42,6 +44,7 @@ public abstract class Person {
         }
     }
 
+    // Create a new Person object and insert it into the database
     public Person(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
