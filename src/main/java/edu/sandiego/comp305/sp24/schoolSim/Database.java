@@ -6,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class Database {
+    private static final int NETWORK_TIMEOUT = 10000;
     private static Database instance;
     private Connection databaseConnection;
 
@@ -38,7 +39,7 @@ public class Database {
     private boolean testHostConnection(String host) {
         try {
             InetAddress addr = InetAddress.getByName(host);
-            if (addr.isReachable(10000)) {
+            if (addr.isReachable(NETWORK_TIMEOUT)) {
                 return true;
             } else {
                 return false;
