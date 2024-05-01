@@ -1,62 +1,58 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
 
-public class Alumni extends Person{
+import java.sql.*;
+
+public class Alumni extends Person {
     private Date graduationDate;
-    private Degree degreeType;
+    private DegreeType degreeType;
 
-    public Alumni(Date graduationDate, Degree degreeType){
-        super();
-        this.graduationDate = graduationDate;
-        this.degreeType = degreeType;
+    public Alumni(int id) {
+        super(id);
+
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement("SELECT * FROM Alumni WHERE id=?");
+            preparedStatement.setLong(1, getId());
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                this.graduationDate = resultSet.getDate("graduation_date");
+                this.degreeType = DegreeType.fromId(resultSet.getInt("degree_type"));
+            } else {
+                throw new SQLException("No entries found with id " + getId());
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("SQL Error: " + e.getMessage());
+        }
     }
 
-    Alumni(int id, String firstName, String lastName, Date birthday, String phoneNumber, String username,
-            String organizationEmail, String secondaryEmail, boolean isActive, Date graduationDate, Degree degreeType){
+    public Alumni(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date graduationDate, DegreeType degreeType) {
+        super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
         this.graduationDate = graduationDate;
         this.degreeType = degreeType;
+
+        String sql = "INSERT INTO Alumni (id, graduation_date, degree_type) " +
+                "VALUES (?, ?, ?)";
+
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, getId());
+            preparedStatement.setDate(2, graduationDate);
+            preparedStatement.setInt(3, degreeType.getId());
+
+            preparedStatement.executeQuery();
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Person entry not found");
+        }
     }
 
     public Date getGraduationDate() {
         return graduationDate;
     }
-    public Degree getDegreeType() {
+
+    public DegreeType getDegree() {
         return degreeType;
-    }
-
-    public void setGraduationDate(Date graduationDate) {
-        this.graduationDate = graduationDate;
-    }
-
-    public void setDegreeType(Degree degreeType) {
-        this.degreeType = degreeType;
-    }
-
-    @Override
-    public boolean addToDatabase() {
-        return false;
-    }
-
-    @Override
-    public boolean removeFromDatabase() {
-        return false;
-    }
-
-    @Override
-    public boolean updateFromDatabase(String query) {
-        return false;
-    }
-
-    @Override
-    public Optional<DatabaseItem> fetchFromDatabase(int id) {
-        return Optional.empty();
-    }
-
-    @Override
-    public List<DatabaseItem> queryDatabase(String query) {
-        return null;
     }
 }
