@@ -63,7 +63,6 @@ public class PersonTests {
         assertThrows(IllegalArgumentException.class, () -> new DummyPerson(DOESNT_EXIST_ID));
     }
 
-
     @Test
     void createPersonDuplicateUsername() {
         assertThrows(IllegalArgumentException.class, () -> {
