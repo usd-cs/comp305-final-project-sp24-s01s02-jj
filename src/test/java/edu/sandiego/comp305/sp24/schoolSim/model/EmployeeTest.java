@@ -4,8 +4,6 @@ import edu.sandiego.comp305.sp24.schoolSim.Config;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeeTest {
