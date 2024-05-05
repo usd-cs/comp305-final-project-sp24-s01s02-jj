@@ -1,44 +1,64 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
-public class Faculty /*extends Employee*/ {
+import edu.sandiego.comp305.sp24.schoolSim.Database;
+
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class Faculty extends Employee {
     private Room officeLocation;
-    private Department department;
     private boolean hasTenure;
-    private String college;
 
-    Faculty(){
+    public Faculty(int id) {
+        super(id);
 
+        String sql = "SELECT * FROM Faculty WHERE id=?";
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                this.officeLocation = new Room(resultSet.getInt("office_location"));
+                this.hasTenure = resultSet.getBoolean("has_tenure");
+            } else {
+                throw new SQLException("No entries found with id " + id);
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("SQL Error: " + e.getMessage());
+        }
+    }
+
+    public Faculty(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date startDate, double hourlyWage, Employee manager, Room officeLocation, boolean hasTenure) {
+        super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department, startDate, hourlyWage, manager);
+        this.officeLocation = officeLocation;
+        this.hasTenure = hasTenure;
+
+        String sql = "INSERT INTO Faculty (id, office_location, has_tenure) " +
+                "VALUES (?, ?, ?)";
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql);
+            preparedStatement.setInt(1, getId());
+            preparedStatement.setInt(2, officeLocation.getId());
+            preparedStatement.setBoolean(3, hasTenure);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating user failed, no rows affected.");
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Person entry not found");
+        }
     }
 
     public Room getOfficeLocation() {
         return officeLocation;
     }
 
-    public Department getDepartment() {
-        return department;
-    }
-
-    public boolean isHasTenure() {
+    public boolean hasTenure() {
         return hasTenure;
-    }
-
-    public String getCollege() {
-        return college;
-    }
-
-    public void setOfficeLocation(Room officeLocation) {
-        this.officeLocation = officeLocation;
-    }
-
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public void setHasTenure(boolean hasTenure) {
-        this.hasTenure = hasTenure;
-    }
-
-    public void setCollege(String college) {
-        this.college = college;
     }
 }
