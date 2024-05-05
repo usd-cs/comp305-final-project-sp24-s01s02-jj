@@ -1,18 +1,79 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
-import java.util.List;
-import java.util.Optional;
+import edu.sandiego.comp305.sp24.schoolSim.Database;
+
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
 public class Building {
+    private int id;
     private String name;
     private String address;
     private int floors;
     private String abbreviation;
 
 
-    Building(){
+    public Building(int id) {
+        this.id = id;
+
+        String sql = "SELECT * FROM Building WHERE id=?";
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql);
+            preparedStatement.setLong(1, id);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                this.name = resultSet.getString("name");
+                this.address = resultSet.getString("address");
+                this.floors = resultSet.getInt("floors");
+                this.abbreviation = resultSet.getString("abbreviation");
+            } else {
+                throw new SQLException("No entries found with id " + id);
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("SQL Error: " + e.getMessage());
+        }
     }
 
+    public Building(String name, String address, int floors, String abbreviation) {
+        this.name = name;
+        this.address = address;
+        this.floors = floors;
+        this.abbreviation = abbreviation;
+
+        String sql = "INSERT INTO Building (`name`, `address`, `floors`, `abbreviation`) " +
+                "VALUES (?, ?, ?, ?)";
+
+        try {
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, name);
+            preparedStatement.setString(2, address);
+            preparedStatement.setInt(3, floors);
+            preparedStatement.setString(4, abbreviation);
+
+            int affectedRows = preparedStatement.executeUpdate();
+
+            if (affectedRows == 0) {
+                throw new SQLException("Creating building failed, no rows affected.");
+            }
+
+            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    this.id = (int) generatedKeys.getLong(1);
+                } else {
+                    throw new SQLException("Creating building failed, no ID obtained.");
+                }
+            }
+        } catch (SQLException e) {
+            throw new IllegalArgumentException("Building entry not found");
+        }
+    }
+
+    public int getId() {
+        return id;
+    }
     public String getName() {
         return name;
     }
@@ -27,21 +88,5 @@ public class Building {
 
     public String getAbbreviation() {
         return abbreviation;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public void setFloors(int floors) {
-        this.floors = floors;
-    }
-
-    public void setAbbreviation(String abbreviation) {
-        this.abbreviation = abbreviation;
     }
 }
