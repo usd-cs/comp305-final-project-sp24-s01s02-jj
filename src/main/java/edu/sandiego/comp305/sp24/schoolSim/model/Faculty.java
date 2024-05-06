@@ -31,7 +31,20 @@ public class Faculty extends Employee {
         }
     }
 
-    public Faculty(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date startDate, double hourlyWage, Employee manager, Room officeLocation, boolean hasTenure) {
+    public Faculty(String firstName,
+                   String lastName,
+                   Date birthdate,
+                   String phoneNumber,
+                   String username,
+                   String organizationEmail,
+                   String secondaryEmail,
+                   boolean isActive,
+                   Department department,
+                   Date startDate,
+                   double hourlyWage,
+                   Employee manager,
+                   Room officeLocation,
+                   boolean hasTenure) {
         super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department, startDate, hourlyWage, manager);
         this.officeLocation = officeLocation;
         this.hasTenure = hasTenure;

@@ -29,7 +29,17 @@ public class Student extends Person {
         }
     }
 
-    public Student(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, String major, Grade grade) {
+    public Student(String firstName,
+                   String lastName,
+                   Date birthdate,
+                   String phoneNumber,
+                   String username,
+                   String organizationEmail,
+                   String secondaryEmail,
+                   boolean isActive,
+                   Department department,
+                   String major,
+                   Grade grade) {
         super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
         this.major = major;
         this.grade = grade;

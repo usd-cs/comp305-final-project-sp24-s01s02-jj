@@ -36,7 +36,19 @@ public class Employee extends Person {
         }
     }
 
-    public Employee(String firstName, String lastName, java.sql.Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date startDate, double hourlyWage, Employee manager) {
+    public Employee(
+            String firstName,
+            String lastName,
+            Date birthdate,
+            String phoneNumber,
+            String username,
+            String organizationEmail,
+            String secondaryEmail,
+            boolean isActive,
+            Department department,
+            Date startDate,
+            double hourlyWage,
+            Employee manager) {
         super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
         String sql = "INSERT INTO Employee (id, start_date, hourly_wage, manager) " +
                 "VALUES (?, ?, ?, ?)";

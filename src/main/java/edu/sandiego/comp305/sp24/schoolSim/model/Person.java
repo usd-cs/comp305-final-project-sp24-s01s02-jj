@@ -45,7 +45,15 @@ public abstract class Person {
     }
 
     // Create a new Person object and insert it into the database
-    public Person(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department) {
+    public Person(String firstName,
+                  String lastName,
+                  Date birthdate,
+                  String phoneNumber,
+                  String username,
+                  String organizationEmail,
+                  String secondaryEmail,
+                  boolean isActive,
+                  Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthdate = birthdate;
