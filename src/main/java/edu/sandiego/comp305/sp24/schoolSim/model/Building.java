@@ -8,14 +8,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Building {
-    private int id;
+    private long id;
     private String name;
     private String address;
     private int floors;
     private String abbreviation;
 
 
-    public Building(int id) {
+    public Building(long id) {
         this.id = id;
 
         String sql = "SELECT * FROM Building WHERE id=?";
@@ -61,7 +61,7 @@ public class Building {
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    this.id = (int) generatedKeys.getLong(1);
+                    this.id = generatedKeys.getLong(1);
                 } else {
                     throw new SQLException("Creating building failed, no ID obtained.");
                 }
@@ -71,7 +71,7 @@ public class Building {
         }
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
     public String getName() {

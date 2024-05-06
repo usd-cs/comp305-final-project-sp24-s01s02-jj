@@ -94,7 +94,7 @@ class AlumniTest {
         deleteWithId(alumni.getId(), "Alumni");
     }
 
-    void deleteWithId(int id, String table) {
+    void deleteWithId(long id, String table) {
         try {
             String sql = "DELETE FROM " + table + " WHERE `id` = ?";
 

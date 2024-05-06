@@ -10,7 +10,7 @@ public class Employee extends Person {
     private Date startDate;
     private double hourlyWage;
 
-    public Employee(int id) {
+    public Employee(long id) {
         super(id);
 
         String sql = "SELECT * FROM Employee WHERE id=?";
@@ -64,12 +64,12 @@ public class Employee extends Person {
 
         try {
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, getId());
+            preparedStatement.setLong(1, getId());
             preparedStatement.setDate(2, startDate);
             preparedStatement.setDouble(3, hourlyWage);
 
             if (this.manager.isPresent()) {
-                preparedStatement.setInt(4, this.manager.get().getId());
+                preparedStatement.setLong(4, this.manager.get().getId());
             } else {
                 preparedStatement.setNull(4, Types.BIGINT);
             }

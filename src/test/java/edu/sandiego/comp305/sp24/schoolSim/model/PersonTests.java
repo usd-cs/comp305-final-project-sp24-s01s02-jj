@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonTests {
     private static class DummyPerson extends Person {
-        public DummyPerson(int id) {
+        public DummyPerson(long id) {
             super(id);
         }
 

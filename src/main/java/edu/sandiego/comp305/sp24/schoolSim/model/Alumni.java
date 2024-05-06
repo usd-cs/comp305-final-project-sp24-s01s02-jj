@@ -9,7 +9,7 @@ public class Alumni extends Person {
     private Date graduationDate;
     private DegreeType degreeType;
 
-    public Alumni(int id) {
+    public Alumni(long id) {
         super(id);
 
         try {

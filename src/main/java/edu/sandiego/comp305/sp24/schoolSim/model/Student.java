@@ -10,7 +10,7 @@ public class Student extends Person {
     private String major;
     private Grade grade;
 
-    public Student(int id) {
+    public Student(long id) {
         super(id);
 
         try {

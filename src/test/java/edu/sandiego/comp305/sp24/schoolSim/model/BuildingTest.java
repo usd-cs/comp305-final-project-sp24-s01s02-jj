@@ -72,7 +72,7 @@ class BuildingTest {
         deleteWithId(building.getId(), "Building");
     }
 
-    void deleteWithId(int id, String table) {
+    void deleteWithId(long id, String table) {
         try {
             String sql = "DELETE FROM " + table + " WHERE `id` = ?";
 

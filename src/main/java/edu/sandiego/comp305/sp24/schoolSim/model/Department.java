@@ -8,10 +8,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Department {
-    private int id;
+    private long id;
     private String name;
 
-    public Department(int id) {
+    public Department(long id) {
         this.id = id;
         try {
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement("SELECT * FROM Department WHERE id=?");
@@ -45,7 +45,7 @@ public class Department {
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    this.id = (int) generatedKeys.getLong(1);
+                    this.id = generatedKeys.getLong(1);
                 } else {
                     throw new SQLException("Creating department failed, no ID obtained.");
                 }
@@ -55,7 +55,7 @@ public class Department {
         }
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 

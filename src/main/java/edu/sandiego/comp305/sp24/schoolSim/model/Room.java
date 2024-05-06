@@ -8,11 +8,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Room {
-    private int id;
+    private long id;
     private Building building;
     private int roomNumber;
 
-    public Room(int id) {
+    public Room(long id) {
         this.id = id;
 
         String sql = "SELECT * FROM Room WHERE id=?";
@@ -41,7 +41,7 @@ public class Room {
 
         try {
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setInt(1, building.getId());
+            preparedStatement.setLong(1, building.getId());
             preparedStatement.setInt(2, roomNumber);
 
             int affectedRows = preparedStatement.executeUpdate();
@@ -62,7 +62,7 @@ public class Room {
         }
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
     public Building getBuilding() {

@@ -11,7 +11,7 @@ public class Faculty extends Employee {
     private Room officeLocation;
     private boolean hasTenure;
 
-    public Faculty(int id) {
+    public Faculty(long id) {
         super(id);
 
         String sql = "SELECT * FROM Faculty WHERE id=?";
@@ -53,8 +53,8 @@ public class Faculty extends Employee {
                 "VALUES (?, ?, ?)";
         try {
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, getId());
-            preparedStatement.setInt(2, officeLocation.getId());
+            preparedStatement.setLong(1, getId());
+            preparedStatement.setLong(2, officeLocation.getId());
             preparedStatement.setBoolean(3, hasTenure);
 
             int affectedRows = preparedStatement.executeUpdate();
