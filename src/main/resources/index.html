@@ -1,29 +1,68 @@
-<!DOCTYPE html5>
+<!doctype html>
 <html>
-	<head>
-		<title>School Simulator</title>
-	</head>
-	<body>
-		<div class="navbar">
-			<p><a href="/">School Simulator</a></p>
-			<ul>
-				<!-- Maybe combine the extensions into one -->
-				<li>People</li>
-				<li>Students</li>
-				<li>Alumni</li>
-				<li>Building</li>
-				<li>Employee</li>
-				<li>Faculty</li>
-				<li>Room</li>
-				<li>Department</li>
-			</ul>
-		</div>
-		<div class="stats">Test Changes</div>
-		<div class="footer">School Simulator - Andrew Albizati, Noah Huang, John Phillips - 2024</div>
-		<script type="text/javascript">
-			// Every n seconds refresh the page for dev 
-			const REFRESH_DELAY = 6;
-			window.setTimeout(() => {location.reload();}, REFRESH_DELAY*1000);
-		</script>
-	</body>
+    <head>
+        <title>School Simulator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    </head>
+    <body>
+        <!-- TODO: Inject this entire nav section -->
+        <nav class="navbar" role="navigation" aria-label="main-navigation">
+            <div class="navbar-brand">
+                <a href="/" class="navbar-item">School Simulator</a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <!-- TODO: Template in these fields -->
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="navbar-menu" id="formnavBar">
+                <div class="navbar-start">
+                    <!-- TODO: Template in these fields -->
+                    <a href="/" class="navbar-item is-selected">Dashboard</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a href="/people" class="navbar-link">People</a>
+                        <div class="navbar-dropdown">
+                            <a href="#" class="navbar-item">Everyone</a>
+                            <hr class="navbar-divider">
+                            <a href="#" class="navbar-item">Students</a>
+                            <a href="#" class="navbar-item">Alumni</a>
+                            <hr class="navbar-divider">
+                            <a href="#" class="navbar-item">Employees</a>
+                            <a href="#" class="navbar-item">Faculty</a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a href="/places" class="navbar-link">Places</a>
+                        <div class="navbar-dropdown">
+                            <a href="#" class="navbar-item">All</a>
+                            <a href="#" class="navbar-item">Buildings</a>
+                            <a href="#" class="navbar-item">Rooms</a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a href="/groups" class="navbar-link">Groups</a>
+                        <div class="navbar-dropdown">
+                            <a href="#" class="navbar-item">Departments</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-end">
+                    <a href="/about" class="navbar-item">About</a>
+                </div>
+            </div>
+        </nav>
+        <!-- Use hero to pin footer to bottom of page -->
+        <div class="hero is-fullheight">
+        <footer class="footer mt-auto">
+            <div class="content has-text-centered">
+                <p>
+                School Simulator by Andrew Albizati, Noah Huang, John Phillips
+                </p>
+            </div>
+        </footer>
+        </div>
+    </body>
 </html>
