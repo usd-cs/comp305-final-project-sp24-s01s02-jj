@@ -14,11 +14,10 @@ public interface DatabaseItem {
     DatabaseTable getParentTable();
 
     /**
-     * Get mappings of column names to object values. The number of keys should match
-     * getParentTable().getColumnNames().size(). There should be one mapping for every
-     * entry in that same list to a string representation of the matching attribute.
+     * Return a list of strings representing the values of this item. The order should be consistent
+     * across items and match the order of getParentTable().getColumnNames().
      *
      * @return A mapping of this item's elements as strings to their column in the table
      */
-    Map<String, String> getStringMap();
+    List<String> getStringList();
 }
