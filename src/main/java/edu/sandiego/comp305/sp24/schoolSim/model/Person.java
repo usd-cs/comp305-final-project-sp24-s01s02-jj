@@ -4,9 +4,13 @@ package edu.sandiego.comp305.sp24.schoolSim.model;
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public abstract class Person {
-    private int id;
+public abstract class Person implements DatabaseItem {
+    private long id;
     private String firstName;
     private String lastName;
     private Date birthdate;
@@ -18,7 +22,7 @@ public abstract class Person {
     private Department department;
 
     // Obtain a Person entry from the database
-    public Person(int id) {
+    public Person(long id) {
         String sql = "SELECT * FROM Person WHERE id=?";
         try {
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql);
@@ -45,7 +49,15 @@ public abstract class Person {
     }
 
     // Create a new Person object and insert it into the database
-    public Person(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department) {
+    public Person(String firstName,
+                  String lastName,
+                  Date birthdate,
+                  String phoneNumber,
+                  String username,
+                  String organizationEmail,
+                  String secondaryEmail,
+                  boolean isActive,
+                  Department department) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.birthdate = birthdate;
@@ -69,7 +81,7 @@ public abstract class Person {
             preparedStatement.setString(6, organizationEmail);
             preparedStatement.setString(7, secondaryEmail);
             preparedStatement.setBoolean(8, isActive);
-            preparedStatement.setInt(9, department.getId());
+            preparedStatement.setLong(9, department.getId());
 
             int affectedRows = preparedStatement.executeUpdate();
 
@@ -79,7 +91,7 @@ public abstract class Person {
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    this.id = (int) generatedKeys.getLong(1);
+                    this.id = generatedKeys.getLong(1);
                 } else {
                     throw new SQLException("Creating user failed, no ID obtained.");
                 }
@@ -89,7 +101,29 @@ public abstract class Person {
         }
     }
 
-    public int getId() {
+    @Override
+    public DatabaseTable getParentTable() {
+        // Would return PersonService (rename to PersonTable).getInstance().
+        return null;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> valueList = new ArrayList<>(10);
+        valueList.add(Long.toString(this.getId()));
+        valueList.add(getFirstName());
+        valueList.add(getLastName());
+        valueList.add(getBirthdate().toString());
+        valueList.add(getPhoneNumber());
+        valueList.add(getUsername());
+        valueList.add(getOrganizationEmail());
+        valueList.add(getSecondaryEmail());
+        valueList.add(Boolean.toString(isActive()));
+        valueList.add(getDepartment().toString());
+        return valueList;
+    }
+
+    public long getId() {
         return id;
     }
 

@@ -10,7 +10,7 @@ public class Employee extends Person {
     private Date startDate;
     private double hourlyWage;
 
-    public Employee(int id) {
+    public Employee(long id) {
         super(id);
 
         String sql = "SELECT * FROM Employee WHERE id=?";
@@ -36,7 +36,19 @@ public class Employee extends Person {
         }
     }
 
-    public Employee(String firstName, String lastName, java.sql.Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date startDate, double hourlyWage, Employee manager) {
+    public Employee(
+            String firstName,
+            String lastName,
+            Date birthdate,
+            String phoneNumber,
+            String username,
+            String organizationEmail,
+            String secondaryEmail,
+            boolean isActive,
+            Department department,
+            Date startDate,
+            double hourlyWage,
+            Employee manager) {
         super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
         String sql = "INSERT INTO Employee (id, start_date, hourly_wage, manager) " +
                 "VALUES (?, ?, ?, ?)";
@@ -52,12 +64,12 @@ public class Employee extends Person {
 
         try {
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql);
-            preparedStatement.setInt(1, getId());
+            preparedStatement.setLong(1, getId());
             preparedStatement.setDate(2, startDate);
             preparedStatement.setDouble(3, hourlyWage);
 
             if (this.manager.isPresent()) {
-                preparedStatement.setInt(4, this.manager.get().getId());
+                preparedStatement.setLong(4, this.manager.get().getId());
             } else {
                 preparedStatement.setNull(4, Types.BIGINT);
             }
