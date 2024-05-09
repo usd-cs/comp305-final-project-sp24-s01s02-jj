@@ -13,4 +13,8 @@ public class SimplePerson extends Person {
                 organizationEmail, secondaryEmail, isActive, department);
 
     }
+
+    SimplePerson(long id){
+        super(id);
+    }
 }

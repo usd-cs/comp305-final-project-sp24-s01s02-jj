@@ -25,7 +25,7 @@ public class PersonService {
 
             while (resultSet.next()) {
                 String lastName = resultSet.getString("last_name");
-                Date birthdate = resultSet.getDate("birthday");
+                Date birthdate = resultSet.getDate("birthdate");
                 String phoneNumber = resultSet.getString("phone_number");
                 String username = resultSet.getString("username");
                 String organizationEmail = resultSet.getString("organization_email");
