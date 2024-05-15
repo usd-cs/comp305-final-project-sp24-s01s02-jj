@@ -9,6 +9,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -35,6 +37,7 @@ public class PersonTests {
     private static final String UNIQUE_USERNAME = "uniqueuser";
     private static final String UNIQUE_ORG_EMAIl = "unique@sandiego.edu";
     private static final String UNIQUE_SECONDARY_EMAIL = "unique@gmail.com";
+    private static final long VALID_PERSON_ID = 1;
 
     @BeforeAll
     static void beforeAll() {
@@ -43,10 +46,10 @@ public class PersonTests {
 
     @Test
     void verifyFirstPersonValues() {
-        DummyPerson person = new DummyPerson(1);
+        DummyPerson person = new DummyPerson(VALID_PERSON_ID);
         assertNotNull(person);
 
-        assertEquals(1, person.getId());
+        assertEquals(VALID_PERSON_ID, person.getId());
         assertEquals("Alumni1", person.getFirstName());
         assertEquals("Smith", person.getLastName());
         assertEquals("2004-03-18", person.getBirthdate().toString());
@@ -186,5 +189,27 @@ public class PersonTests {
         } catch (SQLException e) {
             throw new IllegalStateException("User couldn't be deleted");
         }
+    }
+    @Test
+    void getStringList() {
+        Person valid = new DummyPerson(VALID_PERSON_ID);
+
+        List<String> actual = valid.getStringList();
+        List<String> expected = new ArrayList<>();
+        expected.add(Long.toString(valid.getId()));
+        expected.add(valid.getFirstName());
+        expected.add(valid.getLastName());
+        expected.add(valid.getBirthdate().toString());
+        expected.add(valid.getPhoneNumber());
+        expected.add(valid.getUsername());
+        expected.add(valid.getOrganizationEmail());
+        expected.add(valid.getSecondaryEmail());
+        expected.add(Boolean.toString(valid.isActive()));
+        expected.add(valid.getDepartment().toString());
+
+        for(int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), actual.get(i));
+        }
+
     }
 }
