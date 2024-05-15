@@ -9,6 +9,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -96,5 +98,15 @@ public class FacultyTest {
         } catch (SQLException e) {
             throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
         }
+    }
+    @Test
+    void getStringListValues() {
+        Faculty valid = new Faculty(VALID_FACULTY_ID);
+
+        List<String> actual = valid.getStringList();
+        int facultySpecificStart = actual.size()-2;
+        assertEquals(valid.getOfficeLocation().toString(), actual.get(facultySpecificStart));
+        assertEquals(Boolean.toString(valid.hasTenure()), actual.get(facultySpecificStart+1));
+
     }
 }
