@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Building {
+public class Building implements DatabaseItem{
     private long id;
     private String name;
     private String address;
@@ -88,5 +90,22 @@ public class Building {
 
     public String getAbbreviation() {
         return abbreviation;
+    }
+
+    @Override
+    public DatabaseTable getParentTable() {
+        // Return BuildingTable once it exists
+        return null;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> myAttributes = new ArrayList<>();
+        myAttributes.add(Long.toString(getId()));
+        myAttributes.add(getName());
+        myAttributes.add(getAddress());
+        myAttributes.add(Integer.toString(getFloors()));
+        myAttributes.add(getAbbreviation());
+        return myAttributes;
     }
 }

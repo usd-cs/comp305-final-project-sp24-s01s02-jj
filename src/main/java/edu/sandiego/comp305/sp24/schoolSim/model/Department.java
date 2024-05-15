@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Department {
+public class Department implements DatabaseItem{
     private long id;
     private String name;
 
@@ -61,5 +63,18 @@ public class Department {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public DatabaseTable getParentTable() {
+        return null;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> myAttributes = new ArrayList<>();
+        myAttributes.add(Long.toString(getId()));
+        myAttributes.add(getName());
+        return myAttributes;
     }
 }

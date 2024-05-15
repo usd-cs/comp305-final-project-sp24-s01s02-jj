@@ -4,6 +4,7 @@ import edu.sandiego.comp305.sp24.schoolSim.Database;
 import edu.sandiego.comp305.sp24.schoolSim.enums.Grade;
 
 import java.sql.*;
+import java.util.List;
 
 
 public class Student extends Person {
@@ -63,5 +64,19 @@ public class Student extends Person {
     }
     public Grade getGrade() {
         return grade;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> parentList = super.getStringList();
+        parentList.add(getMajor());
+        parentList.add(getGrade().toString());
+        return parentList;
+    }
+
+    @Override
+    public DatabaseTable getParentTable() {
+        // Replace with instance of StudentTable when it exists
+        return null;
     }
 }

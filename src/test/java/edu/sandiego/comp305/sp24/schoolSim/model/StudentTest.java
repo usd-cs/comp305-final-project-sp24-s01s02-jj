@@ -10,6 +10,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -109,5 +110,14 @@ class StudentTest {
         } catch (SQLException e) {
             throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
         }
+    }
+    @Test
+    void getStringList() {
+        Student valid = new Student(VALID_STUDENT_ID);
+
+        List<String> actual = valid.getStringList();
+        int studentSpecificStart = actual.size()-2;
+        assertEquals(valid.getMajor(), actual.get(studentSpecificStart));
+        assertEquals(valid.getGrade().toString(), actual.get(studentSpecificStart+1));
     }
 }

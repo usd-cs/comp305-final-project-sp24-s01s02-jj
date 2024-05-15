@@ -4,13 +4,16 @@ import edu.sandiego.comp305.sp24.schoolSim.Config;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class DepartmentTest {
     private static final String CONFIG = "config.properties";
     private static final int VALID_DEPARTMENT_ID = 1;
     private static final String VALID_DEPARTMENT_NAME = "Fake Department 1";
-    private static final int INVALID_DEPARTMENT_ID = 3;
+    private static final int INVALID_DEPARTMENT_ID = -1;
     @BeforeAll
     static void beforeAll() {
         Config.initialize(CONFIG);
@@ -36,5 +39,17 @@ class DepartmentTest {
     @Test
     void getDepartmentDoesntExist() {
         assertThrows(IllegalArgumentException.class, () -> new Department(INVALID_DEPARTMENT_ID));
+    }
+
+    @Test
+    void getStringListValues() {
+        Department department = new Department(VALID_DEPARTMENT_ID);
+        List<String> expected = new ArrayList<>();
+        List<String> actual = department.getStringList();
+        expected.add(Long.toString(VALID_DEPARTMENT_ID));
+        expected.add(department.getName());
+
+        assertEquals(expected.get(0), actual.get(0));
+        assertEquals(expected.get(1), actual.get(1));
     }
 }
