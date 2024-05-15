@@ -6,8 +6,10 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Room {
+public class Room implements DatabaseItem{
     private long id;
     private Building building;
     private int roomNumber;
@@ -71,5 +73,20 @@ public class Room {
 
     public int getRoomNumber() {
         return roomNumber;
+    }
+
+    @Override
+    public DatabaseTable getParentTable() {
+        // Return RoomTable once it exists
+        return null;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> myAttributes = new ArrayList<>();
+        myAttributes.add(Long.toString(getId()));
+        myAttributes.add(getBuilding().toString());
+        myAttributes.add(Integer.toString(getRoomNumber()));
+        return myAttributes;
     }
 }

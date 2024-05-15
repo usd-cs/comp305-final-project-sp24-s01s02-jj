@@ -8,6 +8,8 @@ import org.junit.jupiter.api.Test;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -86,5 +88,23 @@ class BuildingTest {
         } catch (SQLException e) {
             throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
         }
+    }
+
+    @Test
+    void getStringList() {
+        Building valid = new Building(VALID_BUILDING_ID);
+        List<String> actual = valid.getStringList();
+        List<String> expected = new ArrayList<>();
+        expected.add(Long.toString(VALID_BUILDING_ID));
+        expected.add(valid.getName());
+        expected.add(valid.getAddress());
+        expected.add(Integer.toString(valid.getFloors()));
+        expected.add(valid.getAbbreviation());
+
+        assertEquals(expected.get(0), actual.get(0));
+        assertEquals(expected.get(1), actual.get(1));
+        assertEquals(expected.get(2), actual.get(2));
+        assertEquals(expected.get(3), actual.get(3));
+        assertEquals(expected.get(4), actual.get(4));
     }
 }

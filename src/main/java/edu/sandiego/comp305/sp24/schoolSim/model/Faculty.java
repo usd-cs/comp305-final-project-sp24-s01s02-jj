@@ -6,6 +6,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Faculty extends Employee {
     private Room officeLocation;
@@ -73,5 +74,13 @@ public class Faculty extends Employee {
 
     public boolean hasTenure() {
         return hasTenure;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> parentList = super.getStringList();
+        parentList.add(getOfficeLocation().toString());
+        parentList.add(Boolean.toString(hasTenure()));
+        return parentList;
     }
 }

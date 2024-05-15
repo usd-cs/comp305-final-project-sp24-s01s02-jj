@@ -3,6 +3,7 @@ package edu.sandiego.comp305.sp24.schoolSim.model;
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 
 import java.sql.*;
+import java.util.List;
 import java.util.Optional;
 
 public class Employee extends Person {
@@ -94,5 +95,24 @@ public class Employee extends Person {
 
     public double getHourlyWage() {
         return hourlyWage;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> parentList = super.getStringList();
+        Optional<Employee> manager = getManager();
+        String managerRepresentation = "No Manager";
+        if (manager.isPresent()) {
+            managerRepresentation = manager.get().toString();
+        }
+        parentList.add(managerRepresentation);
+        parentList.add(getStartDate().toString());
+        parentList.add("$"+Double.toString(getHourlyWage()));
+        return parentList;
+    }
+
+    @Override
+    public DatabaseTable getParentTable() {
+        return null;
     }
 }

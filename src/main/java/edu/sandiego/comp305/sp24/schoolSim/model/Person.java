@@ -4,8 +4,12 @@ package edu.sandiego.comp305.sp24.schoolSim.model;
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public abstract class Person {
+public abstract class Person implements DatabaseItem {
     private long id;
     private String firstName;
     private String lastName;
@@ -95,6 +99,28 @@ public abstract class Person {
         } catch (SQLException e) {
             throw new IllegalArgumentException("Person entry not found");
         }
+    }
+
+    @Override
+    public DatabaseTable getParentTable() {
+        // Would return PersonService (rename to PersonTable).getInstance().
+        return null;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> valueList = new ArrayList<>(10);
+        valueList.add(Long.toString(this.getId()));
+        valueList.add(getFirstName());
+        valueList.add(getLastName());
+        valueList.add(getBirthdate().toString());
+        valueList.add(getPhoneNumber());
+        valueList.add(getUsername());
+        valueList.add(getOrganizationEmail());
+        valueList.add(getSecondaryEmail());
+        valueList.add(Boolean.toString(isActive()));
+        valueList.add(getDepartment().toString());
+        return valueList;
     }
 
     public long getId() {
