@@ -84,4 +84,5 @@ class RoomTest {
         assertEquals(expected.get(0), actual.get(0));
         assertEquals(expected.get(1), actual.get(1));
         assertEquals(expected.get(2), actual.get(2));
-    }}
+    }
+}

@@ -119,4 +119,5 @@ class StudentTest {
         int studentSpecificStart = actual.size()-2;
         assertEquals(valid.getMajor(), actual.get(studentSpecificStart));
         assertEquals(valid.getGrade().toString(), actual.get(studentSpecificStart+1));
-    }}
+    }
+}

@@ -67,7 +67,7 @@ class EmployeeTest {
         }
         List<String> actual = valid.getStringList();
         int employeeSpecificStart = actual.size()-3;
-        assert manager != null;
+        assertNotNull(manager);
         assertEquals(manager.toString(), actual.get(employeeSpecificStart));
         assertEquals(valid.getStartDate().toString(),actual.get(employeeSpecificStart+1));
         assertEquals("$"+Double.toString(valid.getHourlyWage()), actual.get(employeeSpecificStart+2));
