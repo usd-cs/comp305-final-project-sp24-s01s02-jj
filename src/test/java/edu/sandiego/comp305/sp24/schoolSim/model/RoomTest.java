@@ -9,6 +9,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -68,5 +70,19 @@ class RoomTest {
         } catch (SQLException e) {
             throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
         }
+    }
+    @Test
+    void getStringList() {
+        Room valid = new Room(VALID_ROOM_ID);
+        List<String> expected = new ArrayList<>();
+        List<String> actual = valid.getStringList();
+
+        expected.add(Long.toString(VALID_ROOM_ID));
+        expected.add(valid.getBuilding().toString());
+        expected.add(Integer.toString(valid.getRoomNumber()));
+
+        assertEquals(expected.get(0), actual.get(0));
+        assertEquals(expected.get(1), actual.get(1));
+        assertEquals(expected.get(2), actual.get(2));
     }
 }
