@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import java.sql.*;
 
@@ -8,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PersonService {
+public class PersonService implements DatabaseTable {
     public static List<Person> getAllWithFirstName(String firstName){
         List<Person> resultList = new ArrayList<>();
 
@@ -194,5 +195,46 @@ public class PersonService {
             e.printStackTrace();
         }
         return resultList;
+    }
+
+    @Override
+    public String getTableName() {
+        return "Person";
+    }
+
+    @Override
+    public long getCountTableRows() {
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT COUNT(*) FROM Person";
+        try{
+            resultSet = connection.prepareStatement(query).executeQuery();
+            if(resultSet.next()) {
+                return resultSet.getLong(0);
+            } else {
+                return -1;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public List<String> getColumnNames() {
+        ResultSet resultSet;
+        List<String> columnNames = new ArrayList<>();
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "describe Person";
+        try{
+            resultSet = connection.prepareStatement(query).executeQuery();
+            while(resultSet.next()) {
+                columnNames.add(resultSet.getString("Fields"));
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
     }
 }
