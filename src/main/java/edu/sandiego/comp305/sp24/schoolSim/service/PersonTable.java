@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PersonService implements DatabaseTable {
-    public static List<Person> getAllWithFirstName(String firstName){
+public class PersonTable implements DatabaseTable {
+    public List<Person> getAllWithFirstName(String firstName){
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -35,7 +35,7 @@ public class PersonService implements DatabaseTable {
 
         return resultList;
     }
-    public static List<Person> getAllWithLastName(String lastName) {
+    public List<Person> getAllWithLastName(String lastName) {
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -60,7 +60,7 @@ public class PersonService implements DatabaseTable {
 
         return resultList;
     }
-    public static List<Person> getAllWithPhoneNumber(String phoneNumber) {
+    public List<Person> getAllWithPhoneNumber(String phoneNumber) {
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -85,7 +85,7 @@ public class PersonService implements DatabaseTable {
 
         return resultList;
     }
-    public static Optional<Person> getByUsername(String username) {
+    public Optional<Person> getByUsername(String username) {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
@@ -106,7 +106,7 @@ public class PersonService implements DatabaseTable {
         }
         return Optional.empty();
     }
-    public static Optional<Person> getByOrganizationEmail(String organizationEmail) {
+    public Optional<Person> getByOrganizationEmail(String organizationEmail) {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
@@ -127,7 +127,7 @@ public class PersonService implements DatabaseTable {
         }
         return Optional.empty();
     }
-    public static Optional<Person> getBySecondaryEmail(String secondaryEmail) {
+    public Optional<Person> getBySecondaryEmail(String secondaryEmail) {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
@@ -148,7 +148,7 @@ public class PersonService implements DatabaseTable {
         }
         return Optional.empty();
     }
-    public static List<Person> getActivePeople() {
+    public List<Person> getActivePeople() {
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -172,7 +172,7 @@ public class PersonService implements DatabaseTable {
         }
         return resultList;
     }
-    public static List<Person> getInactivePeople() {
+    public List<Person> getInactivePeople() {
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -211,7 +211,7 @@ public class PersonService implements DatabaseTable {
         try{
             resultSet = connection.prepareStatement(query).executeQuery();
             if(resultSet.next()) {
-                return resultSet.getLong(0);
+                return resultSet.getLong(1);
             } else {
                 return -1;
             }
@@ -223,18 +223,17 @@ public class PersonService implements DatabaseTable {
 
     @Override
     public List<String> getColumnNames() {
-        ResultSet resultSet;
         List<String> columnNames = new ArrayList<>();
-        Connection connection = Database.getInstance().getDatabaseConnection();
-
-        String query = "describe Person";
-        try{
-            resultSet = connection.prepareStatement(query).executeQuery();
-            while(resultSet.next()) {
-                columnNames.add(resultSet.getString("Fields"));
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
+        columnNames.add("ID");
+        columnNames.add("First Name");
+        columnNames.add("Last Name");
+        columnNames.add("Birthdate");
+        columnNames.add("Phone Number");
+        columnNames.add("Username");
+        columnNames.add("Organization Email");
+        columnNames.add("Secondary Email");
+        columnNames.add("Is Active");
+        columnNames.add("Department");
+        return columnNames;
     }
 }
