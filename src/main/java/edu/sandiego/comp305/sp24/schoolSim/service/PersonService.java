@@ -1,9 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
-import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
-
 import java.sql.*;
 
 import java.util.ArrayList;
@@ -24,16 +22,9 @@ public class PersonService {
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
-                String lastName = resultSet.getString("last_name");
-                Date birthdate = resultSet.getDate("birthday");
-                String phoneNumber = resultSet.getString("phone_number");
-                String username = resultSet.getString("username");
-                String organizationEmail = resultSet.getString("organization_email");
-                String secondaryEmail = resultSet.getString("secondary_email");
-                boolean isActive = resultSet.getBoolean("is_active");
-                Department department = new Department(resultSet.getInt("department"));
+                long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
+                Person person = new SimplePerson(id);
                 resultList.add(person);
                 }
 
@@ -43,27 +34,165 @@ public class PersonService {
 
         return resultList;
     }
-
-
     public static List<Person> getAllWithLastName(String lastName) {
-        return null;
+        List<Person> resultList = new ArrayList<>();
+
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Person WHERE last_name = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, lastName);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Person person = new SimplePerson(id);
+                resultList.add(person);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return resultList;
     }
     public static List<Person> getAllWithPhoneNumber(String phoneNumber) {
-        return null;
+        List<Person> resultList = new ArrayList<>();
+
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Person WHERE phone_number = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, phoneNumber);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Person person = new SimplePerson(id);
+                resultList.add(person);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return resultList;
     }
     public static Optional<Person> getByUsername(String username) {
-        return null;
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Person WHERE username = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, username);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Person person = new SimplePerson(id);
+                return Optional.of(person);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
     public static Optional<Person> getByOrganizationEmail(String organizationEmail) {
-        return null;
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Person WHERE organization_email = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, organizationEmail);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Person person = new SimplePerson(id);
+                return Optional.of(person);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
     public static Optional<Person> getBySecondaryEmail(String secondaryEmail) {
-        return null;
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Person WHERE secondary_email = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, secondaryEmail);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Person person = new SimplePerson(id);
+                return Optional.of(person);
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return Optional.empty();
     }
     public static List<Person> getActivePeople() {
-        return null;
+        List<Person> resultList = new ArrayList<>();
+
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Person WHERE is_active = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBoolean(1, true);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Person person = new SimplePerson(id);
+                resultList.add(person);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resultList;
     }
     public static List<Person> getInactivePeople() {
-        return null;
+        List<Person> resultList = new ArrayList<>();
+
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Person WHERE is_active = ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBoolean(1, false);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Person person = new SimplePerson(id);
+                resultList.add(person);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resultList;
     }
 }
