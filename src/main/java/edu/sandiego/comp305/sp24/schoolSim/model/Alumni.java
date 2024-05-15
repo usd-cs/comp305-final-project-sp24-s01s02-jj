@@ -4,6 +4,7 @@ import edu.sandiego.comp305.sp24.schoolSim.Database;
 import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
 
 import java.sql.*;
+import java.util.List;
 
 public class Alumni extends Person {
     private Date graduationDate;
@@ -46,6 +47,20 @@ public class Alumni extends Person {
         } catch (SQLException e) {
             throw new IllegalArgumentException("Person entry not found");
         }
+    }
+
+    @Override
+    public DatabaseTable getParentTable() {
+        // Change to AlumniTable.getInstance() once it exists
+        return null;
+    }
+
+    @Override
+    public List<String> getStringList() {
+        List<String> personList = super.getStringList();
+        personList.add(getGraduationDate().toString());
+        personList.add(getDegree().toString());
+        return personList;
     }
 
     public Date getGraduationDate() {
