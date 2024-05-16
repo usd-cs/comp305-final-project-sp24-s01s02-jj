@@ -10,7 +10,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class PersonServiceTest {
+class PersonTableTest {
     ArrayList<Person> singlePersonList = new ArrayList<>();
     ArrayList<Person> twoPersonList = new ArrayList<>();
     ArrayList<SimplePerson> emptyList = new ArrayList<>();
@@ -27,15 +27,17 @@ class PersonServiceTest {
 
     @Test
     void getAllWithFirstNameReturnEmptyList() {
-        List<Person> returnedList = PersonService.getAllWithFirstName("notJohn");
+        PersonTable table = new PersonTable();
+        List<Person> returnedList = table.getAllWithFirstName("notJohn");
         assertEquals(emptyList, returnedList);
 
     }
 
     @Test
     void getAllWithFirstNameReturnOneMatch() {
+        PersonTable table = new PersonTable();
         singlePersonList.add(Fac1);
-        List<Person> returnedList = PersonService.getAllWithFirstName("Fac1");
+        List<Person> returnedList = table.getAllWithFirstName("Fac1");
         long testID = singlePersonList.get(0).getId();
         long Fac1ID = 75;
 
@@ -46,9 +48,10 @@ class PersonServiceTest {
 
     @Test
     void getAllWithFirstNameReturnManyMatches() {
+        PersonTable table = new PersonTable();
         twoPersonList.add(John);
         twoPersonList.add(EvilJohn);
-        List<Person> returnedList = PersonService.getAllWithFirstName("John");
+        List<Person> returnedList = table.getAllWithFirstName("John");
         assertEquals(twoPersonList.size(), returnedList.size());
         long testID1 = twoPersonList.get(0).getId();
         long testID2 = twoPersonList.get(1).getId();
@@ -60,14 +63,16 @@ class PersonServiceTest {
 
     @Test
     void getAllWithLastNameReturnEmptyList() {
-        List<Person> returnedList = PersonService.getAllWithLastName("lastNameSoLongIDoNotThinkAnyoneWillHaveItBilips");
+        PersonTable table = new PersonTable();
+        List<Person> returnedList = table.getAllWithLastName("lastNameSoLongIDoNotThinkAnyoneWillHaveItBilips");
         assertEquals(emptyList, returnedList);
     }
 
     @Test
     void getAllWithLastNameReturnOneMatch() {
+        PersonTable table = new PersonTable();
         singlePersonList.add(Fac1);
-        List<Person> returnedList = PersonService.getAllWithLastName("Fac1last");
+        List<Person> returnedList = table.getAllWithLastName("Fac1last");
         long testID = singlePersonList.get(0).getId();
         long Fac1ID = 75;
 
@@ -77,9 +82,10 @@ class PersonServiceTest {
 
     @Test
     void getAllWithLastNameReturnManyMatch() {
+        PersonTable table = new PersonTable();
         twoPersonList.add(fakeGuy1);
         twoPersonList.add(fakeGuy2);
-        List<Person> returnedList = PersonService.getAllWithLastName("Fakelast");
+        List<Person> returnedList = table.getAllWithLastName("Fakelast");
         assertEquals(twoPersonList.size(), returnedList.size());
         long testID1 = twoPersonList.get(0).getId();
         long testID2 = twoPersonList.get(1).getId();
@@ -91,14 +97,16 @@ class PersonServiceTest {
 
     @Test
     void getAllWithPhoneNumberReturnNoMatch() {
-        List<Person> returnedList = PersonService.getAllWithPhoneNumber("911");
+        PersonTable table = new PersonTable();
+        List<Person> returnedList = table.getAllWithPhoneNumber("911");
         assertEquals(emptyList, returnedList);
     }
 
     @Test
     void getAllWithPhoneNumberReturnOneMatch() {
+        PersonTable table = new PersonTable();
         singlePersonList.add(John);
-        List<Person> returnedList = PersonService.getAllWithPhoneNumber("1");
+        List<Person> returnedList = table.getAllWithPhoneNumber("1");
         assertEquals(singlePersonList.size(),returnedList.size());
         long JohnID = John.getId();
         long testID = returnedList.get(0).getId();
@@ -107,9 +115,10 @@ class PersonServiceTest {
 
     @Test
     void getAllWithPhoneNumberReturnManyMatch() {
+        PersonTable table = new PersonTable();
         twoPersonList.add(fakeGuy1);
         twoPersonList.add(fakeGuy2);
-        List<Person> returnedList = PersonService.getAllWithPhoneNumber("1235650099");
+        List<Person> returnedList = table.getAllWithPhoneNumber("1235650099");
         assertEquals(twoPersonList.size(), returnedList.size());
         long testID1 = twoPersonList.get(0).getId();
         long testID2 = twoPersonList.get(1).getId();
@@ -122,41 +131,48 @@ class PersonServiceTest {
 
     @Test
     void getByUsernameReturnNoMatch() {
-        assertEquals(Optional.empty(),PersonService.getByUsername("FreakyJohn"));
+        PersonTable table = new PersonTable();
+        assertEquals(Optional.empty(), table.getByUsername("FreakyJohn"));
     }
 
     @Test
     void getByUsernameReturnMatch() {
-        long results = PersonService.getByUsername("JohnE").get().getId();
+        PersonTable table = new PersonTable();
+        long results = table.getByUsername("JohnE").get().getId();
         assertEquals(results,EvilJohn.getId());
     }
 
     @Test
     void getByOrganizationEmailReturnNoMatch() {
-        assertEquals(Optional.empty(),PersonService.getByOrganizationEmail("notjohn@disney.com"));
+        PersonTable table = new PersonTable();
+        assertEquals(Optional.empty(), table.getByOrganizationEmail("notjohn@disney.com"));
 
     }
 
     @Test
     void getByOrganizationEmailReturnMatch() {
-        long results = PersonService.getByOrganizationEmail("john@evilmail.com").get().getId();
+        PersonTable table = new PersonTable();
+        long results = table.getByOrganizationEmail("john@evilmail.com").get().getId();
         assertEquals(results,EvilJohn.getId());
     }
 
     @Test
     void getBySecondaryEmailReturnNoMatch() {
-        assertEquals(Optional.empty(),PersonService.getBySecondaryEmail("nonapprovedjohnemail@cmail.eom"));
+        PersonTable table = new PersonTable();
+        assertEquals(Optional.empty(), table.getBySecondaryEmail("nonapprovedjohnemail@cmail.eom"));
     }
 
     @Test
     void getBySecondaryEmailReturnMatch() {
-        long results = PersonService.getBySecondaryEmail("john@evilmail2.com").get().getId();
+        PersonTable table = new PersonTable();
+        long results = table.getBySecondaryEmail("john@evilmail2.com").get().getId();
         assertEquals(results,EvilJohn.getId());
     }
 
     @Test
     void getActivePeopleReturnEveryoneButEvilJohn() {
-        List<Person> resultsList = PersonService.getActivePeople();
+        PersonTable table = new PersonTable();
+        List<Person> resultsList = table.getActivePeople();
         int numOfActivePeople = 6; // the database only has 7 people, only one is inactive
         assertEquals(resultsList.size(), numOfActivePeople);
 
@@ -164,8 +180,9 @@ class PersonServiceTest {
 
     @Test
     void getInactivePeopleReturnOnlyEvilJohn() {
+        PersonTable table = new PersonTable();
         singlePersonList.add(EvilJohn);
-        List<Person> returnedList = PersonService.getInactivePeople();
+        List<Person> returnedList = table.getInactivePeople();
         assertEquals(singlePersonList.size(),returnedList.size());
     }
 
