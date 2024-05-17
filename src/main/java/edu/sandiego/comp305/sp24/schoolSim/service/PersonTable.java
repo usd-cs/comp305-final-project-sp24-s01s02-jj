@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import java.sql.*;
 
@@ -8,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PersonService {
-    public static List<Person> getAllWithFirstName(String firstName){
+public class PersonTable implements DatabaseTable {
+    public List<Person> getAllWithFirstName(String firstName){
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -34,7 +35,7 @@ public class PersonService {
 
         return resultList;
     }
-    public static List<Person> getAllWithLastName(String lastName) {
+    public List<Person> getAllWithLastName(String lastName) {
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -59,7 +60,7 @@ public class PersonService {
 
         return resultList;
     }
-    public static List<Person> getAllWithPhoneNumber(String phoneNumber) {
+    public List<Person> getAllWithPhoneNumber(String phoneNumber) {
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -84,7 +85,7 @@ public class PersonService {
 
         return resultList;
     }
-    public static Optional<Person> getByUsername(String username) {
+    public Optional<Person> getByUsername(String username) {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
@@ -105,7 +106,7 @@ public class PersonService {
         }
         return Optional.empty();
     }
-    public static Optional<Person> getByOrganizationEmail(String organizationEmail) {
+    public Optional<Person> getByOrganizationEmail(String organizationEmail) {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
@@ -126,7 +127,7 @@ public class PersonService {
         }
         return Optional.empty();
     }
-    public static Optional<Person> getBySecondaryEmail(String secondaryEmail) {
+    public Optional<Person> getBySecondaryEmail(String secondaryEmail) {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
@@ -147,7 +148,7 @@ public class PersonService {
         }
         return Optional.empty();
     }
-    public static List<Person> getActivePeople() {
+    public List<Person> getActivePeople() {
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -171,7 +172,7 @@ public class PersonService {
         }
         return resultList;
     }
-    public static List<Person> getInactivePeople() {
+    public List<Person> getInactivePeople() {
         List<Person> resultList = new ArrayList<>();
 
         ResultSet resultSet;
@@ -194,5 +195,45 @@ public class PersonService {
             e.printStackTrace();
         }
         return resultList;
+    }
+
+    @Override
+    public String getTableName() {
+        return "Person";
+    }
+
+    @Override
+    public long getCountTableRows() {
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT COUNT(*) FROM Person";
+        try{
+            resultSet = connection.prepareStatement(query).executeQuery();
+            if(resultSet.next()) {
+                return resultSet.getLong(1);
+            } else {
+                return -1;
+            }
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+    @Override
+    public List<String> getColumnNames() {
+        List<String> columnNames = new ArrayList<>();
+        columnNames.add("ID");
+        columnNames.add("First Name");
+        columnNames.add("Last Name");
+        columnNames.add("Birthdate");
+        columnNames.add("Phone Number");
+        columnNames.add("Username");
+        columnNames.add("Organization Email");
+        columnNames.add("Secondary Email");
+        columnNames.add("Is Active");
+        columnNames.add("Department");
+        return columnNames;
     }
 }

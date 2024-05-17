@@ -2,6 +2,7 @@ package edu.sandiego.comp305.sp24.schoolSim.model;
 
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.service.PersonTable;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -103,8 +104,7 @@ public abstract class Person implements DatabaseItem {
 
     @Override
     public DatabaseTable getParentTable() {
-        // Would return PersonService (rename to PersonTable).getInstance().
-        return null;
+        return new PersonTable();
     }
 
     @Override
