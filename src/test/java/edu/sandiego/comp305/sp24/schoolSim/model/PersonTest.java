@@ -15,17 +15,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonTest {
-    // Create dummy class to test methods from the abstract Person
-    private static class DummyPerson extends Person {
-        public DummyPerson(long id) {
-            super(id);
-        }
-
-        public DummyPerson(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department) {
-            super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
-        }
-    }
-
     private static final String CONFIG_FILENAME = "config.properties";
     private static final int SQL_YEAR_OFFSET = 1900;
 
@@ -64,7 +53,7 @@ public class PersonTest {
 
     @Test
     void verifyFirstPersonValues() {
-        DummyPerson person = new DummyPerson(VALID_PERSON_ID);
+        Person person = new Person(VALID_PERSON_ID);
         assertNotNull(person);
 
         assertEquals(VALID_PERSON_ID, person.getId());
@@ -81,13 +70,13 @@ public class PersonTest {
 
     @Test
     void getPersonDoesntExist() {
-        assertThrows(IllegalArgumentException.class, () -> new DummyPerson(INVALID_PERSON_ID));
+        assertThrows(IllegalArgumentException.class, () -> new Person(INVALID_PERSON_ID));
     }
 
     @Test
     void createPersonDuplicateUsername() {
         assertThrows(IllegalArgumentException.class, () -> {
-            DummyPerson person = new DummyPerson(
+            Person person = new Person(
                     FAKE_FIRST_NAME,
                     FAKE_LAST_NAME,
                     FAKE_BIRTHDATE,
@@ -104,7 +93,7 @@ public class PersonTest {
     @Test
     void createPersonDuplicateOrgEmail() {
         assertThrows(IllegalArgumentException.class, () -> {
-            DummyPerson person = new DummyPerson(
+            Person person = new Person(
                     FAKE_FIRST_NAME,
                     FAKE_LAST_NAME,
                     FAKE_BIRTHDATE,
@@ -121,7 +110,7 @@ public class PersonTest {
     @Test
     void createPersonDuplicateSecondaryEmail() {
         assertThrows(IllegalArgumentException.class, () -> {
-            DummyPerson person = new DummyPerson(
+            Person person = new Person(
                     FAKE_FIRST_NAME,
                     FAKE_LAST_NAME,
                     FAKE_BIRTHDATE,
@@ -137,7 +126,7 @@ public class PersonTest {
 
     @Test
     void createNewPersonTestVariables() {
-        DummyPerson newPerson = new DummyPerson(
+        Person newPerson = new Person(
                 FAKE_FIRST_NAME,
                 FAKE_LAST_NAME,
                 FAKE_BIRTHDATE,
@@ -165,7 +154,7 @@ public class PersonTest {
 
     @Test
     void createNewPersonGetAndTestVariables() {
-        DummyPerson newPerson1 = new DummyPerson(
+        Person newPerson1 = new Person(
                 FAKE_FIRST_NAME,
                 FAKE_LAST_NAME,
                 FAKE_BIRTHDATE,
@@ -178,7 +167,7 @@ public class PersonTest {
         );
 
         // Retrieve the person after creating it
-        DummyPerson newPerson = new DummyPerson(newPerson1.getId());
+        Person newPerson = new Person(newPerson1.getId());
 
         assertEquals(FAKE_FIRST_NAME, newPerson.getFirstName());
         assertEquals(FAKE_LAST_NAME, newPerson.getLastName());
@@ -196,7 +185,7 @@ public class PersonTest {
 
     @Test
     void getStringList() {
-        Person valid = new DummyPerson(VALID_PERSON_ID);
+        Person valid = new Person(VALID_PERSON_ID);
         List<String> actual = valid.getStringList();
 
         List<String> expected = new ArrayList<>();

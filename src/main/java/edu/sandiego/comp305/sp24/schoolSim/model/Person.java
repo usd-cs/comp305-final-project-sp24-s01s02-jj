@@ -6,11 +6,9 @@ import edu.sandiego.comp305.sp24.schoolSim.service.PersonTable;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public abstract class Person implements DatabaseItem {
+public class Person implements DatabaseItem {
     private long id;
     private String firstName;
     private String lastName;

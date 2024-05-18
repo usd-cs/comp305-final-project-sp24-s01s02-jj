@@ -17,7 +17,7 @@ public class PersonTable implements DatabaseTable {
         Connection connection = Database.getInstance().getDatabaseConnection();
 
         String query = "SELECT * FROM Person WHERE first_name = ?";
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, firstName);
             resultSet = preparedStatement.executeQuery();
@@ -25,9 +25,9 @@ public class PersonTable implements DatabaseTable {
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 resultList.add(person);
-                }
+            }
 
             } catch (SQLException e){
                 e.printStackTrace();
@@ -42,7 +42,7 @@ public class PersonTable implements DatabaseTable {
         Connection connection = Database.getInstance().getDatabaseConnection();
 
         String query = "SELECT * FROM Person WHERE last_name = ?";
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, lastName);
             resultSet = preparedStatement.executeQuery();
@@ -50,10 +50,9 @@ public class PersonTable implements DatabaseTable {
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 resultList.add(person);
             }
-
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -67,7 +66,7 @@ public class PersonTable implements DatabaseTable {
         Connection connection = Database.getInstance().getDatabaseConnection();
 
         String query = "SELECT * FROM Person WHERE phone_number = ?";
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, phoneNumber);
             resultSet = preparedStatement.executeQuery();
@@ -75,10 +74,9 @@ public class PersonTable implements DatabaseTable {
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 resultList.add(person);
             }
-
         } catch (SQLException e){
             e.printStackTrace();
         }
@@ -90,7 +88,7 @@ public class PersonTable implements DatabaseTable {
         Connection connection = Database.getInstance().getDatabaseConnection();
 
         String query = "SELECT * FROM Person WHERE username = ?";
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
@@ -98,7 +96,7 @@ public class PersonTable implements DatabaseTable {
             if (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 return Optional.of(person);
             }
         } catch (SQLException e){
@@ -111,7 +109,7 @@ public class PersonTable implements DatabaseTable {
         Connection connection = Database.getInstance().getDatabaseConnection();
 
         String query = "SELECT * FROM Person WHERE organization_email = ?";
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, organizationEmail);
             resultSet = preparedStatement.executeQuery();
@@ -119,7 +117,7 @@ public class PersonTable implements DatabaseTable {
             if (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 return Optional.of(person);
             }
         } catch (SQLException e){
@@ -132,7 +130,7 @@ public class PersonTable implements DatabaseTable {
         Connection connection = Database.getInstance().getDatabaseConnection();
 
         String query = "SELECT * FROM Person WHERE secondary_email = ?";
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, secondaryEmail);
             resultSet = preparedStatement.executeQuery();
@@ -140,7 +138,7 @@ public class PersonTable implements DatabaseTable {
             if (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 return Optional.of(person);
             }
         } catch (SQLException e){
@@ -155,7 +153,7 @@ public class PersonTable implements DatabaseTable {
         Connection connection = Database.getInstance().getDatabaseConnection();
 
         String query = "SELECT * FROM Person WHERE is_active = ?";
-        try{
+        try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setBoolean(1, true);
             resultSet = preparedStatement.executeQuery();
@@ -163,7 +161,7 @@ public class PersonTable implements DatabaseTable {
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 resultList.add(person);
             }
 
@@ -187,7 +185,7 @@ public class PersonTable implements DatabaseTable {
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 resultList.add(person);
             }
 
@@ -213,10 +211,9 @@ public class PersonTable implements DatabaseTable {
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Person person = new SimplePerson(id);
+                Person person = new Person(id);
                 resultList.add(person);
             }
-
         } catch (SQLException e){
             e.printStackTrace();
         }
