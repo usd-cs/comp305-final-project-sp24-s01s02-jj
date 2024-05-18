@@ -25,11 +25,10 @@
                     <div class="navbar-item has-dropdown is-hoverable">
                         <a class="navbar-link is-selected">People</a>
                         <div class="navbar-dropdown">
-                            <a href="#" class="navbar-item">Everyone</a>
+                            <a href="#" class="navbar-item is-selected">Everyone</a>
                             <hr class="navbar-divider">
                             <a href="#" class="navbar-item">Students</a>
                             <a href="#" class="navbar-item">Alumni</a>
-                            <hr class="navbar-divider">
                             <a href="#" class="navbar-item">Employees</a>
                             <a href="#" class="navbar-item">Faculty</a>
                         </div>
@@ -57,11 +56,13 @@
         <!-- Use hero to pin footer to bottom of page -->
         <div class="hero is-fullheight">
             <div class="columns mx-3 is-mobile">
-                <div class="column">Content Name</div>
+                <div class="column" th:text="${tableName}">Content Name</div>
                 <button class="button column is-narrow is-primary">Add</button>
             </div>
             <div class="box mx-3">
-                <th:block th:utext="${tableData}"></th:block>
+                <div class="container">
+                    <th:block th:utext="${tableData}"></th:block>
+                </div>
             </div>
             <footer class="footer mt-auto">
                 <div class="content has-text-centered">

@@ -27,6 +27,7 @@ class PersonFormController implements WebMvcConfigurer {
         List<Person> allPeople = table.getAllPaged(0);
         List<DatabaseItem> peopleAsItems = allPeople.stream().map((x) -> {return (DatabaseItem) x;}).toList();
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, peopleAsItems));
+        model.addAttribute("tableName", table.getTableName());
         return "table";
     }
 
