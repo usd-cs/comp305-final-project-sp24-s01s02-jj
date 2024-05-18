@@ -1,6 +1,18 @@
-# University Identity Management System
+# SchoolSim
 
 ## About
+SchoolSim is an identity management system designed specifically for universities, with capabilities for adding/deleting/viewing the following user types:
+
+- Alumni
+- Employee
+- Faculty
+- Student
+
+And the following group types:
+- Building
+- Room
+- Department
+
 This project is written in Java and uses the [Spring](https://spring.io/) framework.
 
 In addition, this project hosts its data on a [MySQL](https://www.mysql.com/) database.
@@ -22,15 +34,24 @@ Firstly, please ensure that you have a Linux server running that can access the 
 From there, you can install `MySQL` by running `sudo apt install mysql-server` in the terminal.
 Please finish the setup guide found [here](https://www.geeksforgeeks.org/how-to-install-mysql-on-linux/).
 
-Run the following command as a MySQL root user: `CREATE USER 'new_user'@'%' IDENTIFIED BY 'password';`. By using `%`, you will allow the user to 
+Run the following command as a MySQL root user: `CREATE USER 'new_user'@'%' IDENTIFIED BY 'password';`.
+By using `%`, you will allow the user to connect via any host IP.
 
+Once the user has been created, run the following commands to setup the production database:
+1. `CREATE DATABASE ProductionDatabase;`
+2. `USE ProductionDatabase;`
+3. `SOURCE sql/create-prod-db.sql`
 
-Lastly, run the following commands:
-- `GRANT ALL PRIVILEGES ON ProductionDatabase.* To 'user'@'%' IDENTIFIED BY 'password';`
-- `GRANT ALL PRIVILEGES ON ProductionDatabase.* To 'user'@'%' IDENTIFIED BY 'password';`
+Then create the proper test database:
+1. `CREATE DATABASE TestDatabase;`
+2. `USE TestDatabase;`
 
-This will ensure that remote users cannot access every database.
+Lastly, run the following commands to grant the user all privileges for those two databases:
+- `GRANT ALL PRIVILEGES ON ProductionDatabase.* To 'new_user'@'%' IDENTIFIED BY 'password';`
+- `GRANT ALL PRIVILEGES ON TestDatabase.* To 'new_user'@'%' IDENTIFIED BY 'password';`
+- `FLUSH PRIVELEGES:`
 
+From there, the host server should be setup successfully. This can be tested in the next section.
 
 ## Installation
 1. Open a terminal and run `git clone https://github.com/usd-cs/comp305-final-project-sp24-s01s02-jj.git`
@@ -41,6 +62,8 @@ This will ensure that remote users cannot access every database.
       database_password=
       database_host=
       ```
+   You'll want to enter the host server values that were created in the previous section.
+
 3. Open the newly created folder, and navigate to `src/test/resources`. From there, create a file named `config.properties` and enter the following information:
    1. ```properties
       database_name=
@@ -49,14 +72,17 @@ This will ensure that remote users cannot access every database.
       database_host=
       ```
 
+   You'll want to enter the same values as before, but change the database name to the test database.
+
 4. Open a terminal in the root folder and run the command:
    1. `./gradlew build` on macOS/Linux
    2. `gradlew build` on Windows
 
-5. Navigate to `build/libs/`, and execute the JAR file that is created.
-6. Visit `localhost:8080`
+5. If any tests fail during the build process, then please troubleshoot the server creation.
+6. Navigate to `build/libs/`, and execute the JAR file that is created.
+7. Visit `localhost:8080` to view the website.
 
 ## Contact
-- aalbizati@sandiego.edu
-- johnphillips@sandiego.edu
-- nhuang@sandiego.edu
+- aalbizati@sandiego.edu (Host server, model classes)
+- johnphillips@sandiego.edu (Controller classes)
+- nhuang@sandiego.edu (Service classes)

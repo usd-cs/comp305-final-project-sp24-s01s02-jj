@@ -1,0 +1,105 @@
+@startuml
+!pragma layout smetana
+'https://plantuml.com/class-diagram
+
+enum DegreeType {
+BACHELOR
+MASTERS
+DOCTORAL
+-int id
++DegreeType(int id)
++int getId()
++{static}DegreeType fromId(int id)
+}
+
+enum Grade {
+FRESHMAN
+SOPHOMORE
+JUNIOR
+SENIOR
+GRADUATE
+DOCTORAL
+-int id
++Grade(int id)
++int getId()
++{static}Grade fromId(int id)
+}
+
+interface DatabaseItem {
+
+}
+
+interface DatabaseTable {
+
+}
+
+class Alumni extends Person {
+
+}
+
+class Building implements DatabaseItem {
+
+}
+
+class Department implements DatabaseItem {
+
+}
+
+class Employee extends Person {
+
+}
+
+class Faculty extends Employee {
+
+}
+
+class Person implements DatabaseItem {
+
+}
+
+class Room implements DatabaseItem {
+
+}
+
+class Student extends Person {
+
+}
+
+class Config {
+    -{static} Config instance
+    - String databaseName
+    - String databaseUsername
+    - String databasePassword
+    - String databaseHost
+
+    ~Config()
+    -Config(String filename)
+    ~{static}InputStream readFromResourceFile(String filename)
+    ~{static}Properties getPropertiesFromInputStream(InputStream inputStream)
+    ~void setInstanceVariables(Properties properties)
+    +{static}Config getInstance()
+    +{static}Config initialize(String filename)
+    +String getDatabaseName()
+    +String getDatabaseUsername()
+    +String getDatabasePassword()
+    +String getDatabaseHost()
+    ~void reset()
+}
+
+class Database {
+ -{static} int NETWORK_TIMEOUT
+ -{static} Database instance
+ -Connection databaseConnection
+
+ -Database()
+ +{static} Database getInstance()
+ -void initializeDatabase()
+ -boolean testHostConnection(String host)
+ +Connection getDatabaseConnection()
+ ~void reset()
+}
+
+Config *-- Database
+
+
+@enduml

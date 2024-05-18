@@ -33,7 +33,7 @@ CREATE TABLE `Building`(
 
 CREATE TABLE `Department`(
                              `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-                             `name` MEDIUMTEXT NOT NULL
+                             `name` MEDIUMTEXT NOT NULL UNIQUE
 );
 
 CREATE TABLE `Employee`(
