@@ -208,7 +208,6 @@ public class PersonTable implements DatabaseTable {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setInt(2, PAGE_SIZE);
             preparedStatement.setInt(1, PAGE_SIZE*pageNumber);
-            System.out.println(preparedStatement.toString());
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
