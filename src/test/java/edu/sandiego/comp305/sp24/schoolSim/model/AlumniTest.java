@@ -33,7 +33,8 @@ class AlumniTest {
     private static final String UNIQUE_USERNAME = "uniquealum";
     private static final String UNIQUE_ORG_EMAIl = "uniquealum@sandiego.edu";
     private static final String UNIQUE_SECONDARY_EMAIL = "uniquealum@gmail.com";
-    private static final int FAKE_DEPARTMENT_ID = 1;
+    private static final boolean FAKE_ALUMNI_IS_ACTIVE = true;
+    private static final int FAKE_ALUMNI_DEPARTMENT_ID = 1;
     private static final Date FAKE_ALUMNI_GRADUATION_DATE = new Date(2024 - SQL_DATE_OFFSET, 6, 30);
     private static final DegreeType FAKE_ALUMNI_DEGREE = DegreeType.BACHELOR;
 
@@ -70,8 +71,8 @@ class AlumniTest {
                     VALID_ALUMNI_USERNAME,
                     UNIQUE_ORG_EMAIl,
                     UNIQUE_SECONDARY_EMAIL,
-                    true,
-                    new Department(FAKE_DEPARTMENT_ID),
+                    FAKE_ALUMNI_IS_ACTIVE,
+                    new Department(FAKE_ALUMNI_DEPARTMENT_ID),
                     FAKE_ALUMNI_GRADUATION_DATE,
                     FAKE_ALUMNI_DEGREE
             );
@@ -88,8 +89,8 @@ class AlumniTest {
                 UNIQUE_USERNAME,
                 UNIQUE_ORG_EMAIl,
                 UNIQUE_SECONDARY_EMAIL,
-                true,
-                new Department(FAKE_DEPARTMENT_ID),
+                FAKE_ALUMNI_IS_ACTIVE,
+                new Department(FAKE_ALUMNI_DEPARTMENT_ID),
                 FAKE_ALUMNI_GRADUATION_DATE,
                 FAKE_ALUMNI_DEGREE
         );
@@ -98,25 +99,9 @@ class AlumniTest {
         assertEquals(FAKE_ALUMNI_DEGREE, alumni.getDegree());
 
 
-        // Delete person so test can be re-run
-        deleteWithId(alumni.getId(), PERSON_TABLE_NAME);
-        deleteWithId(alumni.getId(), ALUMNI_TABLE_NAME);
-    }
-
-    void deleteWithId(long id, String table) {
-        try {
-            String sql = "DELETE FROM " + table + " WHERE `id` = ?";
-
-            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, id);
-
-            int affectedRows = preparedStatement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("User not deleted");
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
-        }
+        // Delete alumni so test can be re-run
+        deleteSQLEntryWithId(alumni.getId(), PERSON_TABLE_NAME);
+        deleteSQLEntryWithId(alumni.getId(), ALUMNI_TABLE_NAME);
     }
 
     @Test
@@ -128,5 +113,21 @@ class AlumniTest {
 
         assertEquals(valid.getGraduationDate().toString(), actual.get(alumniSpecificStart));
         assertEquals(valid.getDegree().toString(), actual.get(++alumniSpecificStart));
+    }
+
+    private static void deleteSQLEntryWithId(long id, String tableName) {
+        try {
+            String sql = "DELETE FROM " + tableName + " WHERE `id` = ?";
+
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, id);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("User not deleted");
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
+        }
     }
 }

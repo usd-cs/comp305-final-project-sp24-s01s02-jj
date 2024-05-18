@@ -26,9 +26,8 @@ class BuildingTest {
     private static final String UNIQUE_BUILDING_ADDRESS = "uniqueaddr";
     private static final int UNIQUE_BUILDING_FLOORS = 4;
     private static final String UNIQUE_BUILDING_ABBREVIATION= "ABBR";
-    private static final int INVALID_BUILDING_ID = -1;
 
-    private static final String BUILDING_TABLE_NAME = "Building";
+    private static final int INVALID_BUILDING_ID = -1;
 
     @BeforeAll
     static void beforeAll() {
@@ -74,23 +73,7 @@ class BuildingTest {
         assertEquals(UNIQUE_BUILDING_FLOORS, building.getFloors());
         assertEquals(UNIQUE_BUILDING_ABBREVIATION, building.getAbbreviation());
 
-        deleteWithId(building.getId(), BUILDING_TABLE_NAME);
-    }
-
-    void deleteWithId(long id, String table) {
-        try {
-            String sql = "DELETE FROM " + table + " WHERE `id` = ?";
-
-            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, id);
-
-            int affectedRows = preparedStatement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("User not deleted");
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
-        }
+        deleteBuildingWithId(building.getId());
     }
 
     @Test
@@ -107,6 +90,22 @@ class BuildingTest {
 
         for (int i = 0; i < expected.size(); i++) {
             assertEquals(expected.get(i), actual.get(i));
+        }
+    }
+
+    private static void deleteBuildingWithId(long id) {
+        try {
+            String sql = "DELETE FROM Building WHERE `id` = ?";
+
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, id);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("User not deleted");
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
         }
     }
 }

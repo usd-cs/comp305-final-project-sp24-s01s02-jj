@@ -194,21 +194,6 @@ public class PersonTest {
         deletePersonWithUsername(UNIQUE_USERNAME);
     }
 
-    void deletePersonWithUsername(String username) {
-        try {
-            String sql = "DELETE FROM Person WHERE `username` = ?";
-
-            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, username);
-
-            int affectedRows = preparedStatement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("User not deleted");
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("User couldn't be deleted");
-        }
-    }
     @Test
     void getStringList() {
         Person valid = new DummyPerson(VALID_PERSON_ID);
@@ -228,6 +213,22 @@ public class PersonTest {
 
         for(int i = 0; i < expected.size(); i++) {
             assertEquals(expected.get(i), actual.get(i));
+        }
+    }
+
+    private static void deletePersonWithUsername(String username) {
+        try {
+            String sql = "DELETE FROM Person WHERE `username` = ?";
+
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, username);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("User not deleted");
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("User couldn't be deleted");
         }
     }
 }

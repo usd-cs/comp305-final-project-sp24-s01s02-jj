@@ -85,14 +85,25 @@ public class FacultyTest {
         assertEquals(FAKE_FACULTY_ROOM_ID, faculty.getOfficeLocation().getId());
         assertEquals(FAKE_FACULTY_HAS_TENURE, faculty.hasTenure());
 
-        deleteWithId(faculty.getId(), FACULTY_TABLE_NAME);
-        deleteWithId(faculty.getId(), EMPLOYEE_TABLE_NAME);
-        deleteWithId(faculty.getId(), PERSON_TABLE_NAME);
+        deleteSQLEntryWithId(faculty.getId(), FACULTY_TABLE_NAME);
+        deleteSQLEntryWithId(faculty.getId(), EMPLOYEE_TABLE_NAME);
+        deleteSQLEntryWithId(faculty.getId(), PERSON_TABLE_NAME);
     }
 
-    void deleteWithId(long id, String table) {
+    @Test
+    void getStringListValues() {
+        Faculty valid = new Faculty(VALID_FACULTY_ID);
+
+        List<String> actual = valid.getStringList();
+        int facultySpecificStart = actual.size() - FACULTY_SPECIFIC_PARAMETER_COUNT;
+
+        assertEquals(valid.getOfficeLocation().toString(), actual.get(facultySpecificStart));
+        assertEquals(Boolean.toString(valid.hasTenure()), actual.get(++facultySpecificStart));
+    }
+
+    private static void deleteSQLEntryWithId(long id, String tableName) {
         try {
-            String sql = "DELETE FROM " + table + " WHERE `id` = ?";
+            String sql = "DELETE FROM " + tableName + " WHERE `id` = ?";
 
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
@@ -104,15 +115,5 @@ public class FacultyTest {
         } catch (SQLException e) {
             throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
         }
-    }
-    @Test
-    void getStringListValues() {
-        Faculty valid = new Faculty(VALID_FACULTY_ID);
-
-        List<String> actual = valid.getStringList();
-        int facultySpecificStart = actual.size() - FACULTY_SPECIFIC_PARAMETER_COUNT;
-
-        assertEquals(valid.getOfficeLocation().toString(), actual.get(facultySpecificStart));
-        assertEquals(Boolean.toString(valid.hasTenure()), actual.get(++facultySpecificStart));
     }
 }

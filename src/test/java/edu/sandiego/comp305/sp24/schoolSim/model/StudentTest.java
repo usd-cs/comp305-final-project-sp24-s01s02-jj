@@ -99,8 +99,8 @@ class StudentTest {
 
 
         // Delete person so test can be re-run
-        deleteWithId(student.getId(), PERSON_TABLE_NAME);
-        deleteWithId(student.getId(), STUDENT_TABLE_NAME);
+        deleteSQLEntryWithId(student.getId(), PERSON_TABLE_NAME);
+        deleteSQLEntryWithId(student.getId(), STUDENT_TABLE_NAME);
     }
 
     @Test
@@ -114,9 +114,9 @@ class StudentTest {
         assertEquals(valid.getGrade().toString(), actual.get(++studentSpecificStart));
     }
 
-    private static void deleteWithId(long id, String table) {
+    private static void deleteSQLEntryWithId(long id, String tableName) {
         try {
-            String sql = "DELETE FROM " + table + " WHERE `id` = ?";
+            String sql = "DELETE FROM " + tableName + " WHERE `id` = ?";
 
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);

@@ -15,7 +15,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class RoomTest {
     private static final String CONFIG_FILENAME = "config.properties";
-    private static final String ROOM_TABLE_NAME = "Room";
     private static final int ROOM_SPECIFIC_PARAMETERS = 3;
 
     private static final int VALID_ROOM_ID = 1;
@@ -56,24 +55,9 @@ class RoomTest {
         assertEquals(VALID_ROOM_BUILDING_ID, room.getBuilding().getId());
         assertEquals(VALID_ROOM_NUMBER, room.getRoomNumber());
 
-        deleteWithId(room.getId(), ROOM_TABLE_NAME);
+        deleteRoomWithId(room.getId());
     }
 
-    void deleteWithId(long id, String table) {
-        try {
-            String sql = "DELETE FROM " + table + " WHERE `id` = ?";
-
-            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setLong(1, id);
-
-            int affectedRows = preparedStatement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("User not deleted");
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
-        }
-    }
     @Test
     void getStringList() {
         Room valid = new Room(VALID_ROOM_ID);
@@ -86,6 +70,22 @@ class RoomTest {
 
         for (int i = 0; i < ROOM_SPECIFIC_PARAMETERS; i++) {
             assertEquals(expected.get(i), actual.get(i));
+        }
+    }
+
+    private static void deleteRoomWithId(long id) {
+        try {
+            String sql = "DELETE FROM Room WHERE `id` = ?";
+
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, id);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("User not deleted");
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
         }
     }
 }
