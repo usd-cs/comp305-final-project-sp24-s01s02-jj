@@ -10,13 +10,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DepartmentTest {
-    private static final String CONFIG = "config.properties";
+    private static final String CONFIG_FILENAME = "config.properties";
     private static final int VALID_DEPARTMENT_ID = 1;
     private static final String VALID_DEPARTMENT_NAME = "Fake Department 1";
     private static final int INVALID_DEPARTMENT_ID = -1;
+
     @BeforeAll
     static void beforeAll() {
-        Config.initialize(CONFIG);
+        Config.initialize(CONFIG_FILENAME);
     }
 
     @Test
@@ -24,11 +25,11 @@ class DepartmentTest {
         assertDoesNotThrow(() -> new Department(VALID_DEPARTMENT_ID));
     }
 
-
     @Test
     void getDepartmentExistsNotNull() {
         assertNotNull(new Department(VALID_DEPARTMENT_ID));
     }
+
     @Test
     void getDepartmentExistsCorrectValues() {
         Department department = new Department(VALID_DEPARTMENT_ID);
@@ -44,12 +45,14 @@ class DepartmentTest {
     @Test
     void getStringListValues() {
         Department department = new Department(VALID_DEPARTMENT_ID);
-        List<String> expected = new ArrayList<>();
         List<String> actual = department.getStringList();
+
+        List<String> expected = new ArrayList<>();
         expected.add(Long.toString(VALID_DEPARTMENT_ID));
         expected.add(department.getName());
 
-        assertEquals(expected.get(0), actual.get(0));
-        assertEquals(expected.get(1), actual.get(1));
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), actual.get(i));
+        }
     }
 }
