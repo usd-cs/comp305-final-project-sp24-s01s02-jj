@@ -9,7 +9,7 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConfigTests {
+public class ConfigTest {
     private static final String TEST_PROPERTIES = "test.properties";
 
     private static final String VALID_RESOURCE = "test-resource-file.txt";
