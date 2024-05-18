@@ -4,6 +4,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 class DashboardController {
+
     @GetMapping("/")
     public String renderDashboard(Model model) {
         // TODO: Do once enum reworks done

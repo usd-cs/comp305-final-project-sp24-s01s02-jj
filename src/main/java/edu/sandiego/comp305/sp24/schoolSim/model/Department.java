@@ -77,4 +77,9 @@ public class Department implements DatabaseItem{
         myAttributes.add(getName());
         return myAttributes;
     }
+
+    @Override
+    public String toString() {
+        return this.getName();
+    }
 }

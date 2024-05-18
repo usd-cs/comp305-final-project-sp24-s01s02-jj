@@ -197,6 +197,33 @@ public class PersonTable implements DatabaseTable {
         return resultList;
     }
 
+    public List<Person> getAllPaged(int pageNumber) {
+        List<Person> resultList = new ArrayList<>();
+
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Person ORDER BY id LIMIT ?, ?";
+        try{
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(2, PAGE_SIZE);
+            preparedStatement.setInt(1, PAGE_SIZE*pageNumber);
+            System.out.println(preparedStatement.toString());
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Person person = new SimplePerson(id);
+                resultList.add(person);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resultList;
+    }
+
     @Override
     public String getTableName() {
         return "Person";
