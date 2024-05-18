@@ -21,10 +21,9 @@ class TableVisualizer {
         private static StringBuilder rowWrap(boolean isHeader, List<String> items) {
             StringBuilder tableRow = new StringBuilder("<tr>");
             // First item will always be row header
-            final int FIRST_ELEMENT = 0;
             tableRow.append("<th>");
             // .getFirst() introduced JDK21. Removed for compatibility :(
-            tableRow.append(items.get(FIRST_ELEMENT));
+            tableRow.append(items.get(0));
             tableRow.append("</th>");
             // All other items
             String openTag, closeTag;
