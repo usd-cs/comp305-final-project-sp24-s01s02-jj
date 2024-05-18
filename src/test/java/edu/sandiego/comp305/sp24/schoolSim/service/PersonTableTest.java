@@ -13,12 +13,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersonTableTest {
     ArrayList<Person> singlePersonList = new ArrayList<>();
     ArrayList<Person> twoPersonList = new ArrayList<>();
-    ArrayList<SimplePerson> emptyList = new ArrayList<>();
-    Person John = new SimplePerson(142);
-    Person EvilJohn = new SimplePerson(143);
-    Person Fac1 = new SimplePerson(75);
-    Person fakeGuy1 = new SimplePerson(5);
-    Person fakeGuy2 = new SimplePerson(6);
+    ArrayList<Person> emptyList = new ArrayList<>();
+    Person John = new Person(142);
+    Person EvilJohn = new Person(143);
+    Person Fac1 = new Person(75);
+    Person fakeGuy1 = new Person(5);
+    Person fakeGuy2 = new Person(6);
 
     @BeforeAll
     static void beforeAll() {
