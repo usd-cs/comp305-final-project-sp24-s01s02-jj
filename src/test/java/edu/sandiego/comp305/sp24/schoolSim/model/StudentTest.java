@@ -15,31 +15,38 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class StudentTest {
+    private static final String CONFIG_FILENAME = "config.properties";
+    private static final int SQL_YEAR_OFFSET = 1900;
+    private static final String STUDENT_TABLE_NAME = "Student";
+    private static final String PERSON_TABLE_NAME = "Person";
+    private static final int STUDENT_SPECIFIC_PARAMETERS = 2;
+
     private static final int VALID_STUDENT_ID = 55;
     private static final String VALID_STUDENT_USERNAME = "student";
     private static final String VALID_STUDENT_MAJOR = "Computer Science";
     private static final Grade VALID_STUDENT_GRADE = Grade.SOPHOMORE;
 
-    private static final int INVALID_STUDENT_ID = -1;
-
-    private static final String FAKE_FIRST_NAME = "FAKENAME";
-    private static final String FAKE_LAST_NAME = "FAKELAST";
-    private static final Date FAKE_BIRTHDATE = new Date(2004 - 1900, 4, 18);
-    private static final String FAKE_PHONE_NUMBER = "8584940009";
-    private static final String UNIQUE_USERNAME = "uniquestudent";
-    private static final String UNIQUE_ORG_EMAIl = "uniquestudent@sandiego.edu";
-    private static final String UNIQUE_SECONDARY_EMAIL = "uniquestudent@gmail.com";
-    private static final int FAKE_DEPARTMENT_ID = 1;
+    private static final String FAKE_STUDENT_FIRST_NAME = "FAKENAME";
+    private static final String FAKE_STUDENT_LAST_NAME = "FAKELAST";
+    private static final Date FAKE_STUDENT_BIRTHDATE = new Date(2004 - SQL_YEAR_OFFSET, 4, 18);
+    private static final String FAKE_STUDENT_PHONE_NUMBER = "8584940009";
+    private static final String UNIQUE_STUDENT_USERNAME = "uniquestudent";
+    private static final String UNIQUE_STUDENT_ORG_EMAIl = "uniquestudent@sandiego.edu";
+    private static final String UNIQUE_STUDENT_SECONDARY_EMAIL = "uniquestudent@gmail.com";
+    private static final boolean FAKE_STUDENT_IS_ACTIVE = true;
+    private static final int FAKE_STUDENT_DEPARTMENT_ID = 1;
     private static final String FAKE_STUDENT_MAJOR = "Mathematics";
     private static final Grade FAKE_STUDENT_GRADE = Grade.FRESHMAN;
 
+    private static final int INVALID_STUDENT_ID = -1;
+
     @BeforeAll
     static void beforeAll() {
-        Config.initialize("config.properties");
+        Config.initialize(CONFIG_FILENAME);
     }
 
     @Test
-    void verifyFirstStudentValues() {
+    void verifyValidStudentValues() {
         Student student = new Student(VALID_STUDENT_ID);
         assertNotNull(student);
 
@@ -48,7 +55,7 @@ class StudentTest {
     }
 
     @Test
-    void getAlumniInvalid() {
+    void getStudentInvalid() {
         assertThrows(IllegalArgumentException.class, () -> new Student(INVALID_STUDENT_ID));
     }
 
@@ -56,15 +63,15 @@ class StudentTest {
     void createNewStudentDuplicate() {
         assertThrows(IllegalArgumentException.class, () -> {
             Student student = new Student(
-                    FAKE_FIRST_NAME,
-                    FAKE_LAST_NAME,
-                    FAKE_BIRTHDATE,
-                    FAKE_PHONE_NUMBER,
+                    FAKE_STUDENT_FIRST_NAME,
+                    FAKE_STUDENT_LAST_NAME,
+                    FAKE_STUDENT_BIRTHDATE,
+                    FAKE_STUDENT_PHONE_NUMBER,
                     VALID_STUDENT_USERNAME,
-                    UNIQUE_ORG_EMAIl,
-                    UNIQUE_SECONDARY_EMAIL,
-                    true,
-                    new Department(FAKE_DEPARTMENT_ID),
+                    UNIQUE_STUDENT_ORG_EMAIl,
+                    UNIQUE_STUDENT_SECONDARY_EMAIL,
+                    FAKE_STUDENT_IS_ACTIVE,
+                    new Department(FAKE_STUDENT_DEPARTMENT_ID),
                     FAKE_STUDENT_MAJOR,
                     FAKE_STUDENT_GRADE
             );
@@ -74,15 +81,15 @@ class StudentTest {
     @Test
     void createNewStudentAndTestVariables() {
         Student student = new Student(
-                FAKE_FIRST_NAME,
-                FAKE_LAST_NAME,
-                FAKE_BIRTHDATE,
-                FAKE_PHONE_NUMBER,
-                UNIQUE_USERNAME,
-                UNIQUE_ORG_EMAIl,
-                UNIQUE_SECONDARY_EMAIL,
-                true,
-                new Department(FAKE_DEPARTMENT_ID),
+                FAKE_STUDENT_FIRST_NAME,
+                FAKE_STUDENT_LAST_NAME,
+                FAKE_STUDENT_BIRTHDATE,
+                FAKE_STUDENT_PHONE_NUMBER,
+                UNIQUE_STUDENT_USERNAME,
+                UNIQUE_STUDENT_ORG_EMAIl,
+                UNIQUE_STUDENT_SECONDARY_EMAIL,
+                FAKE_STUDENT_IS_ACTIVE,
+                new Department(FAKE_STUDENT_DEPARTMENT_ID),
                 FAKE_STUDENT_MAJOR,
                 FAKE_STUDENT_GRADE
         );
@@ -92,13 +99,24 @@ class StudentTest {
 
 
         // Delete person so test can be re-run
-        deleteWithId(student.getId(), "Person");
-        deleteWithId(student.getId(), "Student");
+        deleteSQLEntryWithId(student.getId(), PERSON_TABLE_NAME);
+        deleteSQLEntryWithId(student.getId(), STUDENT_TABLE_NAME);
     }
 
-    void deleteWithId(long id, String table) {
+    @Test
+    void getStringList() {
+        Student valid = new Student(VALID_STUDENT_ID);
+
+        List<String> actual = valid.getStringList();
+        int studentSpecificStart = actual.size() - STUDENT_SPECIFIC_PARAMETERS;
+
+        assertEquals(valid.getMajor(), actual.get(studentSpecificStart));
+        assertEquals(valid.getGrade().toString(), actual.get(++studentSpecificStart));
+    }
+
+    private static void deleteSQLEntryWithId(long id, String tableName) {
         try {
-            String sql = "DELETE FROM " + table + " WHERE `id` = ?";
+            String sql = "DELETE FROM " + tableName + " WHERE `id` = ?";
 
             PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setLong(1, id);
@@ -110,14 +128,5 @@ class StudentTest {
         } catch (SQLException e) {
             throw new IllegalStateException("User couldn't be deleted: " + e.getMessage());
         }
-    }
-    @Test
-    void getStringList() {
-        Student valid = new Student(VALID_STUDENT_ID);
-
-        List<String> actual = valid.getStringList();
-        int studentSpecificStart = actual.size()-2;
-        assertEquals(valid.getMajor(), actual.get(studentSpecificStart));
-        assertEquals(valid.getGrade().toString(), actual.get(studentSpecificStart+1));
     }
 }
