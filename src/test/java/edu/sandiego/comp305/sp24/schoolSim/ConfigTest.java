@@ -1,6 +1,5 @@
 package edu.sandiego.comp305.sp24.schoolSim;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,7 +9,7 @@ import java.util.Properties;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ConfigTests {
+public class ConfigTest {
     private static final String TEST_PROPERTIES = "test.properties";
 
     private static final String VALID_RESOURCE = "test-resource-file.txt";
@@ -18,6 +17,25 @@ public class ConfigTests {
 
     private static final String VALID_PROPERTIES = "valid.properties";
     private static final String INVALID_PROPERTIES = "invalid.properties";
+
+    private static final String DATABASE_NAME_KEY = "database_name";
+    private static final String DATABASE_USERNAME_KEY = "database_username";
+    private static final String DATABASE_PASSWORD_KEY = "database_password";
+    private static final String DATABASE_HOST_KEY = "database_host";
+
+    private static final String FAKE_DATABASE_NAME_VALUE = "fake name";
+    private static final String FAKE_DATABASE_USERNAME_VALUE = "fake username";
+    private static final String FAKE_DATABASE_PASSWORD_VALUE = "fake password";
+    private static final String FAKE_DATABASE_HOST_VALUE = "fake host";
+
+    private static final String VALID_DATABASE_NAME_VALUE = "fakename";
+    private static final String VALID_DATABASE_USERNAME_VALUE = "fakeusername";
+    private static final String VALID_DATABASE_PASSWORD_VALUE = "fakepassword";
+    private static final String VALID_DATABASE_HOST_VALUE = "fakehost";
+
+    private static final String VALID_PROPERTIES_KEY = "validity";
+    private static final String VALID_PROPERTIES_VALUE = "true";
+
     @AfterEach
     void afterEach() {
         Config.initialize(TEST_PROPERTIES).reset();
@@ -57,7 +75,7 @@ public class ConfigTests {
         Properties properties = Config.getPropertiesFromInputStream(inputStream);
 
         assertNotNull(properties);
-        assertEquals("true", properties.getProperty("validity"));
+        assertEquals(VALID_PROPERTIES_VALUE, properties.getProperty(VALID_PROPERTIES_KEY));
     }
 
     @Test
@@ -66,7 +84,7 @@ public class ConfigTests {
         Properties properties = Config.getPropertiesFromInputStream(inputStream);
 
         assertNotNull(properties);
-        assertEquals(0, properties.entrySet().size());
+        assertTrue(properties.entrySet().isEmpty());
     }
 
     @Test
@@ -80,9 +98,9 @@ public class ConfigTests {
         Config config = new Config();
 
         Properties properties = new Properties();
-        properties.setProperty("database_username", "fake username");
-        properties.setProperty("database_password", "fake password");
-        properties.setProperty("database_host", "fake host");
+        properties.setProperty(DATABASE_USERNAME_KEY, FAKE_DATABASE_USERNAME_VALUE);
+        properties.setProperty(DATABASE_PASSWORD_KEY, FAKE_DATABASE_PASSWORD_VALUE);
+        properties.setProperty(DATABASE_HOST_KEY, FAKE_DATABASE_HOST_VALUE);
         assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
@@ -91,9 +109,9 @@ public class ConfigTests {
         Config config = new Config();
 
         Properties properties = new Properties();
-        properties.setProperty("database_name", "fake name");
-        properties.setProperty("database_password", "fake password");
-        properties.setProperty("database_host", "fake host");
+        properties.setProperty(DATABASE_NAME_KEY, FAKE_DATABASE_NAME_VALUE);
+        properties.setProperty(DATABASE_PASSWORD_KEY, FAKE_DATABASE_PASSWORD_VALUE);
+        properties.setProperty(DATABASE_HOST_KEY, FAKE_DATABASE_HOST_VALUE);
         assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
@@ -102,9 +120,9 @@ public class ConfigTests {
         Config config = new Config();
 
         Properties properties = new Properties();
-        properties.setProperty("database_username", "fake username");
-        properties.setProperty("database_name", "fake name");
-        properties.setProperty("database_host", "fake host");
+        properties.setProperty(DATABASE_USERNAME_KEY, FAKE_DATABASE_HOST_VALUE);
+        properties.setProperty(DATABASE_NAME_KEY, FAKE_DATABASE_NAME_VALUE);
+        properties.setProperty(DATABASE_HOST_KEY, FAKE_DATABASE_HOST_VALUE);
         assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
@@ -113,9 +131,9 @@ public class ConfigTests {
         Config config = new Config();
 
         Properties properties = new Properties();
-        properties.setProperty("database_username", "fake username");
-        properties.setProperty("database_name", "fake name");
-        properties.setProperty("database_password", "fake password");
+        properties.setProperty(DATABASE_USERNAME_KEY, FAKE_DATABASE_USERNAME_VALUE);
+        properties.setProperty(DATABASE_NAME_KEY, FAKE_DATABASE_NAME_VALUE);
+        properties.setProperty(DATABASE_PASSWORD_KEY, FAKE_DATABASE_PASSWORD_VALUE);
         assertThrows(IllegalArgumentException.class, () -> config.setInstanceVariables(properties));
     }
 
@@ -124,10 +142,10 @@ public class ConfigTests {
         Config config = new Config();
 
         Properties properties = new Properties();
-        properties.setProperty("database_username", "fake username");
-        properties.setProperty("database_name", "fake name");
-        properties.setProperty("database_password", "fake password");
-        properties.setProperty("database_host", "fake host");
+        properties.setProperty(DATABASE_USERNAME_KEY, FAKE_DATABASE_USERNAME_VALUE);
+        properties.setProperty(DATABASE_NAME_KEY, FAKE_DATABASE_NAME_VALUE);
+        properties.setProperty(DATABASE_PASSWORD_KEY, FAKE_DATABASE_PASSWORD_VALUE);
+        properties.setProperty(DATABASE_HOST_KEY, FAKE_DATABASE_HOST_VALUE);
 
         assertDoesNotThrow(() -> config.setInstanceVariables(properties));
     }
@@ -159,10 +177,9 @@ public class ConfigTests {
     void getInstanceCorrectVariables() {
         Config.initialize(TEST_PROPERTIES);
 
-
-        assertEquals("fakename", Config.getInstance().getDatabaseName());
-        assertEquals("fakeusername", Config.getInstance().getDatabaseUsername());
-        assertEquals("fakepassword", Config.getInstance().getDatabasePassword());
-        assertEquals("fakehost", Config.getInstance().getDatabaseHost());
+        assertEquals(VALID_DATABASE_NAME_VALUE, Config.getInstance().getDatabaseName());
+        assertEquals(VALID_DATABASE_USERNAME_VALUE, Config.getInstance().getDatabaseUsername());
+        assertEquals(VALID_DATABASE_PASSWORD_VALUE, Config.getInstance().getDatabasePassword());
+        assertEquals(VALID_DATABASE_HOST_VALUE, Config.getInstance().getDatabaseHost());
     }
 }

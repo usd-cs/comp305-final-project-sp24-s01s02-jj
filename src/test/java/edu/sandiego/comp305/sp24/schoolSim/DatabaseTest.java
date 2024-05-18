@@ -1,15 +1,12 @@
 package edu.sandiego.comp305.sp24.schoolSim;
 
-import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.net.InetAddress;
-
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DatabaseTests {
+public class DatabaseTest {
     private static final String TEST_PROPERTIES = "config.properties";
     private static final String BAD_PROPERTIES = "test.properties";
 

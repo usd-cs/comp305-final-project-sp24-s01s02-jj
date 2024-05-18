@@ -14,71 +14,78 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class PersonTests {
-    private static class DummyPerson extends Person {
-        public DummyPerson(long id) {
-            super(id);
-        }
+public class PersonTest {
+    private static final String CONFIG_FILENAME = "config.properties";
+    private static final int SQL_YEAR_OFFSET = 1900;
 
-        public DummyPerson(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department) {
-            super(firstName, lastName, birthdate, phoneNumber, username, organizationEmail, secondaryEmail, isActive, department);
-        }
-    }
-    private static final int DOESNT_EXIST_ID = -1;
+    private static final long VALID_PERSON_ID = 1;
+    private static final String VALID_PERSON_FIRSTNAME = "Alumni1";
+    private static final String VALID_PERSON_LASTNAME = "Smith";
+    private static final Date VALID_PERSON_BIRTHDATE = new Date(2004 - SQL_YEAR_OFFSET, 2, 18);
+    private static final String VALID_PERSON_PHONE_NUMBER = "1234567891";
+    private static final String VALID_PERSON_USERNAME = "alumni";
+    private static final String VALID_PERSON_ORGANIZATION_EMAIL = "alumni@sandiego.edu";
+    private static final String VALID_PERSON_SECONDARY_EMAIL = "alumni@gmail.com";
+    private static final boolean VALID_PERSON_IS_ACTIVE = true;
+    private static final int VALID_PERSON_DEPARTMENT_ID = 1;
 
     private static final String FAKE_FIRST_NAME = "fakename";
     private static final String FAKE_LAST_NAME = "fakelast";
-    private static final Date FAKE_BIRTHDATE = new Date(2004 - 1900, 7, 1);
+    private static final Date FAKE_BIRTHDATE = new Date(2004 - SQL_YEAR_OFFSET, 7, 1);
     private static final String FAKE_PHONE_NUMBER = "1234009955";
     private static final String FAKE_USERNAME = "alumni123";
     private static final String FAKE_ORG_EMAIL = "different_email@sandiego.edu";
     private static final String FAKE_SECONDARY_EMAIL = "different_email@gmail.edu";
+    private static final boolean FAKE_PERSON_IS_ACTIVE = true;
+    private static final int FAKE_PERSON_DEPARTMENT_ID = 1;
 
     private static final String UNIQUE_USERNAME = "uniqueuser";
     private static final String UNIQUE_ORG_EMAIl = "unique@sandiego.edu";
     private static final String UNIQUE_SECONDARY_EMAIL = "unique@gmail.com";
-    private static final long VALID_PERSON_ID = 1;
+
+    private static final int INVALID_PERSON_ID = -1;
+
 
     @BeforeAll
     static void beforeAll() {
-        Config.initialize("config.properties");
+        Config.initialize(CONFIG_FILENAME);
     }
 
     @Test
     void verifyFirstPersonValues() {
-        DummyPerson person = new DummyPerson(VALID_PERSON_ID);
+        Person person = new Person(VALID_PERSON_ID);
         assertNotNull(person);
 
         assertEquals(VALID_PERSON_ID, person.getId());
-        assertEquals("Alumni1", person.getFirstName());
-        assertEquals("Smith", person.getLastName());
-        assertEquals("2004-03-18", person.getBirthdate().toString());
-        assertEquals("1234567891", person.getPhoneNumber());
-        assertEquals("alumni", person.getUsername());
-        assertEquals("alumni@sandiego.edu", person.getOrganizationEmail());
-        assertEquals("alumni@gmail.com", person.getSecondaryEmail());
-        assertTrue(person.isActive());
-        assertEquals(1, person.getDepartment().getId());
+        assertEquals(VALID_PERSON_FIRSTNAME, person.getFirstName());
+        assertEquals(VALID_PERSON_LASTNAME, person.getLastName());
+        assertEquals(VALID_PERSON_BIRTHDATE, person.getBirthdate());
+        assertEquals(VALID_PERSON_PHONE_NUMBER, person.getPhoneNumber());
+        assertEquals(VALID_PERSON_USERNAME, person.getUsername());
+        assertEquals(VALID_PERSON_ORGANIZATION_EMAIL, person.getOrganizationEmail());
+        assertEquals(VALID_PERSON_SECONDARY_EMAIL, person.getSecondaryEmail());
+        assertEquals(VALID_PERSON_IS_ACTIVE, person.isActive());
+        assertEquals(VALID_PERSON_DEPARTMENT_ID, person.getDepartment().getId());
     }
 
     @Test
     void getPersonDoesntExist() {
-        assertThrows(IllegalArgumentException.class, () -> new DummyPerson(DOESNT_EXIST_ID));
+        assertThrows(IllegalArgumentException.class, () -> new Person(INVALID_PERSON_ID));
     }
 
     @Test
     void createPersonDuplicateUsername() {
         assertThrows(IllegalArgumentException.class, () -> {
-            DummyPerson person = new DummyPerson(
+            Person person = new Person(
                     FAKE_FIRST_NAME,
                     FAKE_LAST_NAME,
                     FAKE_BIRTHDATE,
                     FAKE_PHONE_NUMBER,
-                    "alumni",
+                    VALID_PERSON_USERNAME,
                     FAKE_ORG_EMAIL,
                     FAKE_SECONDARY_EMAIL,
-                    true,
-                    new Department(1)
+                    FAKE_PERSON_IS_ACTIVE,
+                    new Department(FAKE_PERSON_DEPARTMENT_ID)
             );
         });
     }
@@ -86,16 +93,16 @@ public class PersonTests {
     @Test
     void createPersonDuplicateOrgEmail() {
         assertThrows(IllegalArgumentException.class, () -> {
-            DummyPerson person = new DummyPerson(
+            Person person = new Person(
                     FAKE_FIRST_NAME,
                     FAKE_LAST_NAME,
                     FAKE_BIRTHDATE,
                     FAKE_PHONE_NUMBER,
                     FAKE_USERNAME,
-                    "alumni@sandiego.edu",
+                    VALID_PERSON_ORGANIZATION_EMAIL,
                     FAKE_SECONDARY_EMAIL,
-                    true,
-                    new Department(1)
+                    FAKE_PERSON_IS_ACTIVE,
+                    new Department(FAKE_PERSON_DEPARTMENT_ID)
             );
         });
     }
@@ -103,23 +110,23 @@ public class PersonTests {
     @Test
     void createPersonDuplicateSecondaryEmail() {
         assertThrows(IllegalArgumentException.class, () -> {
-            DummyPerson person = new DummyPerson(
+            Person person = new Person(
                     FAKE_FIRST_NAME,
                     FAKE_LAST_NAME,
                     FAKE_BIRTHDATE,
                     FAKE_PHONE_NUMBER,
                     FAKE_USERNAME,
                     FAKE_ORG_EMAIL,
-                    "alumni@gmail.com",
-                    true,
-                    new Department(1)
+                    VALID_PERSON_SECONDARY_EMAIL,
+                    FAKE_PERSON_IS_ACTIVE,
+                    new Department(FAKE_PERSON_DEPARTMENT_ID)
             );
         });
     }
 
     @Test
     void createNewPersonTestVariables() {
-        DummyPerson newPerson = new DummyPerson(
+        Person newPerson = new Person(
                 FAKE_FIRST_NAME,
                 FAKE_LAST_NAME,
                 FAKE_BIRTHDATE,
@@ -127,8 +134,8 @@ public class PersonTests {
                 UNIQUE_USERNAME,
                 UNIQUE_ORG_EMAIl,
                 UNIQUE_SECONDARY_EMAIL,
-                true,
-                new Department(1)
+                FAKE_PERSON_IS_ACTIVE,
+                new Department(FAKE_PERSON_DEPARTMENT_ID)
         );
         assertEquals(FAKE_FIRST_NAME, newPerson.getFirstName());
         assertEquals(FAKE_LAST_NAME, newPerson.getLastName());
@@ -137,8 +144,8 @@ public class PersonTests {
         assertEquals(UNIQUE_USERNAME, newPerson.getUsername());
         assertEquals(UNIQUE_ORG_EMAIl, newPerson.getOrganizationEmail());
         assertEquals(UNIQUE_SECONDARY_EMAIL, newPerson.getSecondaryEmail());
-        assertTrue(newPerson.isActive());
-        assertEquals(1, newPerson.getDepartment().getId());
+        assertEquals(FAKE_PERSON_IS_ACTIVE, newPerson.isActive());
+        assertEquals(FAKE_PERSON_DEPARTMENT_ID, newPerson.getDepartment().getId());
 
 
         // Delete person so test can be re-run
@@ -147,7 +154,7 @@ public class PersonTests {
 
     @Test
     void createNewPersonGetAndTestVariables() {
-        DummyPerson newPerson1 = new DummyPerson(
+        Person newPerson1 = new Person(
                 FAKE_FIRST_NAME,
                 FAKE_LAST_NAME,
                 FAKE_BIRTHDATE,
@@ -155,11 +162,13 @@ public class PersonTests {
                 UNIQUE_USERNAME,
                 UNIQUE_ORG_EMAIl,
                 UNIQUE_SECONDARY_EMAIL,
-                true,
-                new Department(1)
+                FAKE_PERSON_IS_ACTIVE,
+                new Department(FAKE_PERSON_DEPARTMENT_ID)
         );
 
-        DummyPerson newPerson = new DummyPerson(newPerson1.getId());
+        // Retrieve the person after creating it
+        Person newPerson = new Person(newPerson1.getId());
+
         assertEquals(FAKE_FIRST_NAME, newPerson.getFirstName());
         assertEquals(FAKE_LAST_NAME, newPerson.getLastName());
         assertEquals(FAKE_BIRTHDATE.toString(), newPerson.getBirthdate().toString());
@@ -167,34 +176,18 @@ public class PersonTests {
         assertEquals(UNIQUE_USERNAME, newPerson.getUsername());
         assertEquals(UNIQUE_ORG_EMAIl, newPerson.getOrganizationEmail());
         assertEquals(UNIQUE_SECONDARY_EMAIL, newPerson.getSecondaryEmail());
-        assertTrue(newPerson.isActive());
-        assertEquals(1, newPerson.getDepartment().getId());
-
+        assertEquals(FAKE_PERSON_IS_ACTIVE, newPerson.isActive());
+        assertEquals(FAKE_PERSON_DEPARTMENT_ID, newPerson.getDepartment().getId());
 
         // Delete person so test can be re-run
         deletePersonWithUsername(UNIQUE_USERNAME);
     }
 
-    void deletePersonWithUsername(String username) {
-        try {
-            String sql = "DELETE FROM Person WHERE `username` = ?";
-
-            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            preparedStatement.setString(1, username);
-
-            int affectedRows = preparedStatement.executeUpdate();
-            if (affectedRows == 0) {
-                throw new SQLException("User not deleted");
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("User couldn't be deleted");
-        }
-    }
     @Test
     void getStringList() {
-        Person valid = new DummyPerson(VALID_PERSON_ID);
-
+        Person valid = new Person(VALID_PERSON_ID);
         List<String> actual = valid.getStringList();
+
         List<String> expected = new ArrayList<>();
         expected.add(Long.toString(valid.getId()));
         expected.add(valid.getFirstName());
@@ -210,6 +203,21 @@ public class PersonTests {
         for(int i = 0; i < expected.size(); i++) {
             assertEquals(expected.get(i), actual.get(i));
         }
+    }
 
+    private static void deletePersonWithUsername(String username) {
+        try {
+            String sql = "DELETE FROM Person WHERE `username` = ?";
+
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, username);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("User not deleted");
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("User couldn't be deleted");
+        }
     }
 }
