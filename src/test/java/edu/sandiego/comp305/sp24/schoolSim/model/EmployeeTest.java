@@ -11,12 +11,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class EmployeeTest {
     private static final String CONFIG_FILENAME = "config.properties";
-    private static final int SQL_DATE_OFFSET = 1900;
+    private static final int SQL_YEAR_OFFSET = 1900;
     private static final int EMPLOYEE_SPECIFIC_VARIABLE_COUNT = 3;
     private static final String NO_MANAGER_VALUE = "No Manager";
 
     private static final int VALID_EMPLOYEE_ID_NO_MANAGER = 5;
-    private static final Date VALID_EMPLOYEE_START_DATE = new Date(2024 - SQL_DATE_OFFSET, 4, 4);
+    private static final Date VALID_EMPLOYEE_START_DATE = new Date(2024 - SQL_YEAR_OFFSET, 4, 4);
     private static final double VALID_EMPLOYEE_WAGE_NO_MANAGER = 16.85;
     private static final int VALID_EMPLOYEE_ID_WITH_MANAGER = 6;
 

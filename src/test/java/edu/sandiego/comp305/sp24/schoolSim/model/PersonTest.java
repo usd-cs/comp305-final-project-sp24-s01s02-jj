@@ -27,12 +27,12 @@ public class PersonTest {
     }
 
     private static final String CONFIG_FILENAME = "config.properties";
-    private static final int SQL_DATE_OFFSET = 1900;
+    private static final int SQL_YEAR_OFFSET = 1900;
 
     private static final long VALID_PERSON_ID = 1;
     private static final String VALID_PERSON_FIRSTNAME = "Alumni1";
     private static final String VALID_PERSON_LASTNAME = "Smith";
-    private static final Date VALID_PERSON_BIRTHDATE = new Date(2004 - SQL_DATE_OFFSET, 2, 18);
+    private static final Date VALID_PERSON_BIRTHDATE = new Date(2004 - SQL_YEAR_OFFSET, 2, 18);
     private static final String VALID_PERSON_PHONE_NUMBER = "1234567891";
     private static final String VALID_PERSON_USERNAME = "alumni";
     private static final String VALID_PERSON_ORGANIZATION_EMAIL = "alumni@sandiego.edu";
@@ -42,7 +42,7 @@ public class PersonTest {
 
     private static final String FAKE_FIRST_NAME = "fakename";
     private static final String FAKE_LAST_NAME = "fakelast";
-    private static final Date FAKE_BIRTHDATE = new Date(2004 - SQL_DATE_OFFSET, 7, 1);
+    private static final Date FAKE_BIRTHDATE = new Date(2004 - SQL_YEAR_OFFSET, 7, 1);
     private static final String FAKE_PHONE_NUMBER = "1234009955";
     private static final String FAKE_USERNAME = "alumni123";
     private static final String FAKE_ORG_EMAIL = "different_email@sandiego.edu";

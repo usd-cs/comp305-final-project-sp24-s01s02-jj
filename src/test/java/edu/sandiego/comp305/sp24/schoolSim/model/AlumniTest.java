@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class AlumniTest {
     private static final String CONFIG_FILENAME = "config.properties";
-    private static final int SQL_DATE_OFFSET = 1900;
+    private static final int SQL_YEAR_OFFSET = 1900;
     private static final int ALUMNI_ADDITIONAL_PARAMETER_COUNT = 2;
 
     private static final int VALID_ALUMNI_ID = 1;
@@ -28,14 +28,14 @@ class AlumniTest {
 
     private static final String FAKE_FIRST_NAME = "FAKENAME";
     private static final String FAKE_LAST_NAME = "FAKELAST";
-    private static final Date FAKE_BIRTHDATE = new Date(2004 - SQL_DATE_OFFSET, 4, 18);
+    private static final Date FAKE_BIRTHDATE = new Date(2004 - SQL_YEAR_OFFSET, 4, 18);
     private static final String FAKE_PHONE_NUMBER = "8584940009";
     private static final String UNIQUE_USERNAME = "uniquealum";
     private static final String UNIQUE_ORG_EMAIl = "uniquealum@sandiego.edu";
     private static final String UNIQUE_SECONDARY_EMAIL = "uniquealum@gmail.com";
     private static final boolean FAKE_ALUMNI_IS_ACTIVE = true;
     private static final int FAKE_ALUMNI_DEPARTMENT_ID = 1;
-    private static final Date FAKE_ALUMNI_GRADUATION_DATE = new Date(2024 - SQL_DATE_OFFSET, 6, 30);
+    private static final Date FAKE_ALUMNI_GRADUATION_DATE = new Date(2024 - SQL_YEAR_OFFSET, 6, 30);
     private static final DegreeType FAKE_ALUMNI_DEGREE = DegreeType.BACHELOR;
 
     private static final String PERSON_TABLE_NAME = "Person";
