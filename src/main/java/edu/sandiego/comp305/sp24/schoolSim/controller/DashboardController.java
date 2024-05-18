@@ -11,12 +11,4 @@ class DashboardController {
         // model.addAttribute("");
         return "index";
     }
-
-    protected String renderSidebar() {
-        return "";
-    }
-
-    protected String renderDataPanels() {
-        return "";
-    }
 }
