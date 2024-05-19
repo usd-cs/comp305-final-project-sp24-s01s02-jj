@@ -26,7 +26,8 @@ DOCTORAL
 }
 
 interface DatabaseItem {
-
++DatabaseTable getParentTable()
++List<String> getStringList()
 }
 
 interface DatabaseTable {
@@ -34,35 +35,110 @@ interface DatabaseTable {
 }
 
 class Alumni extends Person {
+    -Date graduationDate
+    -DegreeType degreeType
 
+    +Alumni(long id)
+
+    +Alumni(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date graduationDate, DegreeType degreeType)
+    +Date getGraduationDate()
+    +DegreeType getDegree()
 }
 
 class Building implements DatabaseItem {
+    -long id
+    -String name
+    -String address
+    -int floors
+    -String abbreviation
 
+    +Building(long id)
+    +Building(String name, String address, int floors, String abbreviation)
+    +long getId()
+    +String getName()
+    +String getAddress()
+    +int getFloors()
+    +String getAbbreviation()
 }
 
 class Department implements DatabaseItem {
+    -long id
+    -String name
 
+    +Department(long id)
+    +Department(String name)
+    +long getId()
+    +String getName()
 }
 
 class Employee extends Person {
+    -Optional<Employee> manager
+    -Date startDate
+    -double hourlyWage
 
+    +Employee(long id)
+    +Employee(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date startDate, double hourlyWage, Employee manager)
+    +Optional<Employee> getManager()
+    +Date getStartDate()
+    +double getHourlyWage()
 }
 
 class Faculty extends Employee {
+    -Room officeLocation;
+    -boolean hasTenure;
 
+    +Faculty(long id)
+    +Faculty(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date startDate, double hourlyWage, Employee manager, Room officeLocation, boolean hasTenure)
+    +Room getOfficeLocation()
+    +boolean hasTenure()
 }
 
 class Person implements DatabaseItem {
+    - long id
+    - String firstName
+    - String lastName
+    - Date birthdate
+    - String phoneNumber
+    - String username
+    - String organizationEmail
+    - String secondaryEmail
+    - boolean isActive
+    - Department department
 
+    +Person(long id)
+    +Person(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department)
+    +long getId()
+    +String getFirstName()
+    +String getLastName()
+    +Date getBirthdate()
+    +String getPhoneNumber()
+    +String getUsername()
+    +String getOrganizationEmail()
+    +String getSecondaryEmail()
+    +boolean isActive()
+    + Department getDepartment()
 }
 
 class Room implements DatabaseItem {
+     -long id;
+     -Building building;
+     -int roomNumber;
 
+     +Room(long id)
+     +Room(Building building, int roomNumber)
+     +long getId()
+     +Building getBuilding()
+     +int getRoomNumber()
 }
 
 class Student extends Person {
+    -String major;
+    -Grade grade;
 
+    +Student(long id)
+    +Student(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, String major, Grade grade)
+    +String getMajor()
+    +Grade getGrade()
 }
 
 class Config {
