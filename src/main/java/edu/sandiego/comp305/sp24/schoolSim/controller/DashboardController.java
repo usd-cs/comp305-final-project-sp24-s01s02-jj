@@ -14,14 +14,12 @@ class DashboardController {
 
     @GetMapping("/")
     public String renderDashboard(Model model) {
-        // TODO: Do once enum reworks done
         Database database = Database.getInstance();
         List<DatabaseTable> tables = database.getTables();
         StringBuilder boxes = new StringBuilder();
         for (DatabaseTable table : tables) {
             boxes.append(TableVisualizer.generateTableStatbox(table));
         }
-        System.out.println(boxes.toString());
         model.addAttribute("tableBoxes", boxes.toString());
         return "index";
     }
