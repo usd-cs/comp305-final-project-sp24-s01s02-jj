@@ -25,12 +25,11 @@ class PersonFormController implements WebMvcConfigurer {
         registry.addViewController("/person");
     }
 
-    @GetMapping("/person")
-    public String form(@RequestParam Optional<String> type, Model model) {
+    DatabaseTable getTableFromKey(Optional<String> key) {
         String tableKey = "all";
         DatabaseTable table;
-        if (type.isPresent()) {
-            tableKey = type.get();
+        if (key.isPresent()) {
+            tableKey = key.get();
         }
         table = switch (tableKey) {
             case "alumni" -> new AlumniTable();
@@ -39,6 +38,13 @@ class PersonFormController implements WebMvcConfigurer {
             case "student" -> new StudentTable();
             default -> new PersonTable();
         };
+
+        return table;
+    }
+
+    @GetMapping("/person")
+    public String form(@RequestParam Optional<String> type, Model model) {
+        DatabaseTable table = getTableFromKey(type);
         List<DatabaseItem> items = table.getAllPaged(0);
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, items));
         model.addAttribute("tableName", table.getTableName());

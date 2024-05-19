@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeTable extends AbstractTable implements DatabaseTable {
+public class EmployeeTable extends AbstractTable {
     public List<Employee> getAllWithStartDate(String startDate){
         List<Employee> resultList = new ArrayList<>();
         ResultSet resultSet;
@@ -114,6 +114,7 @@ public class EmployeeTable extends AbstractTable implements DatabaseTable {
 
     @Override
     public List<DatabaseItem> getAllPaged(int pageNumber) {
+        // Passes Employee's from id constructor to be used to create the objects.
         return getPagedResultSet(pageNumber, Employee::new);
     }
 }

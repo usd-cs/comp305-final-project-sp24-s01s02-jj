@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PersonTable extends AbstractTable implements DatabaseTable {
+public class PersonTable extends AbstractTable  {
     public List<Person> getAllWithFirstName(String firstName){
         List<Person> resultList = new ArrayList<>();
 
@@ -197,6 +197,7 @@ public class PersonTable extends AbstractTable implements DatabaseTable {
     }
 
     public List<DatabaseItem> getAllPaged(int pageNumber) {
+        // Passes Person's from id constructor
         return getPagedResultSet(pageNumber, Person::new);
     }
 

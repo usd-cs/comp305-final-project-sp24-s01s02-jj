@@ -33,6 +33,25 @@ public abstract class AbstractTable implements DatabaseTable {
         return -1;
     }
 
+    /**
+     * Returns a set of databaseItems based on the given page number. The objects are created using the passed
+     * idConstructor method which should be a DatabaseItem constructor that takes a single long id as parameter.
+     * The item should already exist in the database.
+     *
+     * e.x.
+     * class MyItem implements DatabaseItem {
+     *     public myItem(long id) {
+     *         ...
+     *     }
+     * }
+     * ---
+     * getPagedResultSet(0, MyItem::new) // Get page 0 of this table where the instances of DatabaseItem are constructed
+     *                                   // with myItem's constructor.
+     *
+     * @param pageNumber The page number to retrieve
+     * @param idConstructor The constructor to use to make instances of DatabaseItem. Expects a single long id parameter. Item needs to already exist in database.
+     * @return A list of databaseItems for this page
+     */
     protected List<DatabaseItem> getPagedResultSet(int pageNumber, Function<? super Long, ? extends DatabaseItem> idConstructor) {
         ResultSet resultSet = null;
         Connection connection = Database.getInstance().getDatabaseConnection();

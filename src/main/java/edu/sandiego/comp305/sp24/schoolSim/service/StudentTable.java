@@ -13,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentTable extends AbstractTable implements DatabaseTable{
+public class StudentTable extends AbstractTable {
     public List<Student> getAllWithMajor(String major){
         List<Student> resultList = new ArrayList<>();
         ResultSet resultSet;
@@ -92,6 +92,7 @@ public class StudentTable extends AbstractTable implements DatabaseTable{
 
     @Override
     public List<DatabaseItem> getAllPaged(int pageNumber) {
+        // Passes student's from id constructor to create Student instances
         return getPagedResultSet(pageNumber, Student::new);
     }
 }

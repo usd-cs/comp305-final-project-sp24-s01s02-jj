@@ -11,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
-public class AlumniTable extends AbstractTable implements DatabaseTable {
+public class AlumniTable extends AbstractTable {
     public List<Alumni> getAllWithDegreeType(DegreeType degreeType){
         List<Alumni> resultList = new ArrayList<>();
         ResultSet resultSet;
@@ -91,6 +91,7 @@ public class AlumniTable extends AbstractTable implements DatabaseTable {
 
     @Override
     public List<DatabaseItem> getAllPaged(int pageNumber) {
+        // Passes alumni's from id constructor to be used to create the objects.
         return getPagedResultSet(pageNumber, Alumni::new);
     }
 }

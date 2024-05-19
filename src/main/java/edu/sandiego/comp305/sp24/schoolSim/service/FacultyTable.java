@@ -12,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacultyTable extends AbstractTable implements DatabaseTable {
+public class FacultyTable extends AbstractTable {
     public List<Faculty> getAllByOfficeLocation(String officeLocation){
         List<Faculty> resultList = new ArrayList<>();
         ResultSet resultSet;
@@ -117,6 +117,7 @@ public class FacultyTable extends AbstractTable implements DatabaseTable {
 
     @Override
     public List<DatabaseItem> getAllPaged(int pageNumber) {
+        // Passes faculty's from id constructor to be used to create the objects.
         return getPagedResultSet(pageNumber, Faculty::new);
     }
 }
