@@ -29,7 +29,6 @@ class PersonFormController implements WebMvcConfigurer {
     public String form(@RequestParam Optional<String> type, Model model) {
         String tableKey = "all";
         DatabaseTable table;
-        List<DatabaseItem> chosenRows;
         if (type.isPresent()) {
             tableKey = type.get();
         }
