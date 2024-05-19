@@ -106,9 +106,9 @@ public class Employee extends Person {
         if (manager.isPresent()) {
             managerRepresentation = manager.get().toString();
         }
-        parentList.add(managerRepresentation);
         parentList.add(getStartDate().toString());
         parentList.add("$"+Double.toString(getHourlyWage()));
+        parentList.add(managerRepresentation);
         return parentList;
     }
 
