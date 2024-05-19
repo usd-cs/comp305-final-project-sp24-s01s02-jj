@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.service.FacultyTable;
 
 import java.sql.Date;
 import java.sql.PreparedStatement;
@@ -82,5 +83,10 @@ public class Faculty extends Employee {
         parentList.add(getOfficeLocation().toString());
         parentList.add(Boolean.toString(hasTenure()));
         return parentList;
+    }
+
+    @Override
+    public DatabaseTable getParentTable() {
+        return new FacultyTable();
     }
 }
