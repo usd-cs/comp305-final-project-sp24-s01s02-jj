@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Employee;
 
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EmployeeTable implements DatabaseTable {
+public class EmployeeTable extends AbstractTable {
     public List<Employee> getAllWithStartDate(String startDate){
         List<Employee> resultList = new ArrayList<>();
         ResultSet resultSet;
@@ -93,25 +94,6 @@ public class EmployeeTable implements DatabaseTable {
     }
 
     @Override
-    public long getCountTableRows() {
-        ResultSet resultSet;
-        Connection connection = Database.getInstance().getDatabaseConnection();
-
-        String query = "SELECT COUNT(*) FROM Employee";
-        try{
-            resultSet = connection.prepareStatement(query).executeQuery();
-            if(resultSet.next()) {
-                return resultSet.getLong(1);
-            } else {
-                return -1;
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    @Override
     public List<String> getColumnNames() {
         List<String> columnNames = new ArrayList<>();
         columnNames.add("ID");
@@ -128,5 +110,11 @@ public class EmployeeTable implements DatabaseTable {
         columnNames.add("Hourly Wage");
         columnNames.add("Manager");
         return columnNames;
+    }
+
+    @Override
+    public List<DatabaseItem> getAllPaged(int pageNumber) {
+        // Passes Employee's from id constructor to be used to create the objects.
+        return getPagedResultSet(pageNumber, Employee::new);
     }
 }

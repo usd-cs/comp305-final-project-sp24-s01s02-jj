@@ -2,6 +2,7 @@ package edu.sandiego.comp305.sp24.schoolSim.model;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 import edu.sandiego.comp305.sp24.schoolSim.enums.Grade;
+import edu.sandiego.comp305.sp24.schoolSim.service.StudentTable;
 
 import java.sql.*;
 import java.util.List;
@@ -76,7 +77,6 @@ public class Student extends Person {
 
     @Override
     public DatabaseTable getParentTable() {
-        // Replace with instance of StudentTable when it exists
-        return null;
+        return new StudentTable();
     }
 }

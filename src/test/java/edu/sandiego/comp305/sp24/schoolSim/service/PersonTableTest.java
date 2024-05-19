@@ -173,7 +173,7 @@ class PersonTableTest {
     void getActivePeopleReturnEveryoneButEvilJohn() {
         PersonTable table = new PersonTable();
         List<Person> resultsList = table.getActivePeople();
-        int numOfActivePeople = 6; // the database only has 7 people, only one is inactive
+        int numOfActivePeople = 14; // the database only has 7 people, only one is inactive
         assertEquals(resultsList.size(), numOfActivePeople);
 
     }

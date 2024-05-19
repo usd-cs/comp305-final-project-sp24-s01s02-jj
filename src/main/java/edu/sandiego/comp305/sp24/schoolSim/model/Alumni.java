@@ -2,6 +2,7 @@ package edu.sandiego.comp305.sp24.schoolSim.model;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
+import edu.sandiego.comp305.sp24.schoolSim.service.AlumniTable;
 
 import java.sql.*;
 import java.util.List;
@@ -52,7 +53,7 @@ public class Alumni extends Person {
     @Override
     public DatabaseTable getParentTable() {
         // Change to AlumniTable.getInstance() once it exists
-        return null;
+        return new AlumniTable();
     }
 
     @Override

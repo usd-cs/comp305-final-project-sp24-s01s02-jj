@@ -89,4 +89,9 @@ public class Room implements DatabaseItem{
         myAttributes.add(Integer.toString(getRoomNumber()));
         return myAttributes;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %d", getBuilding().toString(), getRoomNumber());
+    }
 }

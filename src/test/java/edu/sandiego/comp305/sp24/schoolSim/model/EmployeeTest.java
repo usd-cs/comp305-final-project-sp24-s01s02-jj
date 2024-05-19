@@ -76,9 +76,10 @@ class EmployeeTest {
         List<String> actual = valid.getStringList();
         int employeeSpecificStart = actual.size() - EMPLOYEE_SPECIFIC_VARIABLE_COUNT;
 
-        assertEquals(NO_MANAGER_VALUE, actual.get(employeeSpecificStart));
-        assertEquals(valid.getStartDate().toString(),actual.get(++employeeSpecificStart));
+
+        assertEquals(valid.getStartDate().toString(),actual.get(employeeSpecificStart));
         assertEquals("$" + valid.getHourlyWage(), actual.get(++employeeSpecificStart));
+        assertEquals(NO_MANAGER_VALUE, actual.get(++employeeSpecificStart));
     }
 
     @Test
@@ -94,9 +95,9 @@ class EmployeeTest {
         int employeeSpecificStart = actual.size() - EMPLOYEE_SPECIFIC_VARIABLE_COUNT;
 
         assertNotNull(manager);
-        assertEquals(manager.toString(), actual.get(employeeSpecificStart));
-        assertEquals(valid.getStartDate().toString(),actual.get(++employeeSpecificStart));
+        assertEquals(valid.getStartDate().toString(),actual.get(employeeSpecificStart));
         assertEquals("$" + valid.getHourlyWage(), actual.get(++employeeSpecificStart));
+        assertEquals(manager.toString(), actual.get(++employeeSpecificStart));
     }
 
     @Test

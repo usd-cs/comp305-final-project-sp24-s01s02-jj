@@ -1,14 +1,23 @@
 package edu.sandiego.comp305.sp24.schoolSim;
 
+import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
+import edu.sandiego.comp305.sp24.schoolSim.service.EmployeeTable;
+import edu.sandiego.comp305.sp24.schoolSim.service.FacultyTable;
+import edu.sandiego.comp305.sp24.schoolSim.service.PersonTable;
+import edu.sandiego.comp305.sp24.schoolSim.service.StudentTable;
+
 import java.net.InetAddress;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Database {
     private static final int NETWORK_TIMEOUT = 10000;
     private static Database instance;
     private Connection databaseConnection;
+    private List<DatabaseTable> tables;
 
     private Database() {
         initializeDatabase();
@@ -34,6 +43,12 @@ public class Database {
         } catch (SQLException e) {
             throw new IllegalStateException("Cannot connect the database!", e);
         }
+        tables = new ArrayList<>();
+        tables.add(new PersonTable());
+        tables.add(new EmployeeTable());
+        tables.add(new FacultyTable());
+        tables.add(new StudentTable());
+        // TODO: Add other tables as they begin to exist
     }
 
     private boolean testHostConnection(String host) {
@@ -52,6 +67,10 @@ public class Database {
 
     public Connection getDatabaseConnection() {
         return databaseConnection;
+    }
+
+    public List<DatabaseTable> getTables() {
+        return this.tables;
     }
 
     void reset() {

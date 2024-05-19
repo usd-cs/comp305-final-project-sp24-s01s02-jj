@@ -39,6 +39,16 @@ class TableVisualizerTest {
         fakeRows.add(row2);
         String table = TableVisualizer.generateTableView(fakeTable, fakeRows);
         String expected = "<table class=\"table\"><thead><tr><th>id</th><th>name</th><th>birthdate</th></tr></thead><tbody><tr><th>1</th><td>Looper</td><td>07-01-1970</td></tr><tr><th>2</th><td>Souper</td><td>07-02-1970</td></tr></tbody></table>";
-        assertEquals(expected, table, "Expected table: " + expected + "\nGot table: " + table);
+        assertEquals(expected, table, "Expected table layout not generated");
+    }
+
+    @Test
+    void generateTableStatbox() {
+        DatabaseTable fakeTable = mock(DatabaseTable.class);
+        when(fakeTable.getTableName()).thenReturn("FakeTable");
+        when(fakeTable.getCountTableRows()).thenReturn((long)25);
+
+        String expected = "<article class=\"message is-info cell\"><div class=\"message-header\">FakeTable</div><div class=\"message-body\">Number of Rows: 25</div></article>";
+        assertEquals(expected, TableVisualizer.generateTableStatbox(fakeTable), "Expected statbox layout not generated");
     }
 }

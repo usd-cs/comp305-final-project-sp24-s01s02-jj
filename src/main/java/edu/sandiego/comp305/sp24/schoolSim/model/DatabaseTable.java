@@ -26,4 +26,12 @@ public interface DatabaseTable {
      */
     List<String> getColumnNames();
 
+    /**
+     * Retrieves a page of database items according to the provided page number.
+     *
+     * @param pageNumber The page of items to retrieve.
+     * @return The list of database items on that page.
+     */
+    List<DatabaseItem> getAllPaged(int pageNumber);
+
 }
