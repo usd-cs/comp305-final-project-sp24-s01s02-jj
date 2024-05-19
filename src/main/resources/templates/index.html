@@ -55,9 +55,14 @@
         </nav>
         <!-- Use hero to pin footer to bottom of page -->
         <div class="hero is-fullheight">
-            <div class="columns mx-3 is-mobile">
-                <div class="column">Dashboard</div>
-            </div>
+            <nav class="level mx-3">
+                <!-- Left side -->
+                <div class="level-left">
+                    <div class="level-item">
+                        <h3 class="title is-3">Dashboard</h3>
+                    </div>
+                </div>
+            </nav>
             <div class="box mx-3">
                 <div class="grid">
                     <th:block th:utext="${tableBoxes}"></th:block>

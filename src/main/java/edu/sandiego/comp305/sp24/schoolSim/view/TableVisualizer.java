@@ -1,4 +1,4 @@
-package edu.sandiego.comp305.sp24.schoolSim.controller;
+package edu.sandiego.comp305.sp24.schoolSim.view;
 
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
@@ -6,7 +6,7 @@ import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
-class TableVisualizer {
+public class TableVisualizer {
     public static String generateTableStatbox(DatabaseTable table) {
         StringBuilder box = new StringBuilder("<article class=\"message is-info cell\">");
         box.append("<div class=\"message-header\">");

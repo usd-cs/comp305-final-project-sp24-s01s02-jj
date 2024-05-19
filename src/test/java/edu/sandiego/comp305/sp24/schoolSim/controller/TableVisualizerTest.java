@@ -2,6 +2,7 @@ package edu.sandiego.comp305.sp24.schoolSim.controller;
 
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
+import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
