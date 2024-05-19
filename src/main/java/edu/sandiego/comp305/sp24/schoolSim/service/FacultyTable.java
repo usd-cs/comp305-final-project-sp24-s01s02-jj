@@ -1,10 +1,8 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
-import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
-import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
-import edu.sandiego.comp305.sp24.schoolSim.model.Student;
+import edu.sandiego.comp305.sp24.schoolSim.model.Faculty;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,26 +10,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.LinkedList;
-public class AlumniTable implements DatabaseTable {
-    public List<Alumni> getAllWithDegreeType(DegreeType degreeType){
-        List<Alumni> resultList = new ArrayList<>();
+
+public class FacultyTable implements DatabaseTable {
+    public List<Faculty> getAllByOfficeLocation(String officeLocation){
+        List<Faculty> resultList = new ArrayList<>();
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
-        String query = "SELECT * FROM Alumni WHERE degree_type = ?";
+        String query = "SELECT * FROM Faculty WHERE office_location = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            int degreeValue = degreeType.ordinal() + 1;
-            String degree = String.valueOf(degreeValue);
-            preparedStatement.setString(1, degree);
+            preparedStatement.setString(1, officeLocation);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Alumni alumn = new Alumni(id);
-                resultList.add(alumn);
+                Faculty faculty = new Faculty(id);
+                resultList.add(faculty);
             }
 
         } catch (SQLException e){
@@ -39,38 +35,61 @@ public class AlumniTable implements DatabaseTable {
         }
 
         return resultList;
-
     }
 
-    public List<Alumni> getAllWithGraduationDate(String graduationDate){
-        List<Alumni> resultList = new ArrayList<>();
+    public List<Faculty> getAllWithTenure(){
+        List<Faculty> resultList = new ArrayList<>();
+
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
-        String query = "SELECT * FROM Alumni WHERE graduation_date = ?";
+        String query = "SELECT * FROM Faculty WHERE has_tenure = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, graduationDate);
+            preparedStatement.setBoolean(1, true);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Alumni alumn = new Alumni(id);
-                resultList.add(alumn);
+                Faculty faculty = new Faculty(id);
+                resultList.add(faculty);
             }
 
         } catch (SQLException e){
             e.printStackTrace();
         }
-
         return resultList;
+    }
 
+    public List<Faculty> getAllWithNoTenure(){
+        List<Faculty> resultList = new ArrayList<>();
+
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Faculty WHERE has_tenure = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setBoolean(1, false);
+            resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Faculty faculty = new Faculty(id);
+                resultList.add(faculty);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+        return resultList;
     }
 
     @Override
     public String getTableName() {
-        return "Alumni";
+        return "Faculty";
     }
 
     @Override
@@ -78,7 +97,7 @@ public class AlumniTable implements DatabaseTable {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
-        String query = "SELECT COUNT(*) FROM Alumni";
+        String query = "SELECT COUNT(*) FROM Faculty";
         try{
             resultSet = connection.prepareStatement(query).executeQuery();
             if(resultSet.next()) {
@@ -105,8 +124,11 @@ public class AlumniTable implements DatabaseTable {
         columnNames.add("Secondary Email");
         columnNames.add("Is Active");
         columnNames.add("Department");
-        columnNames.add("Degree Type");
-        columnNames.add("Graduation Date");
+        columnNames.add("Start Date");
+        columnNames.add("Hourly Wage");
+        columnNames.add("Manager");
+        columnNames.add("Room");
+        columnNames.add("Has Tenure");
         return columnNames;
     }
 }

@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
+import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
 import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,15 +27,9 @@ class AlumniTableTest {
     }
 
     @Test
-    void getAllWithDegreeTypeNoMatch() {
-        AlumniTable table = new AlumniTable();
-        List<Alumni> returnedList = table.getAllWithDegreeType("5"); //That's right, a degree 2 levels above Doctor
-        assertEquals(emptyList, returnedList);
-    }
-    @Test
     void getAllWithDegreeTypeOneMatch() {
         AlumniTable table = new AlumniTable();
-        List<Alumni> returnedList = table.getAllWithDegreeType("2");
+        List<Alumni> returnedList = table.getAllWithDegreeType(DegreeType.MASTERS);
         singlePersonList.add(FutureNoah);
         assertEquals(singlePersonList.size(), returnedList.size());
         assertEquals(singlePersonList.get(0).getId(),returnedList.get(0).getId());
@@ -42,7 +37,7 @@ class AlumniTableTest {
     @Test
     void getAllWithDegreeTypeTwoMatch() {
         AlumniTable table = new AlumniTable();
-        List<Alumni> returnedList = table.getAllWithDegreeType("3");
+        List<Alumni> returnedList = table.getAllWithDegreeType(DegreeType.DOCTORAL);
         twoPersonList.add(FutureJohn);
         twoPersonList.add(FutreAndrew);
         assertEquals(twoPersonList.size(), returnedList.size());

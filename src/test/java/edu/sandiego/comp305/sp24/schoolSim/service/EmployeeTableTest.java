@@ -28,7 +28,7 @@ class EmployeeTableTest {
     }
 
     @Test
-    void getAllWithStartDateNoMatch() { //DONE
+    void getAllWithStartDateNoMatch() {
         EmployeeTable table = new EmployeeTable();
         List<Employee> returnedList = table.getAllWithStartDate("12-5-72");
         assertEquals(emptyList, returnedList);
@@ -42,7 +42,7 @@ class EmployeeTableTest {
         assertEquals(singlePersonList.get(0).getId(),returnedList.get(0).getId());
     }
     @Test
-    void getAllWithStartDateTwoMatch() { //DONE
+    void getAllWithStartDateTwoMatch() {
         EmployeeTable table = new EmployeeTable();
         List<Employee> returnedList = table.getAllWithStartDate("2021-01-05");
         twoPersonList.add(fakeGuy1);
@@ -53,13 +53,13 @@ class EmployeeTableTest {
     }
 
     @Test
-    void getAllWithHourlyWageNoMatch() { //DONE
+    void getAllWithHourlyWageNoMatch() {
         EmployeeTable table = new EmployeeTable();
         List<Employee> returnedList = table.getAllWithHourlyWage("10000.00");
         assertEquals(emptyList, returnedList);
     }
     @Test
-    void getAllWithHourlyWageOneMatch() { //DONE
+    void getAllWithHourlyWageOneMatch() {
         EmployeeTable table = new EmployeeTable();
         List<Employee> returnedList = table.getAllWithHourlyWage("16.86");
         singlePersonList.add(fakeGuy3);
@@ -68,7 +68,7 @@ class EmployeeTableTest {
 
     }
     @Test
-    void getAllWithHourlyWageTwoMatch() { //DONE
+    void getAllWithHourlyWageTwoMatch() {
         EmployeeTable table = new EmployeeTable();
         List<Employee> returnedList = table.getAllWithHourlyWage(".12");
         twoPersonList.add(fakeGuy1);

@@ -57,13 +57,13 @@ class StudentTableTest {
     @Test
     void getAllInGradeNoMatches() {
         StudentTable table = new StudentTable();
-        List<Student> returnedList = table.getAllInGrade("1");
+        List<Student> returnedList = table.getAllInGrade(Grade.FRESHMAN);
         assertEquals(returnedList, emptyList);
     }
     @Test
     void getAllInGradeOneMatch() {
         StudentTable table = new StudentTable();
-        List<Student> returnedList = table.getAllInGrade("2");
+        List<Student> returnedList = table.getAllInGrade(Grade.SOPHOMORE);
         singlePersonList.add(fakeStudent);
         assertEquals(singlePersonList.size(), returnedList.size());
         assertEquals(singlePersonList.get(0).getId(),returnedList.get(0).getId());
@@ -71,7 +71,7 @@ class StudentTableTest {
     @Test
     void getAllInGradeTwoMatch() {
         StudentTable table = new StudentTable();
-        List<Student> returnedList = table.getAllInGrade("4");
+        List<Student> returnedList = table.getAllInGrade(Grade.SENIOR);
         twoPersonList.add(myHomieKevin);
         twoPersonList.add(myHomieRonnie);
         assertEquals(returnedList.size(), twoPersonList.size());

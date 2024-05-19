@@ -1,8 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
-import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
-import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
+import edu.sandiego.comp305.sp24.schoolSim.enums.Grade;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Student;
 
@@ -12,26 +11,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.LinkedList;
-public class AlumniTable implements DatabaseTable {
-    public List<Alumni> getAllWithDegreeType(DegreeType degreeType){
-        List<Alumni> resultList = new ArrayList<>();
+
+public class StudentTable implements DatabaseTable{
+    public List<Student> getAllWithMajor(String major){
+        List<Student> resultList = new ArrayList<>();
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
-        String query = "SELECT * FROM Alumni WHERE degree_type = ?";
+        String query = "SELECT * FROM Student WHERE major = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            int degreeValue = degreeType.ordinal() + 1;
-            String degree = String.valueOf(degreeValue);
-            preparedStatement.setString(1, degree);
+            preparedStatement.setString(1, major);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Alumni alumn = new Alumni(id);
-                resultList.add(alumn);
+                Student student = new Student(id);
+                resultList.add(student);
             }
 
         } catch (SQLException e){
@@ -39,25 +36,26 @@ public class AlumniTable implements DatabaseTable {
         }
 
         return resultList;
-
     }
 
-    public List<Alumni> getAllWithGraduationDate(String graduationDate){
-        List<Alumni> resultList = new ArrayList<>();
+    public List<Student> getAllInGrade(Grade grade){
+        List<Student> resultList = new ArrayList<>();
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
-        String query = "SELECT * FROM Alumni WHERE graduation_date = ?";
+        String query = "SELECT * FROM Student WHERE grade = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, graduationDate);
+            int gradeValue = grade.ordinal() + 1;
+            String currentGrade = String.valueOf(gradeValue);
+            preparedStatement.setString(1, currentGrade);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Alumni alumn = new Alumni(id);
-                resultList.add(alumn);
+                Student student = new Student(id);
+                resultList.add(student);
             }
 
         } catch (SQLException e){
@@ -65,12 +63,11 @@ public class AlumniTable implements DatabaseTable {
         }
 
         return resultList;
-
     }
 
     @Override
     public String getTableName() {
-        return "Alumni";
+        return "Student";
     }
 
     @Override
@@ -78,7 +75,7 @@ public class AlumniTable implements DatabaseTable {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
-        String query = "SELECT COUNT(*) FROM Alumni";
+        String query = "SELECT COUNT(*) FROM Student";
         try{
             resultSet = connection.prepareStatement(query).executeQuery();
             if(resultSet.next()) {
@@ -105,8 +102,8 @@ public class AlumniTable implements DatabaseTable {
         columnNames.add("Secondary Email");
         columnNames.add("Is Active");
         columnNames.add("Department");
-        columnNames.add("Degree Type");
-        columnNames.add("Graduation Date");
+        columnNames.add("Major");
+        columnNames.add("Grade");
         return columnNames;
     }
 }
