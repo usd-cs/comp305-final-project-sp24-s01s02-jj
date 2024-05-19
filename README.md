@@ -12,7 +12,7 @@ And the following group types:
 - Department
 
 This project is written in Java and uses the [Spring](https://spring.io/) framework.
-We decided to use Java because it enforces type safety and object oriented principles.
+We decided to use Java because it enforces type safety and object-oriented principles.
 We decided to Spring because it is well documented and has a large community.
 
 In addition, this project hosts its data on a [MySQL](https://www.mysql.com/) database.
