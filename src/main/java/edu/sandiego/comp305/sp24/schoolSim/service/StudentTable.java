@@ -2,6 +2,7 @@ package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 import edu.sandiego.comp305.sp24.schoolSim.enums.Grade;
+import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Student;
 
@@ -12,7 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentTable implements DatabaseTable{
+public class StudentTable extends AbstractTable implements DatabaseTable{
     public List<Student> getAllWithMajor(String major){
         List<Student> resultList = new ArrayList<>();
         ResultSet resultSet;
@@ -70,24 +71,6 @@ public class StudentTable implements DatabaseTable{
         return "Student";
     }
 
-    @Override
-    public long getCountTableRows() {
-        ResultSet resultSet;
-        Connection connection = Database.getInstance().getDatabaseConnection();
-
-        String query = "SELECT COUNT(*) FROM Student";
-        try{
-            resultSet = connection.prepareStatement(query).executeQuery();
-            if(resultSet.next()) {
-                return resultSet.getLong(1);
-            } else {
-                return -1;
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return -1;
-    }
 
     @Override
     public List<String> getColumnNames() {
@@ -105,5 +88,10 @@ public class StudentTable implements DatabaseTable{
         columnNames.add("Major");
         columnNames.add("Grade");
         return columnNames;
+    }
+
+    @Override
+    public List<DatabaseItem> getAllPaged(int pageNumber) {
+        return getPagedResultSet(pageNumber, Student::new);
     }
 }

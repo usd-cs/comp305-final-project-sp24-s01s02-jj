@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Faculty;
 
@@ -11,7 +12,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FacultyTable implements DatabaseTable {
+public class FacultyTable extends AbstractTable implements DatabaseTable {
     public List<Faculty> getAllByOfficeLocation(String officeLocation){
         List<Faculty> resultList = new ArrayList<>();
         ResultSet resultSet;
@@ -92,24 +93,6 @@ public class FacultyTable implements DatabaseTable {
         return "Faculty";
     }
 
-    @Override
-    public long getCountTableRows() {
-        ResultSet resultSet;
-        Connection connection = Database.getInstance().getDatabaseConnection();
-
-        String query = "SELECT COUNT(*) FROM Faculty";
-        try{
-            resultSet = connection.prepareStatement(query).executeQuery();
-            if(resultSet.next()) {
-                return resultSet.getLong(1);
-            } else {
-                return -1;
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return -1;
-    }
 
     @Override
     public List<String> getColumnNames() {
@@ -130,5 +113,10 @@ public class FacultyTable implements DatabaseTable {
         columnNames.add("Room");
         columnNames.add("Has Tenure");
         return columnNames;
+    }
+
+    @Override
+    public List<DatabaseItem> getAllPaged(int pageNumber) {
+        return getPagedResultSet(pageNumber, Faculty::new);
     }
 }

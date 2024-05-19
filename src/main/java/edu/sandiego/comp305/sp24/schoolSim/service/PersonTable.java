@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import java.sql.*;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class PersonTable implements DatabaseTable {
+public class PersonTable extends AbstractTable implements DatabaseTable {
     public List<Person> getAllWithFirstName(String firstName){
         List<Person> resultList = new ArrayList<>();
 
@@ -195,53 +196,13 @@ public class PersonTable implements DatabaseTable {
         return resultList;
     }
 
-    public List<Person> getAllPaged(int pageNumber) {
-        List<Person> resultList = new ArrayList<>();
-
-        ResultSet resultSet;
-        Connection connection = Database.getInstance().getDatabaseConnection();
-
-        String query = "SELECT * FROM Person ORDER BY id LIMIT ?, ?";
-        try{
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(2, PAGE_SIZE);
-            preparedStatement.setInt(1, PAGE_SIZE*pageNumber);
-            resultSet = preparedStatement.executeQuery();
-
-            while (resultSet.next()) {
-                long id = resultSet.getLong("id");
-
-                Person person = new Person(id);
-                resultList.add(person);
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return resultList;
+    public List<DatabaseItem> getAllPaged(int pageNumber) {
+        return getPagedResultSet(pageNumber, Person::new);
     }
 
     @Override
     public String getTableName() {
         return "Person";
-    }
-
-    @Override
-    public long getCountTableRows() {
-        ResultSet resultSet;
-        Connection connection = Database.getInstance().getDatabaseConnection();
-
-        String query = "SELECT COUNT(*) FROM Person";
-        try{
-            resultSet = connection.prepareStatement(query).executeQuery();
-            if(resultSet.next()) {
-                return resultSet.getLong(1);
-            } else {
-                return -1;
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return -1;
     }
 
     @Override
