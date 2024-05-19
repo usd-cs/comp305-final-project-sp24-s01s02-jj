@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.model;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
+import edu.sandiego.comp305.sp24.schoolSim.service.EmployeeTable;
 
 import java.sql.*;
 import java.util.List;
@@ -113,6 +114,6 @@ public class Employee extends Person {
 
     @Override
     public DatabaseTable getParentTable() {
-        return null;
+        return new EmployeeTable();
     }
 }
