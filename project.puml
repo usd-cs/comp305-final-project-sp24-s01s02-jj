@@ -31,7 +31,10 @@ interface DatabaseItem {
 }
 
 interface DatabaseTable {
-
+    +{static}int PAGE_SIZE
+    +String getTableName()
+    +long getCountTableRows()
+    +List<String> getColumnNames()
 }
 
 class Alumni extends Person {
@@ -39,7 +42,6 @@ class Alumni extends Person {
     -DegreeType degreeType
 
     +Alumni(long id)
-
     +Alumni(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date graduationDate, DegreeType degreeType)
     +Date getGraduationDate()
     +DegreeType getDegree()
@@ -116,7 +118,7 @@ class Person implements DatabaseItem {
     +String getOrganizationEmail()
     +String getSecondaryEmail()
     +boolean isActive()
-    + Department getDepartment()
+    +Department getDepartment()
 }
 
 class Room implements DatabaseItem {
@@ -143,10 +145,10 @@ class Student extends Person {
 
 class Config {
     -{static} Config instance
-    - String databaseName
-    - String databaseUsername
-    - String databasePassword
-    - String databaseHost
+    -String databaseName
+    -String databaseUsername
+    -String databasePassword
+    -String databaseHost
 
     ~Config()
     -Config(String filename)
@@ -175,7 +177,40 @@ class Database {
  ~void reset()
 }
 
-Config *-- Database
+Config *-- Config
+Database *-- Database
 
+Config *-- Database
+DegreeType *-- Alumni
+Grade *-- Student
+Department *-- Person
+Room *-- Faculty
+Room *-- Building
+Person *-- Database
+
+
+
+class SchoolSimApplication {
+  -{static} String CONFIG_FILE
+
+  +{static} void main(String[] args)
+}
+SchoolSimApplication o-- Config
+
+class AlumniTable implements DatabaseTable {
+
+}
+
+class EmployeeTable implements DatabaseTable {
+}
+
+class FacultyTable implements DatabaseTable {
+}
+
+class PersonTable implements DatabaseTable {
+}
+
+class StudentTable implements DatabaseTable {
+}
 
 @enduml
