@@ -160,4 +160,9 @@ public class Person implements DatabaseItem {
     public Department getDepartment() {
         return department;
     }
+
+    @Override
+    public String toString() {
+        return String.format("%s %s", getFirstName(), getLastName());
+    }
 }

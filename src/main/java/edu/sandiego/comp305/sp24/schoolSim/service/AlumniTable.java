@@ -2,9 +2,7 @@ package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
-import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
-import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
-import edu.sandiego.comp305.sp24.schoolSim.model.Student;
+import edu.sandiego.comp305.sp24.schoolSim.model.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,7 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
-public class AlumniTable implements DatabaseTable {
+public class AlumniTable extends AbstractTable {
     public List<Alumni> getAllWithDegreeType(DegreeType degreeType){
         List<Alumni> resultList = new ArrayList<>();
         ResultSet resultSet;
@@ -74,25 +72,6 @@ public class AlumniTable implements DatabaseTable {
     }
 
     @Override
-    public long getCountTableRows() {
-        ResultSet resultSet;
-        Connection connection = Database.getInstance().getDatabaseConnection();
-
-        String query = "SELECT COUNT(*) FROM Alumni";
-        try{
-            resultSet = connection.prepareStatement(query).executeQuery();
-            if(resultSet.next()) {
-                return resultSet.getLong(1);
-            } else {
-                return -1;
-            }
-        } catch (SQLException e){
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
-    @Override
     public List<String> getColumnNames() {
         List<String> columnNames = new ArrayList<>();
         columnNames.add("ID");
@@ -108,5 +87,11 @@ public class AlumniTable implements DatabaseTable {
         columnNames.add("Degree Type");
         columnNames.add("Graduation Date");
         return columnNames;
+    }
+
+    @Override
+    public List<DatabaseItem> getAllPaged(int pageNumber) {
+        // Passes alumni's from id constructor to be used to create the objects.
+        return getPagedResultSet(pageNumber, Alumni::new);
     }
 }

@@ -108,4 +108,9 @@ public class Building implements DatabaseItem{
         myAttributes.add(getAbbreviation());
         return myAttributes;
     }
+
+    @Override
+    public String toString() {
+        return getAbbreviation();
+    }
 }
