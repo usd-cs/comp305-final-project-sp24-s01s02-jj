@@ -57,7 +57,7 @@ public class TableVisualizer {
 
     private static String getCloseTag(String openTag){
         // These are the only two tags supported for rows for this project.
-        return openTag.equals("<th>") ? "</th>" : "</td>";
+        return openTag.equals(getOpenTag(true)) ? "</th>" : "</td>";
     }
 
     private static void addRowItem(StringBuilder tableRow, String tag, String item) {

@@ -39,7 +39,7 @@ class TableVisualizerTest {
         fakeRows.add(row1);
         fakeRows.add(row2);
         String table = TableVisualizer.generateTableView(fakeTable, fakeRows);
-        String expected = "<table class=\"table is-fullwidth is-striped\"><thead><tr><th>id</th><th>name</th><th>birthdate</th></tr></thead><tbody><tr><th>1</th><td>Looper</td><td>07-01-1970</td></tr><tr><th>2</th><td>Souper</td><td>07-02-1970</td></tr></tbody></table>";
+        String expected = "<table class=\"table is-fullwidth is-striped\"><thead><tr><th class=\"is-size-7\">id</th><th class=\"is-size-7\">name</th><th class=\"is-size-7\">birthdate</th></tr></thead><tbody><tr><th class=\"is-size-7\">1</th><td class=\"is-size-7\">Looper</td><td class=\"is-size-7\">07-01-1970</td></tr><tr><th class=\"is-size-7\">2</th><td class=\"is-size-7\">Souper</td><td class=\"is-size-7\">07-02-1970</td></tr></tbody></table>";
         assertEquals(expected, table, "Expected table layout not generated");
     }
 
@@ -51,5 +51,12 @@ class TableVisualizerTest {
 
         String expected = "<article class=\"message is-info cell\"><div class=\"message-header\">FakeTable</div><div class=\"message-body\">Number of Rows: 25</div></article>";
         assertEquals(expected, TableVisualizer.generateTableStatbox(fakeTable), "Expected statbox layout not generated");
+    }
+
+    @Test
+    void generateErrorContent() {
+        String message = "Test Error";
+        String expected = "<div class=\"notification is-danger\"><button class=\"delete\"></button>Test Error</div>";
+        assertEquals(expected, TableVisualizer.generateErrorContent(message));
     }
 }
