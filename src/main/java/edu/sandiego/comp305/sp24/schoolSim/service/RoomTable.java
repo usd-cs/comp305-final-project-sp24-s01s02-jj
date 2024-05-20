@@ -1,10 +1,8 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
-import edu.sandiego.comp305.sp24.schoolSim.enums.Grade;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
-import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
-import edu.sandiego.comp305.sp24.schoolSim.model.Student;
+import edu.sandiego.comp305.sp24.schoolSim.model.Room;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,23 +11,23 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StudentTable extends AbstractTable {
-    public List<Student> getAllWithMajor(String major){
-        List<Student> resultList = new ArrayList<>();
+public class RoomTable extends AbstractTable {
+    public List<Room> getAllWithBuildingID(String buildingID){
+        List<Room> resultList = new ArrayList<>();
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
-        String query = "SELECT * FROM Student WHERE major = ?";
+        String query = "SELECT * FROM Room WHERE building = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, major);
+            preparedStatement.setString(1, buildingID);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Student student = new Student(id);
-                resultList.add(student);
+                Room room = new Room(id);
+                resultList.add(room);
             }
 
         } catch (SQLException e){
@@ -39,24 +37,22 @@ public class StudentTable extends AbstractTable {
         return resultList;
     }
 
-    public List<Student> getAllInGrade(Grade grade){
-        List<Student> resultList = new ArrayList<>();
+    public List<Room> getAllWithRoomNumber(String roomNumber){
+        List<Room> resultList = new ArrayList<>();
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
-        String query = "SELECT * FROM Student WHERE grade = ?";
+        String query = "SELECT * FROM Room WHERE room_number = ?";
         try {
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            int gradeValue = grade.ordinal() + 1;
-            String currentGrade = String.valueOf(gradeValue);
-            preparedStatement.setString(1, currentGrade);
+            preparedStatement.setString(1, roomNumber);
             resultSet = preparedStatement.executeQuery();
 
             while (resultSet.next()) {
                 long id = resultSet.getLong("id");
 
-                Student student = new Student(id);
-                resultList.add(student);
+                Room room = new Room(id);
+                resultList.add(room);
             }
 
         } catch (SQLException e){
@@ -68,37 +64,25 @@ public class StudentTable extends AbstractTable {
 
     @Override
     public String getTableName() {
-        return "Student";
+        return "Room";
     }
-
 
     @Override
     public List<String> getColumnNames() {
         List<String> columnNames = new ArrayList<>();
         columnNames.add("ID");
-        columnNames.add("First Name");
-        columnNames.add("Last Name");
-        columnNames.add("Birthdate");
-        columnNames.add("Phone Number");
-        columnNames.add("Username");
-        columnNames.add("Organization Email");
-        columnNames.add("Secondary Email");
-        columnNames.add("Is Active");
-        columnNames.add("Department");
-        columnNames.add("Major");
-        columnNames.add("Grade");
+        columnNames.add("Building");
+        columnNames.add("Room Number");
         return columnNames;
     }
 
     @Override
     public List<DatabaseItem> getAllPaged(int pageNumber) {
-        // Passes student's from id constructor to create Student instances
-        return getPagedResultSet(pageNumber, Student::new);
+        return getPagedResultSet(pageNumber, Room::new);
     }
 
     @Override
     public void deleteFromDatabase(long id) {
         AbstractTable.deleteWithId(id, getTableName());
-        AbstractTable.deleteWithId(id, "Person");
     }
 }

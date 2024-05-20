@@ -46,6 +46,7 @@ class AlumniTest {
     static void beforeAll() {
         Config.initialize(CONFIG_FILENAME);
     }
+
     @Test
     void verifyFirstAlumniValues() {
         Alumni alumni = new Alumni(VALID_ALUMNI_ID);
