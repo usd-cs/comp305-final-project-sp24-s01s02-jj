@@ -19,6 +19,21 @@ running [Debian 12](https://www.debian.org/releases/stable/releasenotes). We cho
 it's quick to get up and running, and can be hosted continuously without incurring fees.
 
 ## Demonstration
+After connecting to the website, the user will be greeted with a statistics dashboard:
+
+![Home Page](./images/home.png)
+
+From there, the user can see data about how many entries are in each database table. If the user clicks on `People`,
+they will be shown:
+
+![Person Page](./images/person.png)
+
+From here, they can view data for each person that has beena added to the database. On the right side of each entry,
+there is an `X` button to delete an entry. In the upper right corner of the webpage, there is an `Add` button to add an entry.
+
+After clicking on this, the user will be shown a form where they can input data about a particular user
+
+![Add Person Page](./images/addperson.png)
 
 
 ## Prerequisites
