@@ -197,20 +197,23 @@ class SchoolSimApplication {
 }
 SchoolSimApplication o-- Config
 
-class AlumniTable implements DatabaseTable {
+abstract class AbstractTable implements DatabaseTable {
+}
+
+class AlumniTable extends AbstractTable {
 
 }
 
-class EmployeeTable implements DatabaseTable {
+class EmployeeTable extends AbstractTable {
 }
 
-class FacultyTable implements DatabaseTable {
+class FacultyTable extends AbstractTable {
 }
 
-class PersonTable implements DatabaseTable {
+class PersonTable extends AbstractTable {
 }
 
-class StudentTable implements DatabaseTable {
+class StudentTable extends AbstractTable {
 }
 
 @enduml
