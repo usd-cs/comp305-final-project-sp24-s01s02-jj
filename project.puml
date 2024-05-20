@@ -1,0 +1,400 @@
+@startuml
+!pragma layout smetana
+'https://plantuml.com/class-diagram
+
+enum DegreeType {
+BACHELOR
+MASTERS
+DOCTORAL
+-int id
++DegreeType(int id)
++int getId()
++{static}DegreeType fromId(int id)
+}
+DegreeType *-- Alumni
+
+enum Grade {
+FRESHMAN
+SOPHOMORE
+JUNIOR
+SENIOR
+GRADUATE
+DOCTORAL
+-int id
++Grade(int id)
++int getId()
++{static}Grade fromId(int id)
+}
+Grade *-- Student
+
+interface DatabaseItem {
++DatabaseTable getParentTable()
++List<String> getStringList()
+}
+
+interface DatabaseTable {
+    +{static}int PAGE_SIZE
+    +String getTableName()
+    +long getCountTableRows()
+    +List<String> getColumnNames()
+}
+
+interface Webform {
++void build()
++String getFormPath()
++String getSuccessRedirect()
++String getUnsuccessfulRedirect()
+}
+
+class Alumni extends Person {
+    -Date graduationDate
+    -DegreeType degreeType
+
+    +Alumni(long id)
+    +Alumni(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date graduationDate, DegreeType degreeType)
+    +Date getGraduationDate()
+    +DegreeType getDegree()
+}
+
+class Building implements DatabaseItem {
+    -long id
+    -String name
+    -String address
+    -int floors
+    -String abbreviation
+
+    +Building(long id)
+    +Building(String name, String address, int floors, String abbreviation)
+    +long getId()
+    +String getName()
+    +String getAddress()
+    +int getFloors()
+    +String getAbbreviation()
+}
+
+class Department implements DatabaseItem {
+    -long id
+    -String name
+
+    +Department(long id)
+    +Department(String name)
+    +long getId()
+    +String getName()
+}
+Department *-- Person
+
+class Employee extends Person {
+    -Optional<Employee> manager
+    -Date startDate
+    -double hourlyWage
+
+    +Employee(long id)
+    +Employee(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date startDate, double hourlyWage, Employee manager)
+    +Optional<Employee> getManager()
+    +Date getStartDate()
+    +double getHourlyWage()
+}
+
+class Faculty extends Employee {
+    -Room officeLocation;
+    -boolean hasTenure;
+
+    +Faculty(long id)
+    +Faculty(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, Date startDate, double hourlyWage, Employee manager, Room officeLocation, boolean hasTenure)
+    +Room getOfficeLocation()
+    +boolean hasTenure()
+}
+
+class Person implements DatabaseItem {
+    - long id
+    - String firstName
+    - String lastName
+    - Date birthdate
+    - String phoneNumber
+    - String username
+    - String organizationEmail
+    - String secondaryEmail
+    - boolean isActive
+    - Department department
+
+    +Person(long id)
+    +Person(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department)
+    +long getId()
+    +String getFirstName()
+    +String getLastName()
+    +Date getBirthdate()
+    +String getPhoneNumber()
+    +String getUsername()
+    +String getOrganizationEmail()
+    +String getSecondaryEmail()
+    +boolean isActive()
+    +Department getDepartment()
+}
+Person *-- Database
+
+class Room implements DatabaseItem {
+     -long id;
+     -Building building;
+     -int roomNumber;
+
+     +Room(long id)
+     +Room(Building building, int roomNumber)
+     +long getId()
+     +Building getBuilding()
+     +int getRoomNumber()
+}
+Room *-- Faculty
+Room *-- Building
+
+class Student extends Person {
+    -String major;
+    -Grade grade;
+
+    +Student(long id)
+    +Student(String firstName, String lastName, Date birthdate, String phoneNumber, String username, String organizationEmail, String secondaryEmail, boolean isActive, Department department, String major, Grade grade)
+    +String getMajor()
+    +Grade getGrade()
+}
+
+class Config {
+    -{static} Config instance
+    -String databaseName
+    -String databaseUsername
+    -String databasePassword
+    -String databaseHost
+
+    ~Config()
+    -Config(String filename)
+    ~{static}InputStream readFromResourceFile(String filename)
+    ~{static}Properties getPropertiesFromInputStream(InputStream inputStream)
+    ~void setInstanceVariables(Properties properties)
+    +{static}Config getInstance()
+    +{static}Config initialize(String filename)
+    +String getDatabaseName()
+    +String getDatabaseUsername()
+    +String getDatabasePassword()
+    +String getDatabaseHost()
+    ~void reset()
+}
+Config *-- Config
+Config *-- Database
+
+class Database {
+ -{static} int NETWORK_TIMEOUT
+ -{static} Database instance
+ -Connection databaseConnection
+
+ -Database()
+ +{static} Database getInstance()
+ -void initializeDatabase()
+ -boolean testHostConnection(String host)
+ +Connection getDatabaseConnection()
+ ~void reset()
+}
+Database *-- Database
+
+
+class SchoolSimApplication {
+  -{static} String CONFIG_FILE
+
+  +{static} void main(String[] args)
+}
+SchoolSimApplication o-- Config
+
+abstract class AbstractTable implements DatabaseTable {
+    #List<DatabaseItem> getPagedResultSet(int pageNumber, Function<? super Long, ? extends DatabaseItem> idConstructor)
+    #{static} void deleteWithId(long id, String tableName)
+    +{abstract} void deleteFromDatabase(long id)
+}
+
+class AlumniTable extends AbstractTable {
+    +List<Alumni> getAllWithDegreeType(DegreeType degreeType)
+    +List<Alumni> getAllWithGraduationDate(String graduationDate)
+}
+Alumni *-- AlumniTable
+DegreeType o-- AlumniTable
+
+class EmployeeTable extends AbstractTable {
+    +List<Employee> getAllWithStartDate(String startDate)
+    +List<Employee> getAllWithHourlyWage(String hourlyWage)
+    +List<Employee> getAllWithMangerID(String managerID)
+}
+Employee *-- EmployeeTable
+
+class FacultyTable extends AbstractTable {
+    +List<Faculty> getAllByOfficeLocation(String officeLocation)
+    +List<Faculty> getAllWithTenure()
+    +List<Faculty> getAllWithNoTenure()
+}
+Faculty *-- FacultyTable
+
+class PersonTable extends AbstractTable {
+    +List<Person> getAllWithFirstName(String firstName)
+    +List<Person> getAllWithLastName(String lastName)
+    +List<Person> getAllWithPhoneNumber(String phoneNumber)
+    +Optional<Person> getByUsername(String username)
+    +Optional<Person> getByOrganizationEmail(String organizationEmail)
+    +Optional<Person> getBySecondaryEmail(String secondaryEmail)
+    +List<Person> getActivePeople()
+    +List<Person> getInactivePeople()
+    +List<DatabaseItem> getAllPaged(int pageNumber)
+}
+Person *-- PersonTable
+
+class StudentTable extends AbstractTable {
+    +List<Student> getAllWithMajor(String major)
+    +List<Student> getAllInGrade(Grade grade)
+}
+Grade o-- StudentTable
+Student *-- StudentTable
+
+class DashboardController {
+    +String renderDashboard(Model model)
+}
+TableVisualizer *-- DashboardController
+DatabaseTable o-- DashboardController
+
+class OrganizationFormController {
+    +void addViewControllers(ViewControllerRegistry registry)
+    ~DatabaseTable getTableFromKey(Optional<String> key)
+    +String form(@RequestParam Optional<String> type, Model model)
+}
+TableVisualizer *-- OrganizationFormController
+
+class PersonFormController {
+    +void addViewControllers(ViewControllerRegistry registry)
+    ~DatabaseTable getTableFromKey(Optional<String> key)
+    ~String getPOSTPathFromKey(Optional<String> key)
+    +String showTable(@RequestParam Optional<String> type, @RequestParam Optional<String> status, Model model)
+    +String showForm(PersonForm personForm)
+    +String showAlumniForm(AlumniForm form)
+    +String showAlumniForm(EmployeeForm form)
+    +String showAlumniForm(FacultyForm form)
+    +String showStudentForm(StudentForm form)
+    +String handleWebForm(WebForm form, BindingResult result)
+    +String addPerson(@Valid PersonForm form, BindingResult result)
+    +String addAlumni(@Valid AlumniForm form, BindingResult result)
+    +String addFaculty(@Valid FacultyForm form, BindingResult result)
+    +String addEmployee(@Valid EmployeeForm form, BindingResult result)
+    +String addStudent(@Valid StudentForm form, BindingResult result)
+}
+TableVisualizer *-- PersonFormController
+PersonForm *-- PersonFormController
+AlumniForm *-- PersonFormController
+EmployeeForm *-- PersonFormController
+FacultyForm *-- PersonFormController
+StudentForm *-- PersonFormController
+Webform o-- PersonFormController
+
+
+class PlacesFormController {
+    +void addViewControllers(ViewControllerRegistry registry)
+    ~DatabaseTable getTableFromKey(Optional<String> key)
+    +String form(@RequestParam Optional<String> type, Model model)
+}
+
+class AlumniForm extends PersonForm {
+    ~Date graduationDate
+    ~DegreeType degree
+
+    +Date getGraduationDate()
+    +void setGraduationDate(Date graduationDate)
+    +DegreeType getDegree()
+    +void setDegree(DegreeType degree)
+}
+Alumni *-- AlumniForm
+DegreeType o-- AlumniForm
+
+class EmployeeForm implements Webform {
+    ~Employee manager
+    ~Date startDate
+    ~double hourlyWage
+
+    +String getManager()
+    +Employee getManagerInstance()
+    +void setManager(String managerUsername)
+    +Date getStartDate()
+    +void setStartDate(Date startDate)
+    +double getHourlyWage()
+    +void setHourlyWage(double hourlyWage)
+
+}
+Employee *-- EmployeeForm
+
+class FacultyForm implements Webform {
+    +String buildingAbbreviation
+    -long buildingID
+    ~int roomNumber
+    ~boolean tenured
+
+    +boolean getTenured()
+    +void setTenured(boolean tenured)
+    +String getBuildingAbbreviation()
+    +void setBuildingAbbreviation(String buildingAbbreviation)
+    +int getRoomNumber()
+    +void setRoomNumber(int roomNumber)
+    +boolean isTenured()
+}
+Faculty *-- FacultyForm
+Room o-- FacultyForm
+Building o-- FacultyForm
+
+class PersonForm implements Webform {
+    ~String firstName
+    ~String lastName
+    ~Date birthDate
+    ~String phoneNumber
+    ~String username
+    ~String organizationEmail
+    ~String secondaryEmail
+    ~boolean active
+    ~Department department
+
+    +String getFirstName()
+    +String getLastName()
+    +Date getBirthDate()
+    +String getPhoneNumber()
+    +String getUsername()
+    +String getOrganizationEmail()
+    +String getSecondaryEmail()
+    +Boolean getActive()
+    +String getDepartment()
+    +Department getDepartmentInstance()
+    +void setDepartment(String departmentName)
+    +void setFirstName(String firstName)
+    +void setLastName(String lastName)
+    +void setBirthDate(Date birthDate)
+    +void setPhoneNumber(String phoneNumber)
+    +void setUsername(String username)
+    +void setOrganizationEmail(String organizationEmail)
+    +void setSecondaryEmail(String secondaryEmail)
+    +void setActive(boolean active)
+}
+Person *-- PersonForm
+Department *-- PersonForm
+
+class StudentForm implements Webform {
+    ~String major
+    ~Grade grade
+
+    +String getMajor()
+    +void setMajor(String major)
+    +Grade getGrade()
+    +void setGrade(Grade grade)
+}
+Student *-- StudentForm
+Grade *-- StudentForm
+
+class TableVisualizer {
+    +{static} String generateTableStatbox(DatabaseTable table)
+    +{static} String generateTableView(DatabaseTable table, List<DatabaseItem> items)
+    +{static} String generateErrorContent(String message)
+    -{static} StringBuilder rowWrap(boolean isHeader, List<String> items)
+    -{static} String getOpenTag(boolean isHeader)
+    -{static} String getCloseTag(String openTag)
+    -{static} void addRowItem(StringBuilder tableRow, String tag, String item)
+}
+TableVisualizer o-- DatabaseItem
+TableVisualizer o-- DatabaseTable
+
+@enduml
