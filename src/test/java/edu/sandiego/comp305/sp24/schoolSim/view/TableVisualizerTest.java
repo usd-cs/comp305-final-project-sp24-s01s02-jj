@@ -20,6 +20,7 @@ class TableVisualizerTest {
         fakeColNames.add("name");
         fakeColNames.add("birthdate");
         when(fakeTable.getColumnNames()).thenReturn(fakeColNames);
+        when(fakeTable.getTableName()).thenReturn("FakeTable");
 
         List<String> fakeRowData1 = new ArrayList<>();
         fakeRowData1.add("1");
