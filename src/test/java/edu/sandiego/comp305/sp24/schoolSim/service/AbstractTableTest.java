@@ -117,14 +117,14 @@ public class AbstractTableTest {
     void deleteWithIdSuccess() {
         DummyTable dummyTable = new DummyTable();
         Person person = new Person(
-          "fakename",
-          "fakelast",
-          new Date(2020, 5, 4),
-      "85958435",
-          "fakestuser",
-      "fakeuser@sandiego.edu",
-      "fake@gmail.com",
-            true,
+                "fakename",
+                "fakelast",
+                new Date(2020, 5, 4),
+                "85958435",
+                "fakestuser",
+                "fakeuser@sandiego.edu",
+                "fake@gmail.com",
+                true,
                 new Department(1)
         );
         DummyTable.deleteWithId(person.getId(), dummyTable.getTableName());
