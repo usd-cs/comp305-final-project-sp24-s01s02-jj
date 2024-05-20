@@ -11,6 +11,7 @@ DOCTORAL
 +int getId()
 +{static}DegreeType fromId(int id)
 }
+DegreeType *-- Alumni
 
 enum Grade {
 FRESHMAN
@@ -24,6 +25,7 @@ DOCTORAL
 +int getId()
 +{static}Grade fromId(int id)
 }
+Grade *-- Student
 
 interface DatabaseItem {
 +DatabaseTable getParentTable()
@@ -35,6 +37,9 @@ interface DatabaseTable {
     +String getTableName()
     +long getCountTableRows()
     +List<String> getColumnNames()
+}
+
+interface Webform {
 }
 
 class Alumni extends Person {
@@ -72,6 +77,7 @@ class Department implements DatabaseItem {
     +long getId()
     +String getName()
 }
+Department *-- Person
 
 class Employee extends Person {
     -Optional<Employee> manager
@@ -120,6 +126,7 @@ class Person implements DatabaseItem {
     +boolean isActive()
     +Department getDepartment()
 }
+Person *-- Database
 
 class Room implements DatabaseItem {
      -long id;
@@ -132,6 +139,8 @@ class Room implements DatabaseItem {
      +Building getBuilding()
      +int getRoomNumber()
 }
+Room *-- Faculty
+Room *-- Building
 
 class Student extends Person {
     -String major;
@@ -163,6 +172,8 @@ class Config {
     +String getDatabaseHost()
     ~void reset()
 }
+Config *-- Config
+Config *-- Database
 
 class Database {
  -{static} int NETWORK_TIMEOUT
@@ -176,17 +187,7 @@ class Database {
  +Connection getDatabaseConnection()
  ~void reset()
 }
-
-Config *-- Config
 Database *-- Database
-
-Config *-- Database
-DegreeType *-- Alumni
-Grade *-- Student
-Department *-- Person
-Room *-- Faculty
-Room *-- Building
-Person *-- Database
 
 
 class SchoolSimApplication {
@@ -205,20 +206,23 @@ abstract class AbstractTable implements DatabaseTable {
 class AlumniTable extends AbstractTable {
     +List<Alumni> getAllWithDegreeType(DegreeType degreeType)
     +List<Alumni> getAllWithGraduationDate(String graduationDate)
-
 }
+Alumni *-- AlumniTable
+DegreeType o-- AlumniTable
 
 class EmployeeTable extends AbstractTable {
     +List<Employee> getAllWithStartDate(String startDate)
     +List<Employee> getAllWithHourlyWage(String hourlyWage)
     +List<Employee> getAllWithMangerID(String managerID)
 }
+Employee *-- EmployeeTable
 
 class FacultyTable extends AbstractTable {
     +List<Faculty> getAllByOfficeLocation(String officeLocation)
     +List<Faculty> getAllWithTenure()
     +List<Faculty> getAllWithNoTenure()
 }
+Faculty *-- FacultyTable
 
 class PersonTable extends AbstractTable {
     +List<Person> getAllWithFirstName(String firstName)
@@ -231,8 +235,40 @@ class PersonTable extends AbstractTable {
     +List<Person> getInactivePeople()
     +List<DatabaseItem> getAllPaged(int pageNumber)
 }
+Person *-- PersonTable
 
 class StudentTable extends AbstractTable {
+    +List<Student> getAllWithMajor(String major)
+    +List<Student> getAllInGrade(Grade grade)
+}
+Grade o-- StudentTable
+Student *-- StudentTable
+
+class DashboardController {
+    +String renderDashboard(Model model)
+}
+
+class OrganizationFormController {
+    +void addViewControllers(ViewControllerRegistry registry)
+    ~DatabaseTable getTableFromKey(Optional<String> key)
+    +String form(@RequestParam Optional<String> type, Model model)
+}
+
+class PersonFormController {
+}
+
+class PlacesFormController {
+}
+
+class AlumniForm implements Webform {
+}
+Alumni *-- AlumniForm
+
+class PersonForm implements Webform {
+}
+Person *-- PersonForm
+
+class TableVisualizer {
 }
 
 @enduml
