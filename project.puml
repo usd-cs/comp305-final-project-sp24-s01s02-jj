@@ -40,6 +40,10 @@ interface DatabaseTable {
 }
 
 interface Webform {
++void build()
++String getFormPath()
++String getSuccessRedirect()
++String getUnsuccessfulRedirect()
 }
 
 class Alumni extends Person {
@@ -247,28 +251,150 @@ Student *-- StudentTable
 class DashboardController {
     +String renderDashboard(Model model)
 }
+TableVisualizer *-- DashboardController
+DatabaseTable o-- DashboardController
 
 class OrganizationFormController {
     +void addViewControllers(ViewControllerRegistry registry)
     ~DatabaseTable getTableFromKey(Optional<String> key)
     +String form(@RequestParam Optional<String> type, Model model)
 }
+TableVisualizer *-- OrganizationFormController
 
 class PersonFormController {
+    +void addViewControllers(ViewControllerRegistry registry)
+    ~DatabaseTable getTableFromKey(Optional<String> key)
+    ~String getPOSTPathFromKey(Optional<String> key)
+    +String showTable(@RequestParam Optional<String> type, @RequestParam Optional<String> status, Model model)
+    +String showForm(PersonForm personForm)
+    +String showAlumniForm(AlumniForm form)
+    +String showAlumniForm(EmployeeForm form)
+    +String showAlumniForm(FacultyForm form)
+    +String showStudentForm(StudentForm form)
+    +String handleWebForm(WebForm form, BindingResult result)
+    +String addPerson(@Valid PersonForm form, BindingResult result)
+    +String addAlumni(@Valid AlumniForm form, BindingResult result)
+    +String addFaculty(@Valid FacultyForm form, BindingResult result)
+    +String addEmployee(@Valid EmployeeForm form, BindingResult result)
+    +String addStudent(@Valid StudentForm form, BindingResult result)
 }
+TableVisualizer *-- PersonFormController
+PersonForm *-- PersonFormController
+AlumniForm *-- PersonFormController
+EmployeeForm *-- PersonFormController
+FacultyForm *-- PersonFormController
+StudentForm *-- PersonFormController
+Webform o-- PersonFormController
+
 
 class PlacesFormController {
+    +void addViewControllers(ViewControllerRegistry registry)
+    ~DatabaseTable getTableFromKey(Optional<String> key)
+    +String form(@RequestParam Optional<String> type, Model model)
 }
 
-class AlumniForm implements Webform {
+class AlumniForm extends PersonForm {
+    ~Date graduationDate
+    ~DegreeType degree
+
+    +Date getGraduationDate()
+    +void setGraduationDate(Date graduationDate)
+    +DegreeType getDegree()
+    +void setDegree(DegreeType degree)
 }
 Alumni *-- AlumniForm
+DegreeType o-- AlumniForm
+
+class EmployeeForm implements Webform {
+    ~Employee manager
+    ~Date startDate
+    ~double hourlyWage
+
+    +String getManager()
+    +Employee getManagerInstance()
+    +void setManager(String managerUsername)
+    +Date getStartDate()
+    +void setStartDate(Date startDate)
+    +double getHourlyWage()
+    +void setHourlyWage(double hourlyWage)
+
+}
+Employee *-- EmployeeForm
+
+class FacultyForm implements Webform {
+    +String buildingAbbreviation
+    -long buildingID
+    ~int roomNumber
+    ~boolean tenured
+
+    +boolean getTenured()
+    +void setTenured(boolean tenured)
+    +String getBuildingAbbreviation()
+    +void setBuildingAbbreviation(String buildingAbbreviation)
+    +int getRoomNumber()
+    +void setRoomNumber(int roomNumber)
+    +boolean isTenured()
+}
+Faculty *-- FacultyForm
+Room o-- FacultyForm
+Building o-- FacultyForm
 
 class PersonForm implements Webform {
+    ~String firstName
+    ~String lastName
+    ~Date birthDate
+    ~String phoneNumber
+    ~String username
+    ~String organizationEmail
+    ~String secondaryEmail
+    ~boolean active
+    ~Department department
+
+    +String getFirstName()
+    +String getLastName()
+    +Date getBirthDate()
+    +String getPhoneNumber()
+    +String getUsername()
+    +String getOrganizationEmail()
+    +String getSecondaryEmail()
+    +Boolean getActive()
+    +String getDepartment()
+    +Department getDepartmentInstance()
+    +void setDepartment(String departmentName)
+    +void setFirstName(String firstName)
+    +void setLastName(String lastName)
+    +void setBirthDate(Date birthDate)
+    +void setPhoneNumber(String phoneNumber)
+    +void setUsername(String username)
+    +void setOrganizationEmail(String organizationEmail)
+    +void setSecondaryEmail(String secondaryEmail)
+    +void setActive(boolean active)
 }
 Person *-- PersonForm
+Department *-- PersonForm
+
+class StudentForm implements Webform {
+    ~String major
+    ~Grade grade
+
+    +String getMajor()
+    +void setMajor(String major)
+    +Grade getGrade()
+    +void setGrade(Grade grade)
+}
+Student *-- StudentForm
+Grade *-- StudentForm
 
 class TableVisualizer {
+    +{static} String generateTableStatbox(DatabaseTable table)
+    +{static} String generateTableView(DatabaseTable table, List<DatabaseItem> items)
+    +{static} String generateErrorContent(String message)
+    -{static} StringBuilder rowWrap(boolean isHeader, List<String> items)
+    -{static} String getOpenTag(boolean isHeader)
+    -{static} String getCloseTag(String openTag)
+    -{static} void addRowItem(StringBuilder tableRow, String tag, String item)
 }
+TableVisualizer o-- DatabaseItem
+TableVisualizer o-- DatabaseTable
 
 @enduml
