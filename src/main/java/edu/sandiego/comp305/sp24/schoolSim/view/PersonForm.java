@@ -20,7 +20,6 @@ public class PersonForm implements WebForm{
     String lastName;
     @Past
     @NotNull
-    @NotBlank
     Date birthDate;
     @NotNull
     @NotBlank
@@ -37,7 +36,6 @@ public class PersonForm implements WebForm{
     String secondaryEmail;
     boolean active;
     @NotNull
-    @NotBlank
     Department department;
 
     @Override

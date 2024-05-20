@@ -3,6 +3,7 @@ package edu.sandiego.comp305.sp24.schoolSim.view;
 import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
 import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Past;
 
@@ -11,11 +12,9 @@ import java.sql.Date;
 public class AlumniForm extends PersonForm {
     @Past
     @NotNull
-    @NotBlank
     Date graduationDate;
 
     @NotNull
-    @NotBlank
     DegreeType degree;
 
 
