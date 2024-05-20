@@ -1,10 +1,15 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
+import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
+import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
+import edu.sandiego.comp305.sp24.schoolSim.model.Building;
+import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import edu.sandiego.comp305.sp24.schoolSim.model.Room;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,5 +79,30 @@ class RoomTableTest {
         assertEquals(resultsList.size(),twoRoomList.size());
         assertEquals(resultsList.get(0).getId(),twoRoomList.get(0).getId());
         assertEquals(resultsList.get(1).getId(),twoRoomList.get(1).getId());
+    }
+
+    @Test
+    void deleteFromDatabaseExists() {
+        RoomTable roomTable = new RoomTable();
+
+        Room room = new Room(
+                new Building(1),
+                100
+        );
+
+        roomTable.deleteFromDatabase(room.getId());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Room room1 = new Room(room.getId());
+        });
+    }
+
+    @Test
+    void deleteFromDatabaseDoesntExist() {
+        RoomTable roomTable = new RoomTable();
+
+        assertThrows(IllegalStateException.class, () -> {
+            roomTable.deleteFromDatabase(-1);
+        });
     }
 }

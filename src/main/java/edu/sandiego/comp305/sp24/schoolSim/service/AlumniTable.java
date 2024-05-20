@@ -84,8 +84,8 @@ public class AlumniTable extends AbstractTable {
         columnNames.add("Secondary Email");
         columnNames.add("Is Active");
         columnNames.add("Department");
-        columnNames.add("Degree Type");
         columnNames.add("Graduation Date");
+        columnNames.add("Degree Type");
         return columnNames;
     }
 
@@ -93,5 +93,11 @@ public class AlumniTable extends AbstractTable {
     public List<DatabaseItem> getAllPaged(int pageNumber) {
         // Passes alumni's from id constructor to be used to create the objects.
         return getPagedResultSet(pageNumber, Alumni::new);
+    }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+        AbstractTable.deleteWithId(id, "Person");
     }
 }

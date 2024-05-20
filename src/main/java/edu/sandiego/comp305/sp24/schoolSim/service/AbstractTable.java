@@ -5,10 +5,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
@@ -73,4 +70,22 @@ public abstract class AbstractTable implements DatabaseTable {
         }
         return items;
     }
+
+    protected static void deleteWithId(long id, String tableName) {
+        try {
+            String sql = "DELETE FROM " + tableName + " WHERE `id` = ?";
+
+            PreparedStatement preparedStatement = Database.getInstance().getDatabaseConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setLong(1, id);
+
+            int affectedRows = preparedStatement.executeUpdate();
+            if (affectedRows == 0) {
+                throw new SQLException("Table entry not deleted");
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("Table entry not deleted: " + e.getMessage());
+        }
+    }
+
+    public abstract void deleteFromDatabase(long id);
 }

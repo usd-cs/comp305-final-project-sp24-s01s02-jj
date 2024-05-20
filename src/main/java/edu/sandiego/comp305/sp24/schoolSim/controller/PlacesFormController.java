@@ -4,6 +4,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.Building;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.service.*;
+import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,12 +39,26 @@ class PlacesFormController implements WebMvcConfigurer {
         return table;
     }
 
+    String getPOSTPathFromKey(Optional<String> key) {
+        String tableKey = "building";
+        if (key.isPresent()) {
+            tableKey = key.get();
+        }
+        String path = "/places/building";
+        if (tableKey.equals("room")) {
+            path = "/places/room";
+        } else {
+            path = "/places/building";
+        }
+        return path;
+    }
     @GetMapping("/places")
     public String form(@RequestParam Optional<String> type, Model model) {
         DatabaseTable table = getTableFromKey(type);
         List<DatabaseItem> items = table.getAllPaged(0);
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, items));
         model.addAttribute("tableName", table.getTableName());
+        model.addAttribute("formLink", getPOSTPathFromKey(type));
         return "table";
     }
 }

@@ -6,6 +6,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import edu.sandiego.comp305.sp24.schoolSim.service.DepartmentTable;
 import edu.sandiego.comp305.sp24.schoolSim.service.RoomTable;
+import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,12 +36,23 @@ class OrganizationFormController implements WebMvcConfigurer {
         return new DepartmentTable();
     }
 
+    String getPostPath(Optional<String> key) {
+        String path = "/groups/department";
+        String type;
+        if (key.isPresent()) {
+            type = key.get();
+        }
+        // If more orgs, expand to switch
+        return path;
+    }
+
     @GetMapping("/groups")
     public String form(@RequestParam Optional<String> type, Model model) {
         DatabaseTable table = getTableFromKey(type);
         List<DatabaseItem> items = table.getAllPaged(0);
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, items));
         model.addAttribute("tableName", table.getTableName());
+        model.addAttribute("formLink", getPostPath(type));
         return "table";
     }
 }

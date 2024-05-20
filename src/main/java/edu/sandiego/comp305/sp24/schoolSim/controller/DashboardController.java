@@ -1,8 +1,8 @@
 package edu.sandiego.comp305.sp24.schoolSim.controller;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
-import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
+import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
