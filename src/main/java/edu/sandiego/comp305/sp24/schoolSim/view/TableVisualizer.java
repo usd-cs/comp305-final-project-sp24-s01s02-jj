@@ -20,11 +20,12 @@ public class TableVisualizer {
 
     public static String generateTableView(DatabaseTable table, List<DatabaseItem> items) {
         List<String> headers = table.getColumnNames();
+        headers.add("Delete");
         StringBuilder tableHTML = new StringBuilder("<table class=\"table is-fullwidth is-striped\"><thead>");
-        tableHTML.append(TableVisualizer.rowWrap(true, headers));
+        tableHTML.append(TableVisualizer.rowWrap(true, headers, table.getTableName()));
         tableHTML.append("</thead><tbody>");
         for (DatabaseItem item : items) {
-            tableHTML.append(TableVisualizer.rowWrap(false,item.getStringList()));
+            tableHTML.append(TableVisualizer.rowWrap(false,item.getStringList(), table.getTableName()));
         }
         tableHTML.append("</tbody></table>");
         return tableHTML.toString();
@@ -37,7 +38,22 @@ public class TableVisualizer {
         return builder.toString();
     }
 
-    private static StringBuilder rowWrap(boolean isHeader, List<String> items) {
+    private static String generateDeletionPath(String tableName, String id) {
+        String prefix = switch (tableName) {
+            case "Person", "Student", "Employee", "Faculty", "Alumni" -> "/person/";
+            case "Department" -> "/department/";
+            case "Room" -> "/room/";
+            case "Building" -> "/building/";
+            default -> "#";
+        };
+        if (prefix.equals("#")) {
+            return prefix;
+        } else {
+            return prefix+id;
+        }
+    }
+
+    private static StringBuilder rowWrap(boolean isHeader, List<String> items, String tableName) {
         StringBuilder tableRow = new StringBuilder("<tr>");
         // First item will always be row header
         // .getFirst() introduced JDK21. Removed for compatibility :(
@@ -46,6 +62,13 @@ public class TableVisualizer {
         String openTag = TableVisualizer.getOpenTag(isHeader);
         for (int i = 1; i < items.size(); i++) {
             TableVisualizer.addRowItem(tableRow, openTag, items.get(i));
+        }
+        if (!isHeader) {
+            tableRow.append(openTag);
+            tableRow.append("<a href=\"");
+            tableRow.append(TableVisualizer.generateDeletionPath(tableName, items.get(0)));
+            tableRow.append("\" class=\"button is-small is-danger is-rounded\">x</a>");
+            tableRow.append(getCloseTag(openTag));
         }
         tableRow.append("</tr>");
         return tableRow;

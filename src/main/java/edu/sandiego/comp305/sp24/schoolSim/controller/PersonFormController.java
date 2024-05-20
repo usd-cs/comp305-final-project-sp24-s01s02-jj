@@ -1,8 +1,6 @@
 package edu.sandiego.comp305.sp24.schoolSim.controller;
 
-import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
-import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
-import edu.sandiego.comp305.sp24.schoolSim.model.Person;
+import edu.sandiego.comp305.sp24.schoolSim.model.*;
 import edu.sandiego.comp305.sp24.schoolSim.service.*;
 import edu.sandiego.comp305.sp24.schoolSim.view.*;
 import jakarta.validation.Valid;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
@@ -74,6 +73,51 @@ class PersonFormController implements WebMvcConfigurer {
         model.addAttribute("tableName", table.getTableName());
         model.addAttribute("formLink", getPOSTPathFromKey(type));
         return "table";
+    }
+
+    @GetMapping("/person/{id}")
+    public String deletePerson(@PathVariable int id) {
+        try {
+            new Faculty(id);
+            FacultyTable table = new FacultyTable();
+            table.deleteFromDatabase(id);
+            return "redirect:/person?type=faculty";
+        } catch (IllegalArgumentException e) {
+            // Pass
+        }
+        try {
+            new Employee(id);
+            EmployeeTable table = new EmployeeTable();
+            table.deleteFromDatabase(id);
+            return "redirect:/person?type=employee";
+        } catch (IllegalArgumentException e) {
+            // Ignore
+        }
+        try {
+            new Student(id);
+            StudentTable table = new StudentTable();
+            table.deleteFromDatabase(id);
+            return "redirect:/person?type=student";
+        } catch (IllegalArgumentException e) {
+            // Ignore
+        }
+        try {
+            new Alumni(id);
+            AlumniTable table = new AlumniTable();
+            table.deleteFromDatabase(id);
+            return "redirect:/person?type=alumni";
+        } catch (IllegalArgumentException e) {
+            // Ignore
+        }
+        try {
+            new Person(id);
+            PersonTable table = new PersonTable();
+            table.deleteFromDatabase(id);
+            return "redirect:/person";
+        } catch (IllegalArgumentException e) {
+            //pass
+        }
+        return "redirect:/person?status=error";
     }
 
     @GetMapping("/person/person")
