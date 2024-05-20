@@ -34,7 +34,7 @@ public class TableVisualizer {
         StringBuilder tableRow = new StringBuilder("<tr>");
         // First item will always be row header
         // .getFirst() introduced JDK21. Removed for compatibility :(
-        TableVisualizer.addRowItem(tableRow, "<th>", items.get(0));
+        TableVisualizer.addRowItem(tableRow, "<th class=\"is-size-7 is-size-6-fullhd\">", items.get(0));
         // All other items
         String openTag = TableVisualizer.getOpenTag(isHeader);
         for (int i = 1; i < items.size(); i++) {
@@ -45,7 +45,7 @@ public class TableVisualizer {
     }
 
     private static String getOpenTag(boolean isHeader){
-        return isHeader ? "<th>" : "<td>";
+        return isHeader ? "<th class=\"is-size-7 is-size-6-fullhd\">" : "<td class=\"is-size-7 is-size-6-fullhd\">";
     }
 
     private static String getCloseTag(String openTag){
