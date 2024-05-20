@@ -24,7 +24,7 @@ public class StudentForm extends PersonForm {
                 getPhoneNumber(),
                 getUsername(),
                 getOrganizationEmail(),
-                getOrganizationEmail(),
+                getSecondaryEmail(),
                 getActive(),
                 getDepartmentInstance(),
                 getMajor(),
