@@ -84,8 +84,8 @@ public class AlumniTable extends AbstractTable {
         columnNames.add("Secondary Email");
         columnNames.add("Is Active");
         columnNames.add("Department");
-        columnNames.add("Degree Type");
         columnNames.add("Graduation Date");
+        columnNames.add("Degree Type");
         return columnNames;
     }
 

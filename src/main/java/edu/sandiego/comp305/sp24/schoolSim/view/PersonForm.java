@@ -13,24 +13,24 @@ import java.sql.*;
 public class PersonForm {
 
     @NotNull
-    private String firstName;
+    String firstName;
     @NotNull
-    private String lastName;
+    String lastName;
     @Past
     @NotNull
-    private Date birthDate;
+    Date birthDate;
     @NotNull
-    private String phoneNumber;
+    String phoneNumber;
     @NotNull
-    private String username;
+    String username;
     @NotNull
     @Email
-    private String organizationEmail;
+    String organizationEmail;
     @Email
-    private String secondaryEmail;
-    private boolean active;
+    String secondaryEmail;
+    boolean active;
     @NotNull
-    private Department department;
+    Department department;
 
     public void build() {
         new Person(getFirstName(),

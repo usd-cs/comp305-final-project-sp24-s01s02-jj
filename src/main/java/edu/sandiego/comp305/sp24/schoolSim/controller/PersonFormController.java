@@ -4,6 +4,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import edu.sandiego.comp305.sp24.schoolSim.service.*;
+import edu.sandiego.comp305.sp24.schoolSim.view.AlumniForm;
 import edu.sandiego.comp305.sp24.schoolSim.view.PersonForm;
 import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import jakarta.validation.Valid;
@@ -76,12 +77,23 @@ class PersonFormController implements WebMvcConfigurer {
     }
 
     @PostMapping("/person")
-    //TODO: Check if this is possible since person is abstract
     public String addPerson(@Valid PersonForm personForm, BindingResult result) {
         if (result.hasErrors()) {
             return "personForm";
         }
         personForm.build();
         return "redirect:/person";
+    }
+
+    @GetMapping("/person/alumni")
+    public String showAlumniForm(AlumniForm form) { return "alumniForm"; }
+
+    @PostMapping("/alumni")
+    public String addAlumni(@Valid AlumniForm form, BindingResult result) {
+        if (result.hasErrors()) {
+            return "alumniForm";
+        }
+        form.build();
+        return "redirect:/person?type=alumni";
     }
 }
