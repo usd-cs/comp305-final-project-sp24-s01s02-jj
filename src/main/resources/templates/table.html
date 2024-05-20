@@ -91,15 +91,17 @@
                     <p class="modal-card-title" th:text="'New '+${tableName}">New Item</p>
                     <button class="delete" aria-label="close"></button>
                 </header>
-                <section class="modal-card-body">
+                <form action="#" th:action="${path}" th:object="${formObject}" method="post">
+                    <section class="modal-card-body">
 
-                </section>
-                <footer class="modal-card-foot">
+                    </section>
+                    <footer class="modal-card-foot">
                     <div class="buttons">
-                        <button class="button is-success">Save changes</button>
+                        <button class="button is-success">Submit</button>
                         <button class="button">Cancel</button>
                     </div>
                 </footer>
+                </form>
             </div>
         </div>
     </body>
