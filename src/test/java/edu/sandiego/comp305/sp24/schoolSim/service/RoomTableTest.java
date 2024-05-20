@@ -1,15 +1,11 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
-import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
-import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
 import edu.sandiego.comp305.sp24.schoolSim.model.Building;
-import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import edu.sandiego.comp305.sp24.schoolSim.model.Room;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -85,19 +81,19 @@ class RoomTableTest {
     @Test
     void getByBuildingAndRoomNumNoResultNoBuilding() {
         RoomTable table = new RoomTable();
-        assertEquals(Optional.empty(),table.getWitBuildingIDAndRoomNumber(-1, 102));
+        assertEquals(Optional.empty(),table.getWithBuildingIDAndRoomNumber(-1, 102));
     }
 
     @Test
     void getByBuildingAndRoomNumNoResultNoRoom() {
         RoomTable table = new RoomTable();
-        assertEquals(Optional.empty(),table.getWitBuildingIDAndRoomNumber(1, -1));
+        assertEquals(Optional.empty(),table.getWithBuildingIDAndRoomNumber(1, -1));
     }
 
     @Test
     void getByBuildingAndRoomNumResult() {
         RoomTable table = new RoomTable();
-        long actualID = table.getWitBuildingIDAndRoomNumber(1, 102).get().getId();
+        long actualID = table.getWithBuildingIDAndRoomNumber(1, 102).get().getId();
         long expectedID = 1;
         assertEquals(expectedID, actualID);
     }

@@ -1,7 +1,6 @@
 package edu.sandiego.comp305.sp24.schoolSim.view;
 
 import edu.sandiego.comp305.sp24.schoolSim.model.Building;
-import edu.sandiego.comp305.sp24.schoolSim.model.Employee;
 import edu.sandiego.comp305.sp24.schoolSim.model.Faculty;
 import edu.sandiego.comp305.sp24.schoolSim.model.Room;
 import edu.sandiego.comp305.sp24.schoolSim.service.BuildingTable;
@@ -30,7 +29,7 @@ public class FacultyForm extends EmployeeForm{
 
     @Override
     public void build() {
-        Room office = new RoomTable().getWitBuildingIDAndRoomNumber(buildingID, getRoomNumber()).orElseThrow();
+        Room office = new RoomTable().getWithBuildingIDAndRoomNumber(buildingID, getRoomNumber()).orElseThrow();
         new Faculty(getFirstName(),
                 getLastName(),
                 getBirthDate(),

@@ -38,7 +38,7 @@ public class RoomTable extends AbstractTable {
         return resultList;
     }
 
-    public Optional<Room> getWitBuildingIDAndRoomNumber(long buildingID,int roomNumber) {
+    public Optional<Room> getWithBuildingIDAndRoomNumber(long buildingID, int roomNumber) {
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
 
