@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en_US">
+    <head>
+        <title>School Simulator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
+    </head>
+    <body>
+        <!-- TODO: Inject this entire nav section -->
+        <nav class="navbar mb-4 px-3" role="navigation" aria-label="main-navigation">
+            <div class="navbar-brand">
+                <a href="/" class="navbar-item">School Simulator</a>
+                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+                    <!-- TODO: Template in these fields -->
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+            <div class="navbar-menu" id="formNavBar">
+                <div class="navbar-start">
+                    <!-- TODO: Template in these fields -->
+                    <a href="/" class="navbar-item">Dashboard</a>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a class="navbar-link">People</a>
+                        <div class="navbar-dropdown">
+                            <a href="/person" class="navbar-item">Everyone</a>
+                            <hr class="navbar-divider">
+                            <a href="/person?type=student" class="navbar-item">Students</a>
+                            <a href="/person?type=alumni" class="navbar-item">Alumni</a>
+                            <a href="/person?type=employee" class="navbar-item">Employees</a>
+                            <a href="/person?type=faculty" class="navbar-item">Faculty</a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a href="/places" class="navbar-link">Places</a>
+                        <div class="navbar-dropdown">
+                            <a href="/places?type=building" class="navbar-item">Buildings</a>
+                            <a href="/places?type=room" class="navbar-item">Rooms</a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <a href="/groups" class="navbar-link">Groups</a>
+                        <div class="navbar-dropdown">
+                            <a href="/groups?type=department" class="navbar-item">Departments</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="navbar-end">
+                    <a href="https://github.com/usd-cs/comp305-final-project-sp24-s01s02-jj" class="navbar-item" target="_blank">About</a>
+                </div>
+            </div>
+        </nav>
+        <!-- Use hero to pin footer to bottom of page -->
+        <div class="hero is-fullheight">
+            <div class="container is-fluid">
+                <nav class="level mx-3">
+                    <!-- Left side -->
+                    <div class="level-left">
+                        <div class="level-item">
+                            <h3 class="title is-3" th:text="${tableName}">Content Name</h3>
+                        </div>
+                    </div>
+
+                    <!-- Right side -->
+                </nav>
+                <div class="box mx-3">
+
+                    <!--/*@thymesVar id="studentForm" type="edu.sandiego.comp305.sp24.schoolSim.view.StudentForm"*/-->
+                    <form action="#" th:action="@{/student}" th:object="${studentForm}" method="post">
+                        <div class="field">
+                            <label class="label">First Name</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Diego" th:field="*{firstName}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">First Name Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Last Name</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Torero" th:field="*{lastName}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Last Name Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Birth Date</label>
+                            <div class="control">
+                                <input class="input" type="date" placeholder="01-01-1900" th:field="*{birthDate}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}">Birthdate Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Phone Number</label>
+                            <div class="control">
+                                <input class="input" type="tel" placeholder="123-456-7890" th:field="*{phoneNumber}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Phone Number Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Username</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="dtorero" th:field="*{username}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Organization Email</label>
+                            <div class="control">
+                                <input class="input" type="email" placeholder="dtorero@schoolsim.dev" th:field="*{organizationEmail}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('organizationEmail')}" th:errors="*{organizationEmail}">Organization Email Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Secondary Email</label>
+                            <div class="control">
+                                <input class="input" type="email" placeholder="dtorero@personal.tv" th:field="*{secondaryEmail}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('secondaryEmail')}" th:errors="*{secondaryEmail}">Secondary Email Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Active</label>
+                            <div class="control">
+                                <label class="radio">
+                                    <input type="radio" name="active" th:field="*{active}" th:value="true">
+                                    Yes
+                                </label>
+                                <label class="radio">
+                                    <input type="radio" name="active" th:field="*{active}" th:value="false">
+                                    No
+                                </label>
+                                <p class="help is-danger" th:if="${#fields.hasErrors('active')}" th:errors="*{active}">Activity Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Department</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Computer Science" th:field="*{department}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('department')}" th:errors="*{department}">Department Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Major</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Computer Science :)" th:field="*{major}">
+                                <p class="help is-danger" th:if="${#fields.hasErrors('major')}" th:errors="*{major}">Graduation Date Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <label class="label">Grade Level</label>
+                            <div class="control" th:each="gradeValue : ${T(edu.sandiego.comp305.sp24.schoolSim.enums.Grade).values()}">
+                                <input type="radio" name="active" th:field="*{grade}" th:value="${gradeValue}">
+                                <label class="radio" th:text="${gradeValue}">Degree</label>
+                                <p class="help is-danger" th:if="${#fields.hasErrors('grade')}" th:errors="*{grade}">Degree Level Error</p>
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <button class="button is-link">Submit</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <footer class="footer mt-auto">
+                <div class="content has-text-centered">
+                    <p>
+                    School Simulator by Andrew Albizati, Noah Huang, John Phillips
+                    </p>
+                </div>
+            </footer>
+        </div>
+    </body>
+</html>
