@@ -1,11 +1,15 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
+import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
+import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
+import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import edu.sandiego.comp305.sp24.schoolSim.model.Employee;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -104,5 +108,40 @@ class EmployeeTableTest {
         assertEquals(twoPersonList.get(0).getId(),returnedList.get(0).getId());
         assertEquals(twoPersonList.get(1).getId(),returnedList.get(1).getId());
         assertEquals(twoPersonList.get(2).getId(),returnedList.get(2).getId());
+    }
+
+    @Test
+    void deleteFromDatabaseExists() {
+        EmployeeTable employeeTable = new EmployeeTable();
+
+        Employee employee = new Employee(
+                "Fake Name",
+                "Fake Last",
+                new Date(2020, 5, 6),
+                "8580009999",
+                "completelyuniqueemployee",
+                "uniquieemployeeemails@org.com",
+                "uniquieemployeeemails@gmail.com",
+                true,
+                new Department(1),
+                new Date(2024, 8, 9),
+                16.75,
+                null
+        );
+
+        employeeTable.deleteFromDatabase(employee.getId());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Employee employee1 = new Employee(employee.getId());
+        });
+    }
+
+    @Test
+    void deleteFromDatabaseDoesntExist() {
+        EmployeeTable employeeTable = new EmployeeTable();
+
+        assertThrows(IllegalStateException.class, () -> {
+            employeeTable.deleteFromDatabase(-1);
+        });
     }
 }

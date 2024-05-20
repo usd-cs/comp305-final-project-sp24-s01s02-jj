@@ -120,4 +120,11 @@ public class FacultyTable extends AbstractTable {
         // Passes faculty's from id constructor to be used to create the objects.
         return getPagedResultSet(pageNumber, Faculty::new);
     }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+        AbstractTable.deleteWithId(id, "Employee");
+        AbstractTable.deleteWithId(id, "Person");
+    }
 }

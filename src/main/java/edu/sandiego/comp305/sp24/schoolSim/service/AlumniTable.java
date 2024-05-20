@@ -94,4 +94,10 @@ public class AlumniTable extends AbstractTable {
         // Passes alumni's from id constructor to be used to create the objects.
         return getPagedResultSet(pageNumber, Alumni::new);
     }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+        AbstractTable.deleteWithId(id, "Person");
+    }
 }

@@ -1,9 +1,14 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
+import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
+import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
+import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -191,5 +196,35 @@ class PersonTableTest {
         assertEquals(singlePersonList.size(),returnedList.size());
     }
 
+    @Test
+    void deleteFromDatabaseExists() {
+        PersonTable personTable = new PersonTable();
 
+        Person person = new Person(
+                "Fake Name",
+                "Fake Last",
+                new Date(2020, 5, 6),
+                "8580009999",
+                "completelyuniqueuser",
+                "uniquieemails@org.com",
+                "uniquieemails@gmail.com",
+                true,
+                new Department(1)
+        );
+
+        personTable.deleteFromDatabase(person.getId());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Person person1 = new Alumni(person.getId());
+        });
+    }
+
+    @Test
+    void deleteFromDatabaseDoesntExist() {
+        PersonTable personTable = new PersonTable();
+
+        assertThrows(IllegalStateException.class, () -> {
+            personTable.deleteFromDatabase(-1);
+        });
+    }
 }

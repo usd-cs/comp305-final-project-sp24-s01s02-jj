@@ -80,4 +80,9 @@ public class RoomTable extends AbstractTable {
     public List<DatabaseItem> getAllPaged(int pageNumber) {
         return getPagedResultSet(pageNumber, Room::new);
     }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+    }
 }

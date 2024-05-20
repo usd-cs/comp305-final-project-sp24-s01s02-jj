@@ -53,4 +53,9 @@ public class DepartmentTable extends AbstractTable {
     public List<DatabaseItem> getAllPaged(int pageNumber) {
         return getPagedResultSet(pageNumber, Department::new);
     }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+    }
 }
