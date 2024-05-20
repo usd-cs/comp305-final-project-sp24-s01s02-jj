@@ -2,10 +2,13 @@ package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
+import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Date;
+import java.sql.SQLException;
 import java.sql.SQLSyntaxErrorException;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,11 +96,50 @@ public class AbstractTableTest {
     }
 
     @Test
+    void getCountTableRowsInvalid() {
+        DummyInvalidTable dummyInvalidTable = new DummyInvalidTable();
+
+        assertThrows(IllegalStateException.class, () -> {
+            long result = dummyInvalidTable.getCountTableRows();
+        });
+    }
+
+    @Test
     void getPagedResultSetInvalidTest() {
         DummyInvalidTable dummyInvalidTable = new DummyInvalidTable();
 
-        assertThrows(SQLSyntaxErrorException.class, () -> {
+        assertThrows(IllegalStateException.class, () -> {
             List<DatabaseItem> results = dummyInvalidTable.getPagedResultSet(0, Person::new);
+        });
+    }
+
+    @Test
+    void deleteWithIdSuccess() {
+        DummyTable dummyTable = new DummyTable();
+        Person person = new Person(
+          "fakename",
+          "fakelast",
+          new Date(2020, 5, 4),
+      "85958435",
+          "fakestuser",
+      "fakeuser@sandiego.edu",
+      "fake@gmail.com",
+            true,
+                new Department(1)
+        );
+        DummyTable.deleteWithId(person.getId(), dummyTable.getTableName());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+           Person person1 = new Person(person.getId());
+        });
+    }
+
+    @Test
+    void deleteWithIdFailure() {
+        DummyTable dummyTable = new DummyTable();
+
+        assertThrows(IllegalStateException.class, () -> {
+            DummyTable.deleteWithId(-1, dummyTable.getTableName());
         });
     }
 }

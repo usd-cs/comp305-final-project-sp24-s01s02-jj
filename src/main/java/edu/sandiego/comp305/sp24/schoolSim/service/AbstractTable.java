@@ -25,9 +25,8 @@ public abstract class AbstractTable implements DatabaseTable {
                 return -1;
             }
         } catch (SQLException e){
-            e.printStackTrace();
+            throw new IllegalStateException("Error accessing table: " + e.getMessage());
         }
-        return -1;
     }
 
     /**
@@ -66,7 +65,7 @@ public abstract class AbstractTable implements DatabaseTable {
                 items.add(item);
             }
         } catch (SQLException e){
-            e.printStackTrace();
+            throw new IllegalStateException("Error accessing table: " + e.getMessage());
         }
         return items;
     }
