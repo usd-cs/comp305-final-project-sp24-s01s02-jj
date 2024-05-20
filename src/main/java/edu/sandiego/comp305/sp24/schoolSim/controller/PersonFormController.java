@@ -62,12 +62,22 @@ class PersonFormController implements WebMvcConfigurer {
         return path;
     }
 
+    void addErrorMessage(Model model, Optional<String> status) {
+        if (status.isPresent()) {
+            String code = status.get();
+            String message = switch (code) {
+                case "error" -> TableVisualizer.generateErrorContent("Error encountered while attempting to add item to the database");
+                case "error1" -> TableVisualizer.generateErrorContent("Attempted to delete unknown id");
+                default -> TableVisualizer.generateErrorContent("An Unknown Error Occured");
+            };
+            model.addAttribute("errorMessage", message);
+        }
+    }
+
     @GetMapping("/person")
     public String showTable(@RequestParam Optional<String> type, @RequestParam Optional<String> status, Model model) {
         DatabaseTable table = getTableFromKey(type);
-        if (status.isPresent() && status.get().equals("error")) {
-            model.addAttribute("errorMessage", TableVisualizer.generateErrorContent("Error encountered while attempting to add item to the database"));
-        }
+        addErrorMessage(model, status);
         List<DatabaseItem> items = table.getAllPaged(0);
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, items));
         model.addAttribute("tableName", table.getTableName());
@@ -76,12 +86,13 @@ class PersonFormController implements WebMvcConfigurer {
     }
 
     @GetMapping("/person/{id}")
-    public String deletePerson(@PathVariable int id) {
+    public String deletePerson(@PathVariable int id, @RequestParam Optional<String> type) {
+        boolean caughtFlag = false;
         try {
             new Faculty(id);
             FacultyTable table = new FacultyTable();
             table.deleteFromDatabase(id);
-            return "redirect:/person?type=faculty";
+            caughtFlag = true;
         } catch (IllegalArgumentException e) {
             // Pass
         }
@@ -89,7 +100,7 @@ class PersonFormController implements WebMvcConfigurer {
             new Employee(id);
             EmployeeTable table = new EmployeeTable();
             table.deleteFromDatabase(id);
-            return "redirect:/person?type=employee";
+            caughtFlag = true;
         } catch (IllegalArgumentException e) {
             // Ignore
         }
@@ -97,7 +108,7 @@ class PersonFormController implements WebMvcConfigurer {
             new Student(id);
             StudentTable table = new StudentTable();
             table.deleteFromDatabase(id);
-            return "redirect:/person?type=student";
+            caughtFlag = true;
         } catch (IllegalArgumentException e) {
             // Ignore
         }
@@ -105,19 +116,28 @@ class PersonFormController implements WebMvcConfigurer {
             new Alumni(id);
             AlumniTable table = new AlumniTable();
             table.deleteFromDatabase(id);
-            return "redirect:/person?type=alumni";
+            caughtFlag = true;
         } catch (IllegalArgumentException e) {
-            // Ignore
+            //pass
         }
         try {
             new Person(id);
             PersonTable table = new PersonTable();
             table.deleteFromDatabase(id);
-            return "redirect:/person";
+            caughtFlag = true;
         } catch (IllegalArgumentException e) {
             //pass
         }
-        return "redirect:/person?status=error";
+        String redirect="redirect:/person";
+        String nextKey = "?";
+        if (type.isPresent()) {
+            redirect += nextKey+"type="+type.get();
+            nextKey="&";
+        }
+        if (!caughtFlag) {
+            redirect += nextKey+"status=error1";
+        }
+        return redirect;
     }
 
     @GetMapping("/person/person")

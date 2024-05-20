@@ -20,7 +20,6 @@ public class TableVisualizer {
 
     public static String generateTableView(DatabaseTable table, List<DatabaseItem> items) {
         List<String> headers = table.getColumnNames();
-        headers.add("Delete");
         StringBuilder tableHTML = new StringBuilder("<table class=\"table is-fullwidth is-striped\"><thead>");
         tableHTML.append(TableVisualizer.rowWrap(true, headers, table.getTableName()));
         tableHTML.append("</thead><tbody>");
@@ -41,15 +40,13 @@ public class TableVisualizer {
     private static String generateDeletionPath(String tableName, String id) {
         String prefix = switch (tableName) {
             case "Person", "Student", "Employee", "Faculty", "Alumni" -> "/person/";
-            case "Department" -> "/department/";
-            case "Room" -> "/room/";
-            case "Building" -> "/building/";
             default -> "#";
         };
         if (prefix.equals("#")) {
-            return prefix;
+            // Room and Building and Department are Read Only.
+            return "#";
         } else {
-            return prefix+id;
+            return prefix+id+"?type="+tableName.toLowerCase();
         }
     }
 
@@ -63,11 +60,16 @@ public class TableVisualizer {
         for (int i = 1; i < items.size(); i++) {
             TableVisualizer.addRowItem(tableRow, openTag, items.get(i));
         }
-        if (!isHeader) {
+        String deletePath = generateDeletionPath(tableName, items.get(0));
+        if (!deletePath.equals("#")) {
             tableRow.append(openTag);
-            tableRow.append("<a href=\"");
-            tableRow.append(TableVisualizer.generateDeletionPath(tableName, items.get(0)));
-            tableRow.append("\" class=\"button is-small is-danger is-rounded\">x</a>");
+            if (!isHeader) {
+                tableRow.append("<a href=\"");
+                tableRow.append(TableVisualizer.generateDeletionPath(tableName, items.get(0)));
+                tableRow.append("\" class=\"button is-small is-danger is-rounded\">x</a>");
+            } else {
+                tableRow.append("Delete");
+            }
             tableRow.append(getCloseTag(openTag));
         }
         tableRow.append("</tr>");
