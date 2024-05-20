@@ -189,7 +189,6 @@ Room *-- Building
 Person *-- Database
 
 
-
 class SchoolSimApplication {
   -{static} String CONFIG_FILE
 
@@ -198,19 +197,39 @@ class SchoolSimApplication {
 SchoolSimApplication o-- Config
 
 abstract class AbstractTable implements DatabaseTable {
+    #List<DatabaseItem> getPagedResultSet(int pageNumber, Function<? super Long, ? extends DatabaseItem> idConstructor)
+    #{static} void deleteWithId(long id, String tableName)
+    +{abstract} void deleteFromDatabase(long id)
 }
 
 class AlumniTable extends AbstractTable {
+    +List<Alumni> getAllWithDegreeType(DegreeType degreeType)
+    +List<Alumni> getAllWithGraduationDate(String graduationDate)
 
 }
 
 class EmployeeTable extends AbstractTable {
+    +List<Employee> getAllWithStartDate(String startDate)
+    +List<Employee> getAllWithHourlyWage(String hourlyWage)
+    +List<Employee> getAllWithMangerID(String managerID)
 }
 
 class FacultyTable extends AbstractTable {
+    +List<Faculty> getAllByOfficeLocation(String officeLocation)
+    +List<Faculty> getAllWithTenure()
+    +List<Faculty> getAllWithNoTenure()
 }
 
 class PersonTable extends AbstractTable {
+    +List<Person> getAllWithFirstName(String firstName)
+    +List<Person> getAllWithLastName(String lastName)
+    +List<Person> getAllWithPhoneNumber(String phoneNumber)
+    +Optional<Person> getByUsername(String username)
+    +Optional<Person> getByOrganizationEmail(String organizationEmail)
+    +Optional<Person> getBySecondaryEmail(String secondaryEmail)
+    +List<Person> getActivePeople()
+    +List<Person> getInactivePeople()
+    +List<DatabaseItem> getAllPaged(int pageNumber)
 }
 
 class StudentTable extends AbstractTable {
