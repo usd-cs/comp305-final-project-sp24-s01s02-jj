@@ -2,7 +2,6 @@ package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
-import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import java.sql.*;
 
