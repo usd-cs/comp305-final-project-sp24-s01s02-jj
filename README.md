@@ -6,11 +6,6 @@ SchoolSim is an identity management system designed specifically for universitie
 - Faculty
 - Student
 
-And the following group types:
-- Building
-- Room
-- Department
-
 This project is written in Java and uses the [Spring](https://spring.io/) framework.
 We decided to use Java because it enforces type safety and object-oriented principles.
 We decided to Spring because it is well documented and has a large community.
@@ -47,6 +42,7 @@ Once the user has been created, run the following commands to setup the producti
 Then create the proper test database:
 1. `CREATE DATABASE TestDatabase;`
 2. `USE TestDatabase;`
+3. `SOURCE sql/create-test-db.sql`
 
 Lastly, run the following commands to grant the user all privileges for those two databases:
 - `GRANT ALL PRIVILEGES ON ProductionDatabase.* To 'new_user'@'%' IDENTIFIED BY 'password';`
