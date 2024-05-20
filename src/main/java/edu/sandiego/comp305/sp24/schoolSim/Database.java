@@ -1,10 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim;
 
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
-import edu.sandiego.comp305.sp24.schoolSim.service.EmployeeTable;
-import edu.sandiego.comp305.sp24.schoolSim.service.FacultyTable;
-import edu.sandiego.comp305.sp24.schoolSim.service.PersonTable;
-import edu.sandiego.comp305.sp24.schoolSim.service.StudentTable;
+import edu.sandiego.comp305.sp24.schoolSim.service.*;
 
 import java.net.InetAddress;
 import java.sql.Connection;
@@ -48,7 +45,9 @@ public class Database {
         tables.add(new EmployeeTable());
         tables.add(new FacultyTable());
         tables.add(new StudentTable());
-        // TODO: Add other tables as they begin to exist
+        tables.add(new DepartmentTable());
+        tables.add(new BuildingTable());
+        tables.add(new RoomTable());
     }
 
     private boolean testHostConnection(String host) {
