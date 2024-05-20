@@ -117,4 +117,10 @@ public class EmployeeTable extends AbstractTable {
         // Passes Employee's from id constructor to be used to create the objects.
         return getPagedResultSet(pageNumber, Employee::new);
     }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+        AbstractTable.deleteWithId(id, "Person");
+    }
 }

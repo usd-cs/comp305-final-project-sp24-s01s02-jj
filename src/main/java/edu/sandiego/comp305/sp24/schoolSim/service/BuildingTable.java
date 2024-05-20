@@ -157,4 +157,9 @@ public class BuildingTable extends AbstractTable{
     public List<DatabaseItem> getAllPaged(int pageNumber) {
         return getPagedResultSet(pageNumber, Building::new);
     }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+    }
 }

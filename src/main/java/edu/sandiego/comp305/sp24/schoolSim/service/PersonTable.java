@@ -220,4 +220,9 @@ public class PersonTable extends AbstractTable  {
         columnNames.add("Department");
         return columnNames;
     }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+    }
 }
