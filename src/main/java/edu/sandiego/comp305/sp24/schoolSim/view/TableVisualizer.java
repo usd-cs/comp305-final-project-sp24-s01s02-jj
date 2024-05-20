@@ -20,7 +20,7 @@ public class TableVisualizer {
 
     public static String generateTableView(DatabaseTable table, List<DatabaseItem> items) {
         List<String> headers = table.getColumnNames();
-        StringBuilder tableHTML = new StringBuilder("<table class=\"table\"><thead>");
+        StringBuilder tableHTML = new StringBuilder("<table class=\"table is-fullwidth is-striped\"><thead>");
         tableHTML.append(TableVisualizer.rowWrap(true, headers));
         tableHTML.append("</thead><tbody>");
         for (DatabaseItem item : items) {

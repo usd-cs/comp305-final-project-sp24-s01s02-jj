@@ -39,7 +39,7 @@ class TableVisualizerTest {
         fakeRows.add(row1);
         fakeRows.add(row2);
         String table = TableVisualizer.generateTableView(fakeTable, fakeRows);
-        String expected = "<table class=\"table\"><thead><tr><th>id</th><th>name</th><th>birthdate</th></tr></thead><tbody><tr><th>1</th><td>Looper</td><td>07-01-1970</td></tr><tr><th>2</th><td>Souper</td><td>07-02-1970</td></tr></tbody></table>";
+        String expected = "<table class=\"table is-fullwidth is-striped\"><thead><tr><th>id</th><th>name</th><th>birthdate</th></tr></thead><tbody><tr><th>1</th><td>Looper</td><td>07-01-1970</td></tr><tr><th>2</th><td>Souper</td><td>07-02-1970</td></tr></tbody></table>";
         assertEquals(expected, table, "Expected table layout not generated");
     }
 
