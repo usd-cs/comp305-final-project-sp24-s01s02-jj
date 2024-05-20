@@ -90,6 +90,9 @@ class PersonFormController implements WebMvcConfigurer {
     @GetMapping("/person/faculty")
     public String showAlumniForm(FacultyForm form) { return form.getFormPath(); }
 
+    @GetMapping("/person/student")
+    public String showStudentForm(StudentForm form) { return form.getFormPath(); }
+
     public String handleWebForm(WebForm form, BindingResult result) {
         if (result.hasErrors()) {
             return form.getFormPath();
@@ -119,6 +122,11 @@ class PersonFormController implements WebMvcConfigurer {
 
     @PostMapping("/employee")
     public String addEmployee(@Valid EmployeeForm form, BindingResult result) {
+        return handleWebForm(form, result);
+    }
+
+    @PostMapping("/student")
+    public String addStudent(@Valid StudentForm form, BindingResult result) {
         return handleWebForm(form, result);
     }
 }
