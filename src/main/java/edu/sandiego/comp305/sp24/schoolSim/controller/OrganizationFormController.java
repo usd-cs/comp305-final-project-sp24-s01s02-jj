@@ -6,6 +6,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import edu.sandiego.comp305.sp24.schoolSim.service.DepartmentTable;
 import edu.sandiego.comp305.sp24.schoolSim.service.RoomTable;
+import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;

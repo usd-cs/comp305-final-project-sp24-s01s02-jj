@@ -4,6 +4,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.Building;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.service.*;
+import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
