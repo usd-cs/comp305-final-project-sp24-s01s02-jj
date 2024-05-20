@@ -49,6 +49,19 @@ public class AlumniForm extends PersonForm {
     }
 
     @Override
+    public String getFormPath(){
+        return "alumniForm";
+    }
+
+    @Override
+    public String getSuccessRedirect(){
+        return "redirect:/person?type=alumni";
+    }
+    @Override
+    public String getUnsuccessfulRedirect() {
+        return "redirect:/person?type=alumni&status=error";
+    }
+    @Override
     public String toString() {
         return "AlumniForm{" +
                 "graduationDate=" + graduationDate +

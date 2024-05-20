@@ -10,7 +10,7 @@ import jakarta.validation.constraints.*;
 
 import java.sql.*;
 
-public class PersonForm {
+public class PersonForm implements WebForm{
 
     @NotNull
     String firstName;
@@ -32,6 +32,7 @@ public class PersonForm {
     @NotNull
     Department department;
 
+    @Override
     public void build() {
         new Person(getFirstName(),
                 getLastName(),
@@ -42,6 +43,21 @@ public class PersonForm {
                 getSecondaryEmail(),
                 getActive(),
                 getDepartmentInstance());
+    }
+
+    @Override
+    public String getFormPath() {
+        return "personForm";
+    }
+
+    @Override
+    public String getSuccessRedirect() {
+        return "redirect:/person";
+    }
+
+    @Override
+    public String getUnsuccessfulRedirect() {
+        return "redirect:/person?status=error";
     }
 
     public String getFirstName() {

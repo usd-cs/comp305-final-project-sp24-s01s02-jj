@@ -30,6 +30,13 @@ public class TableVisualizer {
         return tableHTML.toString();
     }
 
+    public static String generateErrorContent(String message) {
+        StringBuilder builder = new StringBuilder("<div class=\"notification is-danger\"><button class=\"delete\"></button>");
+        builder.append(message);
+        builder.append("</div>");
+        return builder.toString();
+    }
+
     private static StringBuilder rowWrap(boolean isHeader, List<String> items) {
         StringBuilder tableRow = new StringBuilder("<tr>");
         // First item will always be row header

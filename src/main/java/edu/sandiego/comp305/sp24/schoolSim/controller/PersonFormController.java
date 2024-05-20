@@ -7,9 +7,11 @@ import edu.sandiego.comp305.sp24.schoolSim.service.*;
 import edu.sandiego.comp305.sp24.schoolSim.view.AlumniForm;
 import edu.sandiego.comp305.sp24.schoolSim.view.PersonForm;
 import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
+import edu.sandiego.comp305.sp24.schoolSim.view.WebForm;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -17,6 +19,8 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.ui.Model;
 
+import javax.swing.text.html.Option;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -62,8 +66,11 @@ class PersonFormController implements WebMvcConfigurer {
     }
 
     @GetMapping("/person")
-    public String showTable(@RequestParam Optional<String> type, Model model) {
+    public String showTable(@RequestParam Optional<String> type, @RequestParam Optional<String> status, Model model) {
         DatabaseTable table = getTableFromKey(type);
+        if (status.isPresent() && status.get().equals("error")) {
+            model.addAttribute("errorMessage", TableVisualizer.generateErrorContent("Error encountered while attempting to add item to the database"));
+        }
         List<DatabaseItem> items = table.getAllPaged(0);
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, items));
         model.addAttribute("tableName", table.getTableName());
@@ -76,24 +83,28 @@ class PersonFormController implements WebMvcConfigurer {
         return "personForm";
     }
 
-    @PostMapping("/person")
-    public String addPerson(@Valid PersonForm personForm, BindingResult result) {
-        if (result.hasErrors()) {
-            return "personForm";
-        }
-        personForm.build();
-        return "redirect:/person";
-    }
-
     @GetMapping("/person/alumni")
     public String showAlumniForm(AlumniForm form) { return "alumniForm"; }
 
+    public String handleWebForm(WebForm form, BindingResult result) {
+        if (result.hasErrors()) {
+            return form.getFormPath();
+        }
+        try {
+            form.build();
+        } catch (IllegalArgumentException e) {
+            return form.getUnsuccessfulRedirect();
+        }
+        return form.getSuccessRedirect();
+    }
+
+    @PostMapping("/person")
+    public String addPerson(@Valid PersonForm form, BindingResult result) {
+        return handleWebForm(form, result);
+    }
+
     @PostMapping("/alumni")
     public String addAlumni(@Valid AlumniForm form, BindingResult result) {
-        if (result.hasErrors()) {
-            return "alumniForm";
-        }
-        form.build();
-        return "redirect:/person?type=alumni";
+        return handleWebForm(form, result);
     }
 }

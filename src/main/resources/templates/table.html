@@ -56,6 +56,9 @@
         <!-- Use hero to pin footer to bottom of page -->
         <div class="hero is-fullheight">
             <div class="container is-fluid">
+                <div class="container">
+                    <th:block th:utext="${errorMessage}"></th:block>
+                </div>
                 <nav class="level mx-3">
                     <!-- Left side -->
                     <div class="level-left">
@@ -85,4 +88,16 @@
             </footer>
         </div>
     </body>
+    <script>
+        // Borrowed form https://bulma.io/documentation/elements/notification/
+        document.addEventListener('DOMContentLoaded', () => {
+            (document.querySelectorAll('.notification .delete') || []).forEach(($delete) => {
+                const $notification = $delete.parentNode;
+
+                $delete.addEventListener('click', () => {
+                    $notification.parentNode.removeChild($notification);
+                });
+            });
+        });
+    </script>
 </html>
