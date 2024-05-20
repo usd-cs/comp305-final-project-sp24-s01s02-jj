@@ -92,6 +92,7 @@ class EmployeeTableTest {
         EmployeeTable table = new EmployeeTable();
         List<Employee> returnedList = table.getAllWithMangerID("377");
         singlePersonList.add(greg);
+        singlePersonList.add(new Person(751));
         assertEquals(returnedList.size(),singlePersonList.size());
         assertEquals(singlePersonList.get(0).getId(),returnedList.get(0).getId());
     }

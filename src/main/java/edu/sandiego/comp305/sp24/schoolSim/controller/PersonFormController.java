@@ -4,10 +4,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import edu.sandiego.comp305.sp24.schoolSim.service.*;
-import edu.sandiego.comp305.sp24.schoolSim.view.AlumniForm;
-import edu.sandiego.comp305.sp24.schoolSim.view.PersonForm;
-import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
-import edu.sandiego.comp305.sp24.schoolSim.view.WebForm;
+import edu.sandiego.comp305.sp24.schoolSim.view.*;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -22,6 +19,7 @@ import org.springframework.ui.Model;
 import javax.swing.text.html.Option;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Controller
@@ -80,11 +78,17 @@ class PersonFormController implements WebMvcConfigurer {
 
     @GetMapping("/person/person")
     public String showForm(PersonForm personForm) {
-        return "personForm";
+        return personForm.getFormPath();
     }
 
     @GetMapping("/person/alumni")
-    public String showAlumniForm(AlumniForm form) { return "alumniForm"; }
+    public String showAlumniForm(AlumniForm form) { return form.getFormPath(); }
+
+    @GetMapping("/person/employee")
+    public String showAlumniForm(EmployeeForm form) { return form.getFormPath(); }
+
+    @GetMapping("/person/faculty")
+    public String showAlumniForm(FacultyForm form) { return form.getFormPath(); }
 
     public String handleWebForm(WebForm form, BindingResult result) {
         if (result.hasErrors()) {
@@ -92,7 +96,7 @@ class PersonFormController implements WebMvcConfigurer {
         }
         try {
             form.build();
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NoSuchElementException e) {
             return form.getUnsuccessfulRedirect();
         }
         return form.getSuccessRedirect();
@@ -105,6 +109,16 @@ class PersonFormController implements WebMvcConfigurer {
 
     @PostMapping("/alumni")
     public String addAlumni(@Valid AlumniForm form, BindingResult result) {
+        return handleWebForm(form, result);
+    }
+
+    @PostMapping("/faculty")
+    public String addFaculty(@Valid FacultyForm form, BindingResult result) {
+        return handleWebForm(form, result);
+    }
+
+    @PostMapping("/employee")
+    public String addEmployee(@Valid EmployeeForm form, BindingResult result) {
         return handleWebForm(form, result);
     }
 }

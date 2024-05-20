@@ -42,12 +42,14 @@ public class Database {
         }
         tables = new ArrayList<>();
         tables.add(new PersonTable());
+        tables.add(new AlumniTable());
         tables.add(new EmployeeTable());
         tables.add(new FacultyTable());
         tables.add(new StudentTable());
         tables.add(new DepartmentTable());
         tables.add(new BuildingTable());
         tables.add(new RoomTable());
+
     }
 
     private boolean testHostConnection(String host) {

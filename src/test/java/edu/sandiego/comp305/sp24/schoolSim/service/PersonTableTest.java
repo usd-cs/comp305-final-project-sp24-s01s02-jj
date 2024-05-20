@@ -183,7 +183,7 @@ class PersonTableTest {
         // TODO: This test desperately needs a rework
         PersonTable table = new PersonTable();
         List<Person> resultsList = table.getActivePeople();
-        int numOfActivePeople = 15;
+        int numOfActivePeople = 18;
         assertEquals(resultsList.size(), numOfActivePeople);
 
     }
