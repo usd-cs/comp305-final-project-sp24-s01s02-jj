@@ -48,6 +48,7 @@ public class Database {
         tables.add(new DepartmentTable());
         tables.add(new BuildingTable());
         tables.add(new RoomTable());
+        tables.add(new AlumniTable());
     }
 
     private boolean testHostConnection(String host) {

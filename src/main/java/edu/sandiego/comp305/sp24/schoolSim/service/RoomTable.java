@@ -10,6 +10,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class RoomTable extends AbstractTable {
     public List<Room> getAllWithBuildingID(String buildingID){
@@ -35,6 +36,31 @@ public class RoomTable extends AbstractTable {
         }
 
         return resultList;
+    }
+
+    public Optional<Room> getWitBuildingIDAndRoomNumber(long buildingID,int roomNumber) {
+        ResultSet resultSet;
+        Connection connection = Database.getInstance().getDatabaseConnection();
+
+        String query = "SELECT * FROM Room WHERE building = ? AND room_number = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setLong(1, buildingID);
+            preparedStatement.setInt(2, roomNumber);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                long id = resultSet.getLong("id");
+
+                Room room = new Room(id);
+                return Optional.of(room);
+            }
+
+        } catch (SQLException e){
+            e.printStackTrace();
+        }
+
+        return Optional.empty();
     }
 
     public List<Room> getAllWithRoomNumber(String roomNumber){

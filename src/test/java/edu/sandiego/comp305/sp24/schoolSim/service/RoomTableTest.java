@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -79,6 +80,26 @@ class RoomTableTest {
         assertEquals(resultsList.size(),twoRoomList.size());
         assertEquals(resultsList.get(0).getId(),twoRoomList.get(0).getId());
         assertEquals(resultsList.get(1).getId(),twoRoomList.get(1).getId());
+    }
+
+    @Test
+    void getByBuildingAndRoomNumNoResultNoBuilding() {
+        RoomTable table = new RoomTable();
+        assertEquals(Optional.empty(),table.getWitBuildingIDAndRoomNumber(-1, 102));
+    }
+
+    @Test
+    void getByBuildingAndRoomNumNoResultNoRoom() {
+        RoomTable table = new RoomTable();
+        assertEquals(Optional.empty(),table.getWitBuildingIDAndRoomNumber(1, -1));
+    }
+
+    @Test
+    void getByBuildingAndRoomNumResult() {
+        RoomTable table = new RoomTable();
+        long actualID = table.getWitBuildingIDAndRoomNumber(1, 102).get().getId();
+        long expectedID = 1;
+        assertEquals(expectedID, actualID);
     }
 
     @Test
