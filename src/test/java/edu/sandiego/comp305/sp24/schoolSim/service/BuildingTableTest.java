@@ -1,10 +1,14 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
+import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
+import edu.sandiego.comp305.sp24.schoolSim.model.Alumni;
 import edu.sandiego.comp305.sp24.schoolSim.model.Building;
+import edu.sandiego.comp305.sp24.schoolSim.model.Department;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -126,5 +130,32 @@ class BuildingTableTest {
         BuildingTable table = new BuildingTable();
         long results = table.getByAbbreviation("BLD").get().getId();
         assertEquals(building1.getId(), results);
+    }
+
+    @Test
+    void deleteFromDatabaseExists() {
+        BuildingTable buildingTable = new BuildingTable();
+
+        Building building = new Building(
+                "New Building!!!",
+                "This is the address",
+                10,
+                "BUILDING"
+        );
+
+        buildingTable.deleteFromDatabase(building.getId());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Building building1 = new Building(building.getId());
+        });
+    }
+
+    @Test
+    void deleteFromDatabaseDoesntExist() {
+        BuildingTable buildingTable = new BuildingTable();
+
+        assertThrows(IllegalStateException.class, () -> {
+            buildingTable.deleteFromDatabase(-1);
+        });
     }
 }

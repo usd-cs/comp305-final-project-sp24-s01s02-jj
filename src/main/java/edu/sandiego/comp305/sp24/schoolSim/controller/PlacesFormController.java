@@ -4,6 +4,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.Building;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.service.*;
+import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,6 +45,6 @@ class PlacesFormController implements WebMvcConfigurer {
         List<DatabaseItem> items = table.getAllPaged(0);
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, items));
         model.addAttribute("tableName", table.getTableName());
-        return "table";
+        return "rotable";
     }
 }

@@ -95,4 +95,10 @@ public class StudentTable extends AbstractTable {
         // Passes student's from id constructor to create Student instances
         return getPagedResultSet(pageNumber, Student::new);
     }
+
+    @Override
+    public void deleteFromDatabase(long id) {
+        AbstractTable.deleteWithId(id, getTableName());
+        AbstractTable.deleteWithId(id, "Person");
+    }
 }

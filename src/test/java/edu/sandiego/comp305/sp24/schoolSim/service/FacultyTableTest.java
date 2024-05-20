@@ -1,6 +1,7 @@
 package edu.sandiego.comp305.sp24.schoolSim.service;
 
 import edu.sandiego.comp305.sp24.schoolSim.Config;
+import edu.sandiego.comp305.sp24.schoolSim.enums.DegreeType;
 import edu.sandiego.comp305.sp24.schoolSim.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -69,5 +70,42 @@ class FacultyTableTest {
         assertEquals(twoPersonList.size(), returnedList.size());
         assertEquals(twoPersonList.get(0).getId(),returnedList.get(0).getId());
         assertEquals(twoPersonList.get(1).getId(),returnedList.get(1).getId());
-        }
+    }
+
+    @Test
+    void deleteFromDatabaseExists() {
+        FacultyTable facultyTable = new FacultyTable();
+
+        Faculty faculty = new Faculty(
+                "Fake Name",
+                "Fake Last",
+                new Date(2020, 5, 6),
+                "8580009999",
+                "completelyuniqueuser",
+                "uniquieemails@org.com",
+                "uniquieemails@gmail.com",
+                true,
+                new Department(1),
+                new Date(2024, 8, 9),
+                17.85,
+                null,
+                new Room(1),
+                false
+        );
+
+        facultyTable.deleteFromDatabase(faculty.getId());
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            Faculty faculty1 = new Faculty(faculty.getId());
+        });
+    }
+
+    @Test
+    void deleteFromDatabaseDoesntExist() {
+        FacultyTable facultyTable = new FacultyTable();
+
+        assertThrows(IllegalStateException.class, () -> {
+            facultyTable.deleteFromDatabase(-1);
+        });
+    }
 }
