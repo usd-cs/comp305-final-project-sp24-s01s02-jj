@@ -36,23 +36,12 @@ class OrganizationFormController implements WebMvcConfigurer {
         return new DepartmentTable();
     }
 
-    String getPostPath(Optional<String> key) {
-        String path = "/groups/department";
-        String type;
-        if (key.isPresent()) {
-            type = key.get();
-        }
-        // If more orgs, expand to switch
-        return path;
-    }
-
     @GetMapping("/groups")
     public String form(@RequestParam Optional<String> type, Model model) {
         DatabaseTable table = getTableFromKey(type);
         List<DatabaseItem> items = table.getAllPaged(0);
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, items));
         model.addAttribute("tableName", table.getTableName());
-        model.addAttribute("formLink", getPostPath(type));
-        return "table";
+        return "rotable";
     }
 }
