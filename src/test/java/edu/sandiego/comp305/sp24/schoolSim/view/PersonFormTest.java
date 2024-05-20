@@ -26,7 +26,7 @@ class PersonFormTest {
     void setDepartmentValid() {
         PersonForm form = new PersonForm();
         assertDoesNotThrow(()->{form.setDepartment("Fake Department 1");});
-        assertEquals(1, form.getDepartment().getId());
+        assertEquals(1, form.getDepartmentInstance().getId());
     }
 
 }

@@ -12,10 +12,11 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class PersonTableTest {
     ArrayList<Person> singlePersonList = new ArrayList<>();
-    ArrayList<Person> twoPersonList = new ArrayList<>();
+    ArrayList<Person> threePersonList = new ArrayList<>();
     ArrayList<Person> emptyList = new ArrayList<>();
     Person John = new Person(142);
     Person EvilJohn = new Person(143);
+    Person FormTestJohn = new Person(519);
     Person Fac1 = new Person(75);
     Person fakeGuy1 = new Person(5);
     Person fakeGuy2 = new Person(6);
@@ -49,14 +50,17 @@ class PersonTableTest {
     @Test
     void getAllWithFirstNameReturnManyMatches() {
         PersonTable table = new PersonTable();
-        twoPersonList.add(John);
-        twoPersonList.add(EvilJohn);
+        threePersonList.add(John);
+        threePersonList.add(EvilJohn);
+        threePersonList.add(FormTestJohn);
         List<Person> returnedList = table.getAllWithFirstName("John");
-        assertEquals(twoPersonList.size(), returnedList.size());
-        long testID1 = twoPersonList.get(0).getId();
-        long testID2 = twoPersonList.get(1).getId();
+        assertEquals(threePersonList.size(), returnedList.size());
+        long testID1 = threePersonList.get(0).getId();
+        long testID2 = threePersonList.get(1).getId();
+        long testID3 = threePersonList.get(2).getId();
         long JohnID = John.getId();
         long EvilID = EvilJohn.getId();
+        long FormID = FormTestJohn.getId();
         assertEquals(testID1, JohnID);
         assertEquals(testID2, EvilID);
     }
@@ -83,12 +87,12 @@ class PersonTableTest {
     @Test
     void getAllWithLastNameReturnManyMatch() {
         PersonTable table = new PersonTable();
-        twoPersonList.add(fakeGuy1);
-        twoPersonList.add(fakeGuy2);
+        threePersonList.add(fakeGuy1);
+        threePersonList.add(fakeGuy2);
         List<Person> returnedList = table.getAllWithLastName("Fakelast");
-        assertEquals(twoPersonList.size(), returnedList.size());
-        long testID1 = twoPersonList.get(0).getId();
-        long testID2 = twoPersonList.get(1).getId();
+        assertEquals(threePersonList.size(), returnedList.size());
+        long testID1 = threePersonList.get(0).getId();
+        long testID2 = threePersonList.get(1).getId();
         long FakeID1 = fakeGuy1.getId();
         long FakeID2 = fakeGuy2.getId();
         assertEquals(testID1, FakeID1);
@@ -116,12 +120,12 @@ class PersonTableTest {
     @Test
     void getAllWithPhoneNumberReturnManyMatch() {
         PersonTable table = new PersonTable();
-        twoPersonList.add(fakeGuy1);
-        twoPersonList.add(fakeGuy2);
+        threePersonList.add(fakeGuy1);
+        threePersonList.add(fakeGuy2);
         List<Person> returnedList = table.getAllWithPhoneNumber("1235650099");
-        assertEquals(twoPersonList.size(), returnedList.size());
-        long testID1 = twoPersonList.get(0).getId();
-        long testID2 = twoPersonList.get(1).getId();
+        assertEquals(threePersonList.size(), returnedList.size());
+        long testID1 = threePersonList.get(0).getId();
+        long testID2 = threePersonList.get(1).getId();
         long FakeID1 = fakeGuy1.getId();
         long FakeID2 = fakeGuy2.getId();
         assertEquals(testID1, FakeID1);
@@ -171,9 +175,10 @@ class PersonTableTest {
 
     @Test
     void getActivePeopleReturnEveryoneButEvilJohn() {
+        // TODO: This test desperately needs a rework
         PersonTable table = new PersonTable();
         List<Person> resultsList = table.getActivePeople();
-        int numOfActivePeople = 14; // the database only has 7 people, only one is inactive
+        int numOfActivePeople = 15;
         assertEquals(resultsList.size(), numOfActivePeople);
 
     }

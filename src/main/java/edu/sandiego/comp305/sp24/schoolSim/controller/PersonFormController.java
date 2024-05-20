@@ -4,6 +4,7 @@ import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 import edu.sandiego.comp305.sp24.schoolSim.service.*;
+import edu.sandiego.comp305.sp24.schoolSim.view.PersonForm;
 import edu.sandiego.comp305.sp24.schoolSim.view.TableVisualizer;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,8 @@ import java.util.Optional;
 class PersonFormController implements WebMvcConfigurer {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/person");
+        registry.addViewController("/person").setViewName("person");
+        registry.addViewController("/person?type=alumni").setViewName("alumni");
     }
 
     DatabaseTable getTableFromKey(Optional<String> key) {
@@ -42,18 +44,44 @@ class PersonFormController implements WebMvcConfigurer {
         return table;
     }
 
+    String getPOSTPathFromKey(Optional<String> key) {
+        String tableKey = "person";
+        String path = "/person/person";
+        if (key.isPresent()) {
+            tableKey = key.get();
+        }
+        path = switch (tableKey) {
+            case "alumni" -> "/person/alumni";
+            case "faculty" -> "/person/faculty";
+            case "employee" -> "/person/employee";
+            case "student" -> "/person/student";
+            default -> "/person/person";
+        };
+        return path;
+    }
+
     @GetMapping("/person")
-    public String form(@RequestParam Optional<String> type, Model model) {
+    public String showTable(@RequestParam Optional<String> type, Model model) {
         DatabaseTable table = getTableFromKey(type);
         List<DatabaseItem> items = table.getAllPaged(0);
         model.addAttribute("tableData", TableVisualizer.generateTableView(table, items));
         model.addAttribute("tableName", table.getTableName());
+        model.addAttribute("formLink", getPOSTPathFromKey(type));
         return "table";
     }
 
-    @PostMapping("/person/input")
+    @GetMapping("/person/person")
+    public String showForm(PersonForm personForm) {
+        return "personForm";
+    }
+
+    @PostMapping("/person")
     //TODO: Check if this is possible since person is abstract
-    public String addPerson(@Valid Person personForm, BindingResult result) {
-        return "redirect:/";
+    public String addPerson(@Valid PersonForm personForm, BindingResult result) {
+        if (result.hasErrors()) {
+            return "personForm";
+        }
+        personForm.build();
+        return "redirect:/person";
     }
 }

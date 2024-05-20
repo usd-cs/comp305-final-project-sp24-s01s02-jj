@@ -93,7 +93,7 @@ class EmployeeTableTest {
     }
     @Test
     void getAllWithMangerManyResults() {
-        // I know it says twoPersonList, but I didn't realize the manager I chose for my two employees
+        // I know it says threePersonList, but I didn't realize the manager I chose for my two employees
         // was already in use, so 3 people share the same manager. Test results still good tho.
         EmployeeTable table = new EmployeeTable();
         List<Employee> returnedList = table.getAllWithMangerID("5");

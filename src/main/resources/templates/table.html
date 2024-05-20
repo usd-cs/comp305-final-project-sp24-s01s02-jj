@@ -4,7 +4,6 @@
         <title>School Simulator</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@1.0.0/css/bulma.min.css">
-        <script type="text/javascript" th:src="@{/site.js}"></script>
     </head>
     <body>
         <!-- TODO: Inject this entire nav section -->
@@ -67,7 +66,8 @@
 
                     <!-- Right side -->
                     <div class="level-right">
-                        <button class="level-item button column is-narrow is-primary js-modal-trigger" data-target="add-modal">Add</button>
+                        <!--/*@thymesVar id="formLink" type="java.lang.String"*/-->
+                        <a class="level-item button column is-narrow is-primary" th:href="${formLink}">Add</a>
                     </div>
                 </nav>
                 <div class="box mx-3">
@@ -83,26 +83,6 @@
                     </p>
                 </div>
             </footer>
-        </div>
-        <div id="add-modal" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-card">
-                <header class="modal-card-head">
-                    <p class="modal-card-title" th:text="'New '+${tableName}">New Item</p>
-                    <button class="delete" aria-label="close"></button>
-                </header>
-                <form action="#" th:action="${path}" th:object="${formObject}" method="post">
-                    <section class="modal-card-body">
-
-                    </section>
-                    <footer class="modal-card-foot">
-                    <div class="buttons">
-                        <button class="button is-success">Submit</button>
-                        <button class="button" type="button">Cancel</button>
-                    </div>
-                </footer>
-                </form>
-            </div>
         </div>
     </body>
 </html>

@@ -1,4 +1,4 @@
-package edu.sandiego.comp305.sp24.schoolSim.controller;
+package edu.sandiego.comp305.sp24.schoolSim.view;
 
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseItem;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;

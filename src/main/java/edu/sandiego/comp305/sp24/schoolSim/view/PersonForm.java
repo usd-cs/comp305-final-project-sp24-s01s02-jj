@@ -3,16 +3,14 @@ package edu.sandiego.comp305.sp24.schoolSim.view;
 import edu.sandiego.comp305.sp24.schoolSim.Database;
 import edu.sandiego.comp305.sp24.schoolSim.model.DatabaseTable;
 import edu.sandiego.comp305.sp24.schoolSim.model.Department;
-import edu.sandiego.comp305.sp24.schoolSim.model.Employee;
 import edu.sandiego.comp305.sp24.schoolSim.model.Person;
 
+import edu.sandiego.comp305.sp24.schoolSim.service.DepartmentTable;
 import jakarta.validation.constraints.*;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 
-public class PersonForm extends AbstractForm {
+public class PersonForm {
 
     @NotNull
     private String firstName;
@@ -30,30 +28,9 @@ public class PersonForm extends AbstractForm {
     private String organizationEmail;
     @Email
     private String secondaryEmail;
+    private boolean active;
     @NotNull
-    private boolean isActive;
-    @NotNull
-    private String department;
-
-    public PersonForm(String firstName,
-                  String lastName,
-                  Date birthdate,
-                  String phoneNumber,
-                  String username,
-                  String organizationEmail,
-                  String secondaryEmail,
-                  boolean isActive,
-                  String department) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.birthDate = birthdate;
-        this.phoneNumber = phoneNumber;
-        this.username = username;
-        this.organizationEmail = organizationEmail;
-        this.secondaryEmail = secondaryEmail;
-        this.isActive = isActive;
-        this.department = department;
-    }
+    private Department department;
 
     public void build() {
         new Person(getFirstName(),
@@ -63,13 +40,8 @@ public class PersonForm extends AbstractForm {
                 getUsername(),
                 getOrganizationEmail(),
                 getSecondaryEmail(),
-                isActive(),
-                getDepartment());
-    }
-
-    @Override
-    public String toBulmaForm(String postPath) {
-        return "";
+                getActive(),
+                getDepartmentInstance());
     }
 
     public String getFirstName() {
@@ -100,31 +72,83 @@ public class PersonForm extends AbstractForm {
         return secondaryEmail;
     }
 
-    public boolean isActive() {
-        return isActive;
+    public Boolean getActive() {
+        return active;
     }
 
-    public Department getDepartment() {
+    public String getDepartment() {
         // Uncomment once departmentTable exists
-        // DatabaseTable departmentTable = new DepartmentTable();
-        String query = String.format("SELECT id FROM %s WHERE name = ?", "Department");
+        if (department != null) {
+            return this.department.toString();
+        }
+        return "";
+    }
+
+    public Department getDepartmentInstance() {
+        return this.department;
+    }
+
+    public void setDepartment(String departmentName) throws SQLException {
+        DatabaseTable departmentTable = new DepartmentTable();
+        String query = String.format("SELECT id FROM %s WHERE name = ?", departmentTable.getTableName());
         ResultSet resultSet;
         Connection connection = Database.getInstance().getDatabaseConnection();
-        try {
-            PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, this.department);
-            resultSet = preparedStatement.executeQuery();
+        PreparedStatement preparedStatement = connection.prepareStatement(query);
+        preparedStatement.setString(1, departmentName);
+        resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
-                long id = resultSet.getLong("id");
-                return new Department(id);
-            } else {
-                return null;
-            }
-
-        } catch (SQLException e){
-            e.printStackTrace();
+        if (resultSet.next()) {
+            long id = resultSet.getLong("id");
+            this.department = new Department(id);
+        } else {
+            throw new IllegalArgumentException("Invalid Department Name");
         }
-        return null;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setOrganizationEmail(String organizationEmail) {
+        this.organizationEmail = organizationEmail;
+    }
+
+    public void setSecondaryEmail(String secondaryEmail) {
+        this.secondaryEmail = secondaryEmail;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    @Override
+    public String toString() {
+        return "PersonForm{" +
+                "firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", birthDate=" + birthDate +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", username='" + username + '\'' +
+                ", organizationEmail='" + organizationEmail + '\'' +
+                ", secondaryEmail='" + secondaryEmail + '\'' +
+                ", isActive=" + active +
+                ", department=" + department +
+                '}';
     }
 }
