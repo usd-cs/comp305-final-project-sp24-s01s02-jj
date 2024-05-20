@@ -95,7 +95,6 @@ class PersonFormController implements WebMvcConfigurer {
             return form.getFormPath();
         }
         try {
-            System.out.println(form.toString());
             form.build();
         } catch (IllegalArgumentException | NoSuchElementException e) {
             return form.getUnsuccessfulRedirect();
