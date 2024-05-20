@@ -13,23 +13,31 @@ import java.sql.*;
 public class PersonForm implements WebForm{
 
     @NotNull
+    @NotBlank
     String firstName;
     @NotNull
+    @NotBlank
     String lastName;
     @Past
     @NotNull
+    @NotBlank
     Date birthDate;
     @NotNull
+    @NotBlank
     String phoneNumber;
     @NotNull
+    @NotBlank
     String username;
     @NotNull
     @Email
+    @NotBlank
     String organizationEmail;
     @Email
+    @NotBlank
     String secondaryEmail;
     boolean active;
     @NotNull
+    @NotBlank
     Department department;
 
     @Override
