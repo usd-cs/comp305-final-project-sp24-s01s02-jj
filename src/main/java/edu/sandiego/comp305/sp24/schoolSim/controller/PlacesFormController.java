@@ -26,10 +26,7 @@ class PlacesFormController implements WebMvcConfigurer {
     }
 
     DatabaseTable getTableFromKey(Optional<String> key) {
-        String tableKey = "all";
-        if (key.isPresent()) {
-            tableKey = key.get();
-        }
+        String tableKey = key.orElse("building");
         DatabaseTable table;
         if (tableKey.equals("room")) {
             table = new RoomTable();
