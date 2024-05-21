@@ -31,11 +31,8 @@ class PersonFormController implements WebMvcConfigurer {
     }
 
     DatabaseTable getTableFromKey(Optional<String> key) {
-        String tableKey = "all";
+        String tableKey = key.orElse("person");
         DatabaseTable table;
-        if (key.isPresent()) {
-            tableKey = key.get();
-        }
         table = switch (tableKey) {
             case "alumni" -> new AlumniTable();
             case "faculty" -> new FacultyTable();
@@ -43,16 +40,12 @@ class PersonFormController implements WebMvcConfigurer {
             case "student" -> new StudentTable();
             default -> new PersonTable();
         };
-
         return table;
     }
 
     String getPOSTPathFromKey(Optional<String> key) {
-        String tableKey = "person";
+        String tableKey = key.orElse("person");
         String path = "/person/person";
-        if (key.isPresent()) {
-            tableKey = key.get();
-        }
         path = switch (tableKey) {
             case "alumni" -> "/person/alumni";
             case "faculty" -> "/person/faculty";
