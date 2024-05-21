@@ -61,11 +61,13 @@ public class TableVisualizer {
             TableVisualizer.addRowItem(tableRow, openTag, items.get(i));
         }
         String deletePath = generateDeletionPath(tableName, items.get(0));
+
+        // Add deletion buttons for non ro tables
         if (!deletePath.equals("#")) {
             tableRow.append(openTag);
             if (!isHeader) {
                 tableRow.append("<a href=\"");
-                tableRow.append(TableVisualizer.generateDeletionPath(tableName, items.get(0)));
+                tableRow.append(deletePath);
                 tableRow.append("\" class=\"button is-small is-danger is-rounded\">x</a>");
             } else {
                 tableRow.append("Delete");
