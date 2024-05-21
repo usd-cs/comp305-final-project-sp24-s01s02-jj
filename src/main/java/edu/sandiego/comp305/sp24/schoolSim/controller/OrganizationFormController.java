@@ -28,10 +28,7 @@ class OrganizationFormController implements WebMvcConfigurer {
     }
 
     DatabaseTable getTableFromKey(Optional<String> key) {
-        String tableKey = "all";
-        if (key.isPresent()) {
-            tableKey = key.get();
-        }
+        String tableKey = key.orElse("department");
         // Expand to switch if other organization types begin appearing
         return new DepartmentTable();
     }

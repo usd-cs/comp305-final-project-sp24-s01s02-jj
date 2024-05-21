@@ -34,4 +34,11 @@ public interface DatabaseTable {
      */
     List<DatabaseItem> getAllPaged(int pageNumber);
 
+    /**
+     * Delete the row with the given ID from the database.
+     *
+     * @param id The id of the row to delete
+     */
+    void deleteFromDatabase(long id);
+
 }

@@ -110,21 +110,9 @@ public class PersonForm implements WebForm{
         return this.department;
     }
 
-    public void setDepartment(String departmentName) throws SQLException {
-        DatabaseTable departmentTable = new DepartmentTable();
-        String query = String.format("SELECT id FROM %s WHERE name = ?", departmentTable.getTableName());
-        ResultSet resultSet;
-        Connection connection = Database.getInstance().getDatabaseConnection();
-        PreparedStatement preparedStatement = connection.prepareStatement(query);
-        preparedStatement.setString(1, departmentName);
-        resultSet = preparedStatement.executeQuery();
-
-        if (resultSet.next()) {
-            long id = resultSet.getLong("id");
-            this.department = new Department(id);
-        } else {
-            throw new IllegalArgumentException("Invalid Department Name");
-        }
+    public void setDepartment(String departmentName) {
+        DepartmentTable departmentTable = new DepartmentTable();
+        this.department = departmentTable.getByName(departmentName).orElseThrow();
     }
 
     public void setFirstName(String firstName) {

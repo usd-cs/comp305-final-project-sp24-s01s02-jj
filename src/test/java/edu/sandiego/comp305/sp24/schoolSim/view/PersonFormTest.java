@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.NoSuchElementException;
 
 class PersonFormTest {
     @BeforeAll
@@ -19,7 +20,7 @@ class PersonFormTest {
     @Test
     void setDepartmentNonExistent() {
         PersonForm form = new PersonForm();
-        assertThrows(IllegalArgumentException.class, () -> {form.setDepartment("Not a real department");});
+        assertThrows(NoSuchElementException.class, () -> {form.setDepartment("Not a real department");});
     }
 
     @Test
