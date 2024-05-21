@@ -20,6 +20,7 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.Function;
 
 @Controller
 class PersonFormController implements WebMvcConfigurer {
@@ -68,7 +69,7 @@ class PersonFormController implements WebMvcConfigurer {
             String message = switch (code) {
                 case "error" -> TableVisualizer.generateErrorContent("Error encountered while attempting to add item to the database");
                 case "error1" -> TableVisualizer.generateErrorContent("Attempted to delete unknown id");
-                default -> TableVisualizer.generateErrorContent("An Unknown Error Occured");
+                default -> TableVisualizer.generateErrorContent("An Unknown Error Occurred");
             };
             model.addAttribute("errorMessage", message);
         }
@@ -85,57 +86,40 @@ class PersonFormController implements WebMvcConfigurer {
         return "table";
     }
 
+    public boolean testID(long id, Function<? super Long, ? extends DatabaseItem> idConstructor) {
+        try {
+            idConstructor.apply(id);
+            return true;
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    public DatabaseTable getDeepestTable(int id) {
+        if (testID(id, Faculty::new)) {
+            return new FacultyTable();
+        } else if (testID(id, Employee::new)) {
+            return new EmployeeTable();
+        } else if (testID(id, Student::new)) {
+            return new StudentTable();
+        } else if (testID(id, Alumni::new)) {
+            return new AlumniTable();
+        } else if (testID(id, Person::new)) {
+            return new PersonTable();
+        } else {
+            throw new IllegalArgumentException("Invalid ID");
+        }
+    }
+
     @GetMapping("/person/{id}")
     public String deletePerson(@PathVariable int id, @RequestParam Optional<String> type) {
-        boolean caughtFlag = false;
+        String redirect = "redirect:/person";
+        redirect += "?type="+type.orElse("person");
         try {
-            new Faculty(id);
-            FacultyTable table = new FacultyTable();
+            DatabaseTable table = getDeepestTable(id);
             table.deleteFromDatabase(id);
-            caughtFlag = true;
         } catch (IllegalArgumentException e) {
-            // Pass
-        }
-        try {
-            new Employee(id);
-            EmployeeTable table = new EmployeeTable();
-            table.deleteFromDatabase(id);
-            caughtFlag = true;
-        } catch (IllegalArgumentException e) {
-            // Ignore
-        }
-        try {
-            new Student(id);
-            StudentTable table = new StudentTable();
-            table.deleteFromDatabase(id);
-            caughtFlag = true;
-        } catch (IllegalArgumentException e) {
-            // Ignore
-        }
-        try {
-            new Alumni(id);
-            AlumniTable table = new AlumniTable();
-            table.deleteFromDatabase(id);
-            caughtFlag = true;
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-        try {
-            new Person(id);
-            PersonTable table = new PersonTable();
-            table.deleteFromDatabase(id);
-            caughtFlag = true;
-        } catch (IllegalArgumentException e) {
-            //pass
-        }
-        String redirect="redirect:/person";
-        String nextKey = "?";
-        if (type.isPresent()) {
-            redirect += nextKey+"type="+type.get();
-            nextKey="&";
-        }
-        if (!caughtFlag) {
-            redirect += nextKey+"status=error1";
+            redirect += "&status=error1";
         }
         return redirect;
     }
@@ -149,10 +133,10 @@ class PersonFormController implements WebMvcConfigurer {
     public String showAlumniForm(AlumniForm form) { return form.getFormPath(); }
 
     @GetMapping("/person/employee")
-    public String showAlumniForm(EmployeeForm form) { return form.getFormPath(); }
+    public String showEmployeeForm(EmployeeForm form) { return form.getFormPath(); }
 
     @GetMapping("/person/faculty")
-    public String showAlumniForm(FacultyForm form) { return form.getFormPath(); }
+    public String showFacultyForm(FacultyForm form) { return form.getFormPath(); }
 
     @GetMapping("/person/student")
     public String showStudentForm(StudentForm form) { return form.getFormPath(); }
